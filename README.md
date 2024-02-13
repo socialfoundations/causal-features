@@ -1,10 +1,10 @@
 ![tableshift logo](img/tableshift.png)
 
-# Predictors from Causal Features Do Not Generalize Better to New Domains
+# Predictors from causal features do not generalize better to new domains
 
 This is code to reproduce experiments in the paper:
 
-> Predictors from Causal Features Do Not Generalize Better to New Domains
+> Predictors from causal features do not generalize better to new domains
 
 ![logo](experiments_causal/dag_diabetes.svg)
 
