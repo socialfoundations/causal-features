@@ -5,7 +5,7 @@
 
 This is code to reproduce experiments in the paper:
 
-> "Predictors from causal features do not generalize better to new domains", Nastl and Moritz, 2024.
+> Vivian Y. Nastl and Moritz Hardt. "Predictors from causal features do not generalize better to new domains", 2024.
 
 <div align="center">
 <img src="experiments_causal/dag_diabetes.svg">
@@ -118,4 +118,6 @@ We list in the following which files/folders we changed for our experiments:
 - added the packages `paretoset==1.2.3` and `seaborn==0.13.0` in `requirements.txt`
 
 ## Citing
+This repository contains code and supplementary materials for the following preprint:
+> Vivian Y. Nastl and Moritz Hardt. "Predictors from causal features do not generalize better to new domains", 2024.
 <!-- add bibtex citation from archiv -->
