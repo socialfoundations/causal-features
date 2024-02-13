@@ -281,3 +281,5 @@ xxhash==3.2.0
 yacs==0.1.8
 yarl==1.8.1
 zipp==3.11.0
+paretoset==1.2.3
+seaborn==0.13.0

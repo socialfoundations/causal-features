@@ -19,3 +19,5 @@ from .mooc import *
 from .nhanes import *
 from .physionet import *
 from .uci import *
+from .meps import *
+from .sipp import *

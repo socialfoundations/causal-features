@@ -1,3 +1,8 @@
+"""
+Definition of pytorch model with an sklearn-style interface.
+
+Modified for 'Predictors from Causal Features Do Not Generalize Better to New Domains'.
+"""
 import logging
 import os
 from abc import ABC, abstractmethod
@@ -52,8 +57,11 @@ class SklearnStylePytorchModel(ABC, nn.Module):
         raise
 
     def evaluate(self, eval_loaders: Dict[str, DataLoader], device):
-        return {str(split): evaluate(self, loader, device)
-                for split, loader in eval_loaders.items()}
+        return {str(split): evaluate(self, loader, device)[0]
+                for split, loader in eval_loaders.items()}, \
+            {str(split): evaluate(self, loader, device)[1] for split, loader in eval_loaders.items()}, \
+            {str(split): evaluate(self, loader, device)[2] for split, loader in eval_loaders.items()}, \
+            {str(split): evaluate(self, loader, device)[3] for split, loader in eval_loaders.items()}
 
     @abstractmethod
     def train_epoch(self,
@@ -98,7 +106,7 @@ class SklearnStylePytorchModel(ABC, nn.Module):
                              eval_loaders=eval_loaders,
                              device=device,
                              max_examples_per_epoch=max_examples_per_epoch)
-            metrics = self.evaluate(eval_loaders, device=device)
+            metrics, metrics_balanced, metrics_balanced_se, logits = self.evaluate(eval_loaders, device=device)
             log_str = f'Epoch {epoch:03d} ' + ' | '.join(
                 f"{k} score: {v:.4f}" for k, v in metrics.items())
             logging.info(log_str)
@@ -110,6 +118,9 @@ class SklearnStylePytorchModel(ABC, nn.Module):
                                checkpoint=checkpoint)
 
             fit_metrics = append_by_key(from_dict=metrics, to_dict=fit_metrics)
+            self.fit_metrics = metrics
+            self.fit_metrics_balanced = {"score": metrics_balanced, "se": metrics_balanced_se}
+            self.logits = logits
 
         return fit_metrics
 
@@ -123,10 +134,10 @@ SKLEARN_MODEL_NAMES = ("expgrad", "histgbm", "lightgbm", "wcs", "xgb")
 BASELINE_MODEL_NAMES = ["ft_transformer", "mlp", "resnet", "node", "saint",
                         "tabtransformer"]
 PYTORCH_MODEL_NAMES = BASELINE_MODEL_NAMES \
-                      + DOMAIN_ROBUSTNESS_MODEL_NAMES \
-                      + DOMAIN_GENERALIZATION_MODEL_NAMES \
-                      + DOMAIN_ADAPTATION_MODEL_NAMES \
-                      + LABEL_ROBUSTNESS_MODEL_NAMES
+    + DOMAIN_ROBUSTNESS_MODEL_NAMES \
+    + DOMAIN_GENERALIZATION_MODEL_NAMES \
+    + DOMAIN_ADAPTATION_MODEL_NAMES \
+    + LABEL_ROBUSTNESS_MODEL_NAMES
 
 
 def is_domain_generalization_model_name(model_name: str) -> bool:
@@ -141,7 +152,7 @@ def is_pytorch_model_name(model: str) -> bool:
     """Helper function to determine whether a model name is a pytorch model.
 
     See description of is_pytorch_model() above."""
-    if model=="catboost":
+    if model == "catboost":
         logging.warning("Catboost models are not suported in Ray hyperparameter training."
                         " Instead, use the provided catboost-specific script.")
     is_sklearn = model in SKLEARN_MODEL_NAMES

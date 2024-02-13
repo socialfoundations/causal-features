@@ -9,16 +9,18 @@ For more information on datasets and access in TableShift, see:
 * https://tableshift.org/datasets.html
 * https://github.com/mlfoundations/tableshift
 
+
+Modified for 'Predictors from Causal Features Do Not Generalize Better to New Domains'.
 """
 import json
 import logging
 import os
 from collections import defaultdict
-
 import numpy as np
 import pandas as pd
 
 from tableshift.core.features import Feature, FeatureList, cat_dtype
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust
 
 DEFAULT_NHANES_CODING = {
     "1.0": "Yes",
@@ -120,11 +122,11 @@ NHANES_CHOLESTEROL_FEATURES = FeatureList(features=[
     # (Table 6) **which can be asked in a questionnaire** (i.e. those which
     # do not require laboratory testing).
 
-    ####### Risk Factor: Family history of ASCVD
+    # Risk Factor: Family history of ASCVD
 
     # No questions on this topic.
 
-    ####### Risk Factor: Metabolic syndrome (increased waist circumference,
+    # Risk Factor: Metabolic syndrome (increased waist circumference,
     # elevated triglycerides [>175 mg/dL], elevated blood pressure,
     # elevated glucose, and low HDL-C [<40 mg/dL in men; <50 in women
     # mg/dL] are factors; tally of 3 makes the diagnosis)
@@ -159,7 +161,7 @@ NHANES_CHOLESTEROL_FEATURES = FeatureList(features=[
             value_mapping={**DEFAULT_NHANES_CODING,
                            "3.0": "Borderline"}),
 
-    ####### Risk Factor: Chronic kidney disease
+    # Risk Factor: Chronic kidney disease
 
     Feature('KIQ025', cat_dtype, """In the past 12 months, {have you/has SP} 
     received dialysis (either hemodialysis or peritoneal dialysis)?""",
@@ -175,7 +177,7 @@ NHANES_CHOLESTEROL_FEATURES = FeatureList(features=[
                           "professional that you had weak or failing kidneys",
             value_mapping=DEFAULT_NHANES_CODING),
 
-    ####### Risk Factor: Chronic inflammatory conditions such as
+    # Risk Factor: Chronic inflammatory conditions such as
     # psoriasis, RA, or HIV/AIDS
 
     Feature('MCQ070', cat_dtype,
@@ -196,7 +198,7 @@ NHANES_CHOLESTEROL_FEATURES = FeatureList(features=[
 
     # Note: no questions about HIV/AIDS.
 
-    #######  Risk Factor: History of premature menopause (before age 40 y)
+    # Risk Factor: History of premature menopause (before age 40 y)
     # and history of pregnancy-associated conditions that increase later
     #  ASCVD risk such as preeclampsia
 
@@ -352,3 +354,125 @@ def preprocess_nhanes_lead(df: pd.DataFrame, threshold: float = 3.5):
 
     df = _postprocess_nhanes(df, feature_list=feature_list)
     return df
+
+################################################################################
+# Feature list for causal, arguably causal and (if applicable) anticausal features
+################################################################################
+
+
+NHANES_LEAD_FEATURES_CAUSAL = FeatureList(features=[
+    # Derived feature for survey year
+    Feature("nhanes_year", int, "Derived feature for year.",
+            name_extended='year'),
+    Feature('DMDBORN4', cat_dtype, """In what country {were you/was SP} born? 
+    1	Born in 50 US states or Washington, DC 2 Others""",
+            na_values=(77, 99, "."),
+            name_extended="country of birth",
+            value_mapping={"1.0": "born in 50 US states or Washington, DC",
+                           "2.0": "not born in 50 US states or Washington, DC"}),
+    Feature('RIDAGEYR', float, """Age in years of the participant at the time 
+    of screening. Individuals 80 and over are topcoded at 80 years of age.""",
+            name_extended="age in years"),
+    Feature('RIAGENDR', cat_dtype, "Gender of the participant.",
+            name_extended="gender"),
+    Feature('RIDRETH_merged', int, """Derived feature. This feature uses 
+    'RIDRETH3' (Recode of reported race and Hispanic origin information, 
+    with Non-Hispanic Asian Category) from years where it is available, 
+    and otherwise 'RIDRETH1' (Recode of reported race and Hispanic origin 
+    information). 'RIDRETH3' contains a superset of the values in 'RIDRETH1' 
+    but the shared values are coded identically; 'RIDRETH3' was only added to 
+    NHANES in 2011-2012 data year. See _merge_ridreth_features( ) below, 
+    and the NHANES documentation, e.g. 
+    https://wwwn.cdc.gov/Nchs/Nhanes/2017-2018/DEMO_J.htm#RIDRETH1 .""",
+            name_extended="race and hispanic origin",
+            value_mapping={
+                1.: "Mexican American",
+                2.: "Other Hispanic",
+                3.: "Non-Hispanic White",
+                4.: "Non-Hispanic Black",
+                5.: "Other Race - Including Multi-Racial",
+                6.: "Non-Hispanic Asian",
+                7.: "Other Race - Including Multi-Racial"
+            }),
+    # A ratio of family income to poverty guidelines.
+    Feature('INDFMPIRBelowCutoff', float,
+            'Binary indicator for whether family PIR (poverty-income ratio)'
+            'is <= 1.3. The threshold of 1.3 is selected based on the '
+            'categorization in NHANES, where PIR <= 1.3 is the lowest level ('
+            'see INDFMMPC feature).',
+            name_extended='Binary indicator for whether family PIR ('
+                          'poverty-income ratio) is <= 1.3.',
+            value_mapping={1.: 'yes', 0.: 'no'}),
+    Feature("LBXBPB", float, "Blood lead (ug/dL)", is_target=True,
+            na_values=(".",)),
+], documentation="https://wwwn.cdc.gov/Nchs/Nhanes/")
+
+target = Feature("LBXBPB", float, "Blood lead (ug/dL)", is_target=True,
+                 na_values=(".",))
+domain = Feature('INDFMPIRBelowCutoff', float,
+                 'Binary indicator for whether family PIR (poverty-income ratio)'
+                 'is <= 1.3. The threshold of 1.3 is selected based on the '
+                 'categorization in NHANES, where PIR <= 1.3 is the lowest level ('
+                 'see INDFMMPC feature).',
+                 name_extended='Binary indicator for whether family PIR ('
+                 'poverty-income ratio) is <= 1.3.',
+                 value_mapping={1.: 'yes', 0.: 'no'})
+NHANES_LEAD_FEATURES_CAUSAL_SUBSETS = get_causal_robust(NHANES_LEAD_FEATURES_CAUSAL, target, domain)
+NHANES_LEAD_FEATURES_CAUSAL_SUBSETS_NUMBER = len(NHANES_LEAD_FEATURES_CAUSAL_SUBSETS)
+
+NHANES_LEAD_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
+    # Derived feature for survey year
+    Feature("nhanes_year", int, "Derived feature for year.",
+            name_extended='year'),
+    Feature('DMDBORN4', cat_dtype, """In what country {were you/was SP} born? 
+    1	Born in 50 US states or Washington, DC 2 Others""",
+            na_values=(77, 99, "."),
+            name_extended="country of birth",
+            value_mapping={"1.0": "born in 50 US states or Washington, DC",
+                           "2.0": "not born in 50 US states or Washington, DC"}),
+    Feature('RIDAGEYR', float, """Age in years of the participant at the time 
+    of screening. Individuals 80 and over are topcoded at 80 years of age.""",
+            name_extended="age in years"),
+    Feature('RIAGENDR', cat_dtype, "Gender of the participant.",
+            name_extended="gender"),
+    Feature('RIDRETH_merged', int, """Derived feature. This feature uses 
+    'RIDRETH3' (Recode of reported race and Hispanic origin information, 
+    with Non-Hispanic Asian Category) from years where it is available, 
+    and otherwise 'RIDRETH1' (Recode of reported race and Hispanic origin 
+    information). 'RIDRETH3' contains a superset of the values in 'RIDRETH1' 
+    but the shared values are coded identically; 'RIDRETH3' was only added to 
+    NHANES in 2011-2012 data year. See _merge_ridreth_features( ) below, 
+    and the NHANES documentation, e.g. 
+    https://wwwn.cdc.gov/Nchs/Nhanes/2017-2018/DEMO_J.htm#RIDRETH1 .""",
+            name_extended="race and hispanic origin",
+            value_mapping={
+                1.: "Mexican American",
+                2.: "Other Hispanic",
+                3.: "Non-Hispanic White",
+                4.: "Non-Hispanic Black",
+                5.: "Other Race - Including Multi-Racial",
+                6.: "Non-Hispanic Asian",
+                7.: "Other Race - Including Multi-Racial"
+            }),
+    # Arguably causal feature
+    Feature('DMDEDUC2', cat_dtype, """What is the highest grade or level of 
+    school {you have/SP has} completed or the highest degree {you have/s/he 
+    has} received?""",
+            name_extended="highest grade or level of school completed or "
+                          "highest degree received"),
+    # A ratio of family income to poverty guidelines.
+    Feature('INDFMPIRBelowCutoff', float,
+            'Binary indicator for whether family PIR (poverty-income ratio)'
+            'is <= 1.3. The threshold of 1.3 is selected based on the '
+            'categorization in NHANES, where PIR <= 1.3 is the lowest level ('
+            'see INDFMMPC feature).',
+            name_extended='Binary indicator for whether family PIR ('
+                          'poverty-income ratio) is <= 1.3.',
+            value_mapping={1.: 'yes', 0.: 'no'}),
+    Feature("LBXBPB", float, "Blood lead (ug/dL)", is_target=True,
+            na_values=(".",)),
+], documentation="https://wwwn.cdc.gov/Nchs/Nhanes/")
+
+NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS = get_arguablycausal_robust(NHANES_LEAD_FEATURES_ARGUABLYCAUSAL,
+                                                                          NHANES_LEAD_FEATURES.features+NHANES_SHARED_FEATURES.features)
+NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER = len(NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS)

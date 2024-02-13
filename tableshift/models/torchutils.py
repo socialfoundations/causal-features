@@ -1,3 +1,8 @@
+"""
+Definition of functions for evaluation of pytorch models.
+
+Modified for 'Predictors from Causal Features Do Not Generalize Better to New Domains'.
+"""
 from typing import Union, Dict, Tuple
 
 import numpy as np
@@ -9,6 +14,7 @@ from tab_transformer_pytorch import TabTransformer
 from tqdm import tqdm
 
 from tableshift.third_party.saint.models import SAINT
+from experiments_causal.metrics import balanced_accuracy_score
 
 
 def get_module_attr(model, attr):
@@ -70,14 +76,14 @@ def apply_model(model: torch.nn.Module, x):
 
 @torch.no_grad()
 def get_predictions_and_labels(model, loader, device=None, as_logits=False) -> Tuple[
-    np.ndarray, np.ndarray]:
+        np.ndarray, np.ndarray]:
     """Get the predictions (as logits, or probabilities) and labels."""
     prediction = []
     label = []
 
     if not device:
         device = f"cuda:{torch.cuda.current_device()}" \
-        if torch.cuda.is_available() else "cpu"
+            if torch.cuda.is_available() else "cpu"
 
     modelname = model.__class__.__name__
     for batch in tqdm(loader, desc=f"{modelname}:getpreds"):
@@ -98,6 +104,8 @@ def get_predictions_and_labels(model, loader, device=None, as_logits=False) -> T
 def evaluate(model, loader, device):
     model.eval()
     prediction, target = get_predictions_and_labels(model, loader, device)
+    logit = get_predictions_and_labels(model, loader, device, as_logits=True)
     prediction = np.round(prediction)
     score = sklearn.metrics.accuracy_score(target, prediction)
-    return score
+    score_balanced, score_balanced_se = balanced_accuracy_score(target=target, prediction=prediction)
+    return score, score_balanced, score_balanced_se, logit

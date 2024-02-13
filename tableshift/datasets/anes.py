@@ -7,10 +7,14 @@ For more information on datasets and access in TableShift, see:
 
 List of variables: https://electionstudies.org/wp-content/uploads/2019/09/anes_timeseries_cdf_codebook_Varlist.pdf
 Codebook: https://electionstudies.org/wp-content/uploads/2022/09/anes_timeseries_cdf_codebook_var_20220916.pdf
+
+Modified for 'Predictors from Causal Features Do Not Generalize Better to New Domains'.
 """
 import pandas as pd
 
 from tableshift.core.features import Feature, cat_dtype, FeatureList
+
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust
 
 # Note that "state" feature is named as VCF0901b; see below. Note that '99' is
 # also a valid value, but it contains all missing targets .
@@ -350,8 +354,7 @@ ANES_FEATURES = FeatureList(features=[
     Feature('VCF0612', cat_dtype, "VOTING IS THE ONLY WAY TO HAVE A SAY IN "
                                   "GOVERNMENT",
             name_extended='voting is the only way to have a say in government',
-            value_mapping=
-            {
+            value_mapping={
                 '1.0': "Agree",
                 '2.0': "Disagree",
                 '9.0': "Don't know or not sure",
@@ -537,9 +540,433 @@ ANES_FEATURES = FeatureList(features=[
 def preprocess_anes(df: pd.DataFrame) -> pd.DataFrame:
     df = df.dropna(subset=[ANES_FEATURES.target])
     df[ANES_FEATURES.target] = (
-            df[ANES_FEATURES.target].astype(float) == 2.0).astype(int)
+        df[ANES_FEATURES.target].astype(float) == 2.0).astype(int)
     for f in ANES_FEATURES.features:
         if f.kind == cat_dtype:
             df[f.name] = df[f.name].fillna("no answer").apply(str) \
                 .astype("category")
     return df
+
+################################################################################
+# Feature list for causal, arguably causal and (if applicable) anticausal features
+################################################################################
+
+
+ANES_FEATURES_CAUSAL = FeatureList(features=[
+    Feature('VCF0702', int, "DID RESPONDENT VOTE IN THE NATIONAL "
+                            "ELECTIONS 1. No, did not vote 2. Yes, "
+                            "voted 0. DK; NA; no Post IW; refused to "
+                            "say if voted; Washington D.C. ("
+                            "presidential years only)",
+            is_target=True,
+            name_extended='voted in national election'),
+    Feature("VCF0004", int, name_extended="election year"),
+    Feature("VCF0901b", cat_dtype, """State of interview - state postal 
+    abbreviation, 99. NA; wrong district identified (2000) INAP. question not 
+    used""",
+            name_extended='state'),
+
+    # REGISTRATION, TURNOUT, AND VOTE CHOICE
+    Feature('VCF0701', cat_dtype, "REGISTERED TO VOTE PRE-ELECTION",
+            name_extended='registered to vote pre-election',
+            value_mapping={
+                '1.0': "No ",
+                '2.0': "Yes",
+                '0.0': "no answer"}),
+
+    # PERSONAL AND DEMOGRAPHIC
+    Feature('VCF0101', int, "RESPONDENT - AGE",
+            name_extended='age'),
+    Feature('VCF0104', cat_dtype, name_extended='gender',
+            value_mapping={
+                '1': "Male",
+                '2': "Female",
+                '3': "Other",
+                '0': "no answer"}),
+    Feature('VCF0105a', cat_dtype, """RACE-ETHNICITY SUMMARY, 7 CATEGORIES""",
+            name_extended='race/ethnicity',
+            value_mapping={
+                '1.0': "White non-Hispanic",
+                '2.0': "Black non-Hispanic",
+                '3.0': "Asian or Pacific Islander, non-Hispanic",
+                '4.0': "American Indian or Alaska Native non-Hispanic",
+                '5.0': "Hispanic",
+                '6.0': "Other or multiple races, non-Hispanic",
+                '7.0': "Non-white and non-black",
+                '9.0': "no answer"}),
+    Feature('VCF0115', cat_dtype,
+            """RESPONDENT - OCCUPATION GROUP 6-CATEGORY""",
+            name_extended='occupation group',
+            value_mapping={
+                '1.0': "Professional and managerial",
+                '2.0': "Clerical and sales workers",
+                '3.0': "Skilled, semi-skilled and service workers",
+                '4.0': "Laborers, except farm",
+                '5.0': "Farmers, farm managers, farm laborers and foremen; forestry and fishermen",
+                '6.0': "Homemakers",
+                '0.0': "no answer"}),
+    Feature('VCF0140a', cat_dtype, """RESPONDENT - EDUCATION 7-CATEGORY""",
+            name_extended='education level',
+            value_mapping={
+                '1.0': "8 grades or less (‘grade school’)",
+                '2.0': "9-12 grades (‘high school’), no diploma/equivalency; less than high school credential (2020)",
+                '3.0': "12 grades, diploma or equivalency",
+                '4.0': "12 grades, diploma or equivalency plus non-academic training",
+                '5.0': "Some college, no degree; junior/community college level degree (AA degree)",
+                '6.0': "BA level degrees",
+                '7.0': "Advanced degrees incl. LLB",
+                '8.0': "Don't know",
+                '9.0': "no answer"}),
+    Feature('VCF0112', cat_dtype, """Region - U.S. Census 1. Northeast (CT, 
+    ME, MA, NH, NJ, NY, PA, RI, VT) 2. North Central (IL, IN, IA, KS, MI, MN, 
+    MO, NE, ND, OH, SD, WI) 3. South (AL, AR, DE, D.C., FL, GA, KY, LA, MD, 
+    MS, NC, OK, SC,TN, TX, VA, WV) 4. West (AK, AZ, CA, CO, HI, ID, MT, NV, 
+    NM, OR, UT, WA, WY)""",
+            name_extended='US census region',
+            value_mapping={
+                # (CT, ME, MA, NH, NJ, NY, PA, RI, VT)
+                '1.0': "Northeast",
+                # (IL, IN, IA, KS, MI, MN, MO, NE, ND, OH, SD, WI)
+                '2.0': "North Central",
+                # (AL, AR, DE, D.C., FL, GA, KY, LA, MD, MS, NC, OK, SC,TN, TX, VA, WV) 4. West (AK, AZ, CA, CO, HI, ID, MT, NV, NM, OR, UT, WA, WY)
+                '3.0': "South",
+                # (AK, AZ, CA, CO, HI, ID, MT, NV, NM, OR, UT, WA, WY)
+                '4.0': 'West', }),
+],
+    documentation="https://electionstudies.org/data-center/anes-time-series-cumulative-data-file/")
+
+target = Feature('VCF0702', int, "DID RESPONDENT VOTE IN THE NATIONAL "
+                 "ELECTIONS 1. No, did not vote 2. Yes, "
+                 "voted 0. DK; NA; no Post IW; refused to "
+                 "say if voted; Washington D.C. ("
+                 "presidential years only)",
+                 is_target=True,
+                 name_extended='voted in national election')
+domain = Feature('VCF0112', cat_dtype, """Region - U.S. Census 1. Northeast (CT, 
+    ME, MA, NH, NJ, NY, PA, RI, VT) 2. North Central (IL, IN, IA, KS, MI, MN, 
+    MO, NE, ND, OH, SD, WI) 3. South (AL, AR, DE, D.C., FL, GA, KY, LA, MD, 
+    MS, NC, OK, SC,TN, TX, VA, WV) 4. West (AK, AZ, CA, CO, HI, ID, MT, NV, 
+    NM, OR, UT, WA, WY)""",
+                 name_extended='US census region',
+                 value_mapping={
+                     # (CT, ME, MA, NH, NJ, NY, PA, RI, VT)
+                     '1.0': "Northeast",
+                     # (IL, IN, IA, KS, MI, MN, MO, NE, ND, OH, SD, WI)
+                     '2.0': "North Central",
+                     # (AL, AR, DE, D.C., FL, GA, KY, LA, MD, MS, NC, OK, SC,TN, TX, VA, WV) 4. West (AK, AZ, CA, CO, HI, ID, MT, NV, NM, OR, UT, WA, WY)
+                     '3.0': "South",
+                     # (AK, AZ, CA, CO, HI, ID, MT, NV, NM, OR, UT, WA, WY)
+                     '4.0': 'West', })
+
+ANES_FEATURES_CAUSAL_SUBSETS = get_causal_robust(ANES_FEATURES_CAUSAL, target, domain)
+
+ANES_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
+    Feature('VCF0702', int, "DID RESPONDENT VOTE IN THE NATIONAL "
+                            "ELECTIONS 1. No, did not vote 2. Yes, "
+                            "voted 0. DK; NA; no Post IW; refused to "
+                            "say if voted; Washington D.C. ("
+                            "presidential years only)",
+            is_target=True,
+            name_extended='voted in national election'),
+    Feature("VCF0004", int, name_extended="election year"),
+    Feature("VCF0901b", cat_dtype, """State of interview - state postal 
+    abbreviation, 99. NA; wrong district identified (2000) INAP. question not 
+    used""",
+            name_extended='state'),
+
+    # PARTISANSHIP AND ATTITUDES TOWARDS PARTIES
+    Feature('VCF0218', float,
+            name_extended="Democratic Party feeling thermometer"),
+    Feature('VCF0224', float,
+            name_extended="Republican Party feeling thermometer"),
+    Feature('VCF0302', cat_dtype,
+            "Generally speaking, do you usually think of yourself as a "
+            "Republican, a Democrat, an Independent, or what?",
+            name_extended='party identification',
+            value_mapping={
+                '1.0': "Republican",
+                '2.0': "Independent",
+                '3.0': "No preference; none; neither",
+                '4.0': "Other",
+                '5.0': "Democrat",
+                '8.0': "Don't know",
+                '9.0': "no answer", }),
+    Feature('VCF9201', cat_dtype,
+            """(I’d like to know what you think about each of our political 
+            parties. After I read the name of a political party, please rate 
+            it on a scale from 0 to 10, where 0 means you strongly dislike 
+            that party and 10 means that you strongly like that party. If I 
+            come to a party you haven’t heard of or you feel you do not know 
+            enough about, just say so.) [The first party is: / Using the same 
+            scale where would you place:] the Democratic party {INTERVIEWER: 
+            DO NOT PROBE DON’T KNOW}""",
+            name_extended='like-dislike scale placement for democratic party (0-10)',
+            na_values=(-7., -8., -9.)),
+    Feature('VCF9202', cat_dtype,
+            """(I’d like to know what you think about each of our political 
+            parties. After I read the name of a political party, please rate 
+            it on a scale from 0 to 10, where 0 means you strongly dislike 
+            that party and 10 means that you strongly like that party. If I 
+            come to a party you haven’t heard of or you feel you do not know 
+            enough about, just say so.) [The first party is: / Using the same 
+            scale where would you place:] the Republican party {INTERVIEWER: 
+            DO NOT PROBE DON’T KNOW}""",
+            name_extended='like-dislike scale placement for republican party (0-10)',
+            na_values=(-7., -8., -9.)
+            ),
+    Feature('VCF9203', cat_dtype,
+            """Would you say that any of the parties in the United States 
+            represents your views reasonably well? {INTERVIEWER: DO NOT PROBE 
+            DON’T KNOW}""",
+            name_extended='do any of the parties in the U.S. represent views reasonably well',
+            value_mapping={
+                '1.0': "Yes",
+                '2.0': "No",
+                '-8.0': "no answer",
+                '-9.0': "no answer"}),
+    Feature('VCF9206', cat_dtype,
+            """Do you think it is better when one party controls both the 
+            presidency and Congress; better when control is split between the 
+            Democrats and Republicans, or doesn’t it matter?""",
+            name_extended='better when one party controls both presidency and congress or when control is split',
+            value_mapping={
+                '1.0': "One party control both ",
+                '2.0': "Control is split",
+                '3.0': "It doesn’t matter",
+                '-8.0': "no answer",
+                '-9.0': "no answer"}),
+
+    # CANDIDATE AND INCUMBENT EVALUATIONS
+    Feature('VCF0428', float, name_extended="President thermometer",
+            na_values=(98., 99.)),
+    Feature('VCF0429', float, name_extended="Vice-president thermometer",
+            na_values=(98., 99.)),
+    # ISSUES
+    Feature('VCF0822', cat_dtype,
+            """As to the economic policy of the government – I mean steps 
+            taken to fight inflation or unemployment – would you say the 
+            government is doing a good job, only fair, or a poor job?""",
+            name_extended='rating of government economic policy',
+            value_mapping={
+                '1.0': "Poor job",
+                '2.0': "Only fair",
+                '3.0': "Good job",
+                '0.0': "no answer",
+                '9.0': "no answer"}),
+    Feature('VCF0870', cat_dtype, "BETTER OR WORSE ECONOMY IN PAST YEAR",
+            name_extended='better or worse economy in past year',
+            value_mapping={
+                '1.0': "Better",
+                '3.0': "Stayed same",
+                '5.0': "Worse",
+                '0.0': "no answer",
+                '8.0': "no answer"}),
+    # IDEOLOGY AND VALUES
+    Feature('VCF0803', cat_dtype, "LIBERAL-CONSERVATIVE SCALE",
+            name_extended='liberal-conservative scale',
+            value_mapping={
+                '1.0': "Extremely liberal",
+                '2.0': "Liberal",
+                '3.0': "Slightly liberal",
+                '4.0': "Moderate, middle of the road ",
+                '5.0': "Slightly conservative",
+                '6.0': "Conservative",
+                '7.0': "Extremely conservative",
+                '9.0': "Don't know; haven’t thought much about it",
+                '0.0': "no answer"}),
+    # SYSTEM SUPPORT
+    Feature('VCF0601', cat_dtype, "APPROVE PARTICIPATION IN PROTESTS",
+            name_extended='approve participation in protests',
+            value_mapping={
+                '1.0': "Disapprove",
+                '2.0': "Pro-con, depends, don’t know",
+                '3.0': "Approve",
+                '0.0': "no answer"}),
+    Feature('VCF0612', cat_dtype, "VOTING IS THE ONLY WAY TO HAVE A SAY IN "
+                                  "GOVERNMENT",
+            name_extended='voting is the only way to have a say in government',
+            value_mapping={
+                '1.0': "Agree",
+                '2.0': "Disagree",
+                '9.0': "Don't know or not sure",
+                '0.0': "no answer"}),
+    Feature('VCF0615', cat_dtype, "MATTER WHETHER RESPONDENT VOTES OR NOT",
+            name_extended='it matters whether I vote',
+            value_mapping={
+                '1.0': "Agree",
+                '2.0': "Disagree",
+                '3.0': "Neither agree nor disagree",
+                '9.0': "Don't know or not sure",
+                '0.0': "no answer"}),
+    Feature('VCF0616', cat_dtype, "SHOULD THOSE WHO DON’T CARE ABOUT ELECTION "
+                                  "OUTCOME VOTE",
+            name_extended="those who don't care about election outcome should vote",
+            value_mapping={
+                '1.0': "Agree",
+                '2.0': "Disagree",
+                '3.0': "Neither agree nor disagree",
+                '9.0': "Don't know or not sure",
+                '0.0': "no answer"}),
+    Feature('VCF0617', cat_dtype, "SHOULD SOMEONE VOTE IF THEIR PARTY CAN’T "
+                                  "WIN",
+            name_extended="someone should vote if their party can't win",
+            value_mapping={
+                '1.0': "Agree",
+                '2.0': "Disagree",
+                '9.0': "Don't know or not sure",
+                '0.0': "no answer"}),
+    Feature('VCF0310', cat_dtype, "INTEREST IN THE ELECTIONS",
+            name_extended='interest in the elections',
+            value_mapping={
+                '1.0': "Not much interested ",
+                '2.0': "Somewhat interested ",
+                '3.0': "Very much interested ",
+                '9.0': "Don't know",
+                '0.0': "no answer"}),
+    Feature('VCF0743', cat_dtype, "DOES R BELONG TO POLITICAL ORGANIZATION OR "
+                                  "CLUB",
+            name_extended='belongs to political organization or club',
+            value_mapping={'1.0': "Yes", '5.0': "No", '9.0': "no answer"}),
+    Feature('VCF0717', cat_dtype, "RESPONDENT TRY TO INFLUENCE THE VOTE OF "
+                                  "OTHERS DURING THE CAMPAIGN",
+            name_extended='tried to influence others during campaign',
+            value_mapping={
+                '1.0': "No ",
+                '2.0': "Yes",
+                '0.0': "no answer"}),
+    Feature('VCF0718', cat_dtype, "RESPONDENT ATTEND POLITICAL "
+                                  "MEETINGS/RALLIES DURING THE CAMPAIGN",
+            name_extended='attended political meetings/rallies during campaign',
+            value_mapping={
+                '1.0': "No ",
+                '2.0': "Yes",
+                '0.0': "no answer"}),
+    Feature('VCF0720', cat_dtype, "RESPONDENT DISPLAY CANDIDATE "
+                                  "BUTTON/STICKER DURING THE CAMPAIGN",
+            name_extended='displayed candidate button/sticker during campaign',
+            value_mapping={
+                '1.0': "No ",
+                '2.0': "Yes",
+                '0.0': "no answer"}),
+    Feature('VCF0721', cat_dtype, "RESPONDENT DONATE MONEY TO PARTY OR "
+                                  "CANDIDATE DURING THE CAMPAIGN",
+            name_extended='donated money to party or candidate during campaign',
+            value_mapping={
+                '1.0': "No ",
+                '2.0': "Yes",
+                '0.0': "no answer"}),
+
+    # REGISTRATION, TURNOUT, AND VOTE CHOICE
+    Feature('VCF0701', cat_dtype, "REGISTERED TO VOTE PRE-ELECTION",
+            name_extended='registered to vote pre-election',
+            value_mapping={
+                '1.0': "No ",
+                '2.0': "Yes",
+                '0.0': "no answer"}),
+
+    # MEDIA
+    Feature('VCF0675', cat_dtype,
+            "HOW MUCH OF THE TIME DOES RESPONDENT TRUST THE "
+            "MEDIA TO REPORT FAIRLY",
+            name_extended='how much of the time can you trust the media to report the news fairly',
+            value_mapping={
+                '1.0': "Just about always",
+                '2.0': "Most of the time",
+                '3.0': "Only some of the time",
+                '4.0': "Almost never",
+                '5.0': "Never",
+                '8.0': "Don't know",
+                '9.0': "no answer"}),
+    Feature('VCF0724', cat_dtype, "WATCH TV PROGRAMS ABOUT THE ELECTION "
+                                  "CAMPAIGNS",
+            name_extended='watched TV programs about the election campaigns',
+            value_mapping={
+                '1.0': "No ",
+                '2.0': "Yes",
+                '0.0': "no answer"}),
+    Feature('VCF0725', cat_dtype, "HEAR PROGRAMS ABOUT CAMPAIGNS ON THE RADIO "
+                                  "2- CATEGORY",
+            name_extended='heard radio programs about the election campaigns',
+            value_mapping={
+                '1.0': "No ",
+                '2.0': "Yes",
+                '0.0': "no answer"}),
+    Feature('VCF0726', cat_dtype, "ARTICLES ABOUT ELECTION CAMPAIGNS IN "
+                                  "MAGAZINES",
+            name_extended='read about the election campaigns in magazines',
+            value_mapping={
+                '1.0': "No ",
+                '2.0': "Yes",
+                '0.0': "no answer"}),
+    Feature('VCF0745', cat_dtype, "SAW ELECTION CAMPAIGN INFORMATION ON THE "
+                                  "INTERNET",
+            name_extended='saw election campaign information on the internet',
+            value_mapping={
+                '1.0': "Yes",
+                '5.0': "No ",
+                '9.0': "no answer"}),
+
+    # PERSONAL AND DEMOGRAPHIC
+    Feature('VCF0101', int, "RESPONDENT - AGE",
+            name_extended='age'),
+    Feature('VCF0104', cat_dtype, name_extended='gender',
+            value_mapping={
+                '1': "Male",
+                '2': "Female",
+                '3': "Other",
+                '0': "no answer"}),
+    Feature('VCF0105a', cat_dtype, """RACE-ETHNICITY SUMMARY, 7 CATEGORIES""",
+            name_extended='race/ethnicity',
+            value_mapping={
+                '1.0': "White non-Hispanic",
+                '2.0': "Black non-Hispanic",
+                '3.0': "Asian or Pacific Islander, non-Hispanic",
+                '4.0': "American Indian or Alaska Native non-Hispanic",
+                '5.0': "Hispanic",
+                '6.0': "Other or multiple races, non-Hispanic",
+                '7.0': "Non-white and non-black",
+                '9.0': "no answer"}),
+    Feature('VCF0115', cat_dtype,
+            """RESPONDENT - OCCUPATION GROUP 6-CATEGORY""",
+            name_extended='occupation group',
+            value_mapping={
+                '1.0': "Professional and managerial",
+                '2.0': "Clerical and sales workers",
+                '3.0': "Skilled, semi-skilled and service workers",
+                '4.0': "Laborers, except farm",
+                '5.0': "Farmers, farm managers, farm laborers and foremen; forestry and fishermen",
+                '6.0': "Homemakers",
+                '0.0': "no answer"}),
+    Feature('VCF0140a', cat_dtype, """RESPONDENT - EDUCATION 7-CATEGORY""",
+            name_extended='education level',
+            value_mapping={
+                '1.0': "8 grades or less (‘grade school’)",
+                '2.0': "9-12 grades (‘high school’), no diploma/equivalency; less than high school credential (2020)",
+                '3.0': "12 grades, diploma or equivalency",
+                '4.0': "12 grades, diploma or equivalency plus non-academic training",
+                '5.0': "Some college, no degree; junior/community college level degree (AA degree)",
+                '6.0': "BA level degrees",
+                '7.0': "Advanced degrees incl. LLB",
+                '8.0': "Don't know",
+                '9.0': "no answer"}),
+    Feature('VCF0112', cat_dtype, """Region - U.S. Census 1. Northeast (CT, 
+    ME, MA, NH, NJ, NY, PA, RI, VT) 2. North Central (IL, IN, IA, KS, MI, MN, 
+    MO, NE, ND, OH, SD, WI) 3. South (AL, AR, DE, D.C., FL, GA, KY, LA, MD, 
+    MS, NC, OK, SC,TN, TX, VA, WV) 4. West (AK, AZ, CA, CO, HI, ID, MT, NV, 
+    NM, OR, UT, WA, WY)""",
+            name_extended='US census region',
+            value_mapping={
+                # (CT, ME, MA, NH, NJ, NY, PA, RI, VT)
+                '1.0': "Northeast",
+                # (IL, IN, IA, KS, MI, MN, MO, NE, ND, OH, SD, WI)
+                '2.0': "North Central",
+                # (AL, AR, DE, D.C., FL, GA, KY, LA, MD, MS, NC, OK, SC,TN, TX, VA, WV) 4. West (AK, AZ, CA, CO, HI, ID, MT, NV, NM, OR, UT, WA, WY)
+                '3.0': "South",
+                # (AK, AZ, CA, CO, HI, ID, MT, NV, NM, OR, UT, WA, WY)
+                '4.0': 'West', }),
+],
+    documentation="https://electionstudies.org/data-center/anes-time-series-cumulative-data-file/")
+
+ANES_FEATURES_ARGUABLYCAUSAL_SUPERSETS = get_arguablycausal_robust(ANES_FEATURES_ARGUABLYCAUSAL,
+                                                                   ANES_FEATURES.features)
+ANES_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER = len(ANES_FEATURES_ARGUABLYCAUSAL_SUPERSETS)

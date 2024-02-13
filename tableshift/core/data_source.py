@@ -1,4 +1,8 @@
-"""Data sources for TableBench."""
+"""
+Data sources for TableBench.
+
+Modified for 'Predictors from Causal Features Do Not Generalize Better to New Domains'.
+"""
 import glob
 import gzip
 import logging
@@ -46,6 +50,9 @@ from tableshift.datasets.nhanes import preprocess_nhanes_cholesterol, \
 from tableshift.datasets.physionet import preprocess_physionet
 from tableshift.datasets.uci import WINE_CULTIVARS_FEATURES, ABALONE_FEATURES, \
     preprocess_abalone
+from tableshift.datasets.meps import preprocess_meps
+from tableshift.datasets.sipp import preprocess_sipp
+
 from tableshift.datasets.utils import apply_column_missingness_threshold
 
 
@@ -1364,17 +1371,17 @@ class AssistmentsDataSource(KaggleDataSource):
         logging.info(
             "reading assistments data (can be slow due to large file size)")
         # TODO(jpgard): uncomment below to use full-width dataset after testing.
-        # df = pd.read_csv(os.path.join(
-        #     self.cache_dir,
-        #     self.kaggle_dataset_name,
-        #     "2012-2013-data-with-predictions-4-final.csv"))
+        df = pd.read_csv(os.path.join(
+            self.cache_dir,
+            self.kaggle_dataset_name,
+            "2012-2013-data-with-predictions-4-final.csv"))
         # # # write out a tiny version of assistments datasets
         # import ipdb;
         # ipdb.set_trace()
         # df[tableshift.datasets.ASSISTMENTS_FEATURES.names].to_feather(
         #     os.path.join(self.cache_dir, "assistments-subset.feather"))
-        df = pd.read_feather(os.path.join(self.cache_dir,
-                                          "assistments-subset.feather"))
+        # df = pd.read_feather(os.path.join(self.cache_dir,
+        #                                   "assistments-subset.feather"))
         logging.info("finished reading data")
         return df
 
@@ -1390,3 +1397,35 @@ class CollegeScorecardDataSource(KaggleDataSource):
         return pd.read_csv(os.path.join(self.cache_dir,
                                         self.kaggle_dataset_name,
                                         "Scorecard.csv"))
+    
+class MEPSDataSource(OfflineDataSource):
+    def __init__(
+            self,
+            preprocess_fn=preprocess_meps,
+            resources=(os.path.join("meps",
+                                    "h216.csv"),),
+            **kwargs):
+        super().__init__(resources=resources,
+                         preprocess_fn=preprocess_fn,
+                         **kwargs)
+
+    def _load_data(self) -> pd.DataFrame:
+        fp = os.path.join(self.cache_dir, self.resources[0])
+        df = pd.read_csv(fp, low_memory=False, na_values=(' '))
+        return df
+    
+class SIPPDataSource(OfflineDataSource):
+    def __init__(
+            self,
+            preprocess_fn=preprocess_sipp,
+            resources=(os.path.join("sipp",
+                                    "sipp_2014.csv"),),
+            **kwargs):
+        super().__init__(resources=resources,
+                         preprocess_fn=preprocess_fn,
+                         **kwargs)
+
+    def _load_data(self) -> pd.DataFrame:
+        fp = os.path.join(self.cache_dir, self.resources[0])
+        df = pd.read_csv(fp, low_memory=False, na_values=(' '))
+        return df
