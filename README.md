@@ -1,5 +1,5 @@
 > :exclamation: This repository is heavily based on the [TableShift GitHub repository](https://github.com/mlfoundations/tableshift).
-> Our code is built on top of TableShift and code from [Kim & Hardt (2023)](https://doi.org/10.1145/3617694.3623225).
+> Our code is built on top of TableShift and code from [Hardt & Kim (2023)](https://doi.org/10.1145/3617694.3623225).
 
 # Predictors from causal features do not generalize better to new domains
 
@@ -100,15 +100,15 @@ The causal, arguably causal, and anti-causal feature sets are obtained by append
 | Public Health Insurance | `acspubcov`               | Public                                                                                                       | [American Community Survey](https://www.census.gov/programs-surveys/acs) (via [folktables](http://folktables.org))      | TableShift |
 | Sepsis                  | `physionet`               | Public                                                                                                       | [Physionet](https://physionet.org/content/challenge-2019/)                                                             | TableShift |
 | Unemployment            | `acsunemployment`         | Public                                                                                                       | [American Community Survey](https://www.census.gov/programs-surveys/acs) (via [folktables](http://folktables.org))       | TableShift |
-| Utilization             | `meps`                    | Public ([source](https://meps.ahrq.gov/mepsweb/data_files/pufs/h216/h216dta.zip))                             | [Medical expenditure panel survey](https://meps.ahrq.gov/mepsweb/data_stats/download_data_files_detail.jsp?cboPufNumber=HC-216) |[Kim & Hardt (2023)](https://doi.org/10.1145/3617694.3623225) |
-| Poverty                 | `sipp`                    | Public ([source](https://www2.census.gov/programs-surveys/sipp/data/datasets/2014/w1/pu2014w1_v13.dta.gz), [source](https://www2.census.gov/programs-surveys/sipp/data/datasets/2014/w2/pu2014w2_v13.dta.gz)) | [Survey of income and program participation](https://www.census.gov/sipp/)|[Kim & Hardt (2023)](https://doi.org/10.1145/3617694.3623225)|
+| Utilization             | `meps`                    | Public ([source](https://meps.ahrq.gov/mepsweb/data_files/pufs/h216/h216dta.zip))                             | [Medical expenditure panel survey](https://meps.ahrq.gov/mepsweb/data_stats/download_data_files_detail.jsp?cboPufNumber=HC-216) |[Hardt & Kim (2023)](https://doi.org/10.1145/3617694.3623225) |
+| Poverty                 | `sipp`                    | Public ([source](https://www2.census.gov/programs-surveys/sipp/data/datasets/2014/w1/pu2014w1_v13.dta.gz), [source](https://www2.census.gov/programs-surveys/sipp/data/datasets/2014/w2/pu2014w2_v13.dta.gz)) | [Survey of income and program participation](https://www.census.gov/sipp/)|[Hardt & Kim (2023)](https://doi.org/10.1145/3617694.3623225)|
 
-TableShift includes the preprocessing of the data files in their implementation. For the tasks `Utilization` and `Poverty`, follow the instructions provided by [Kim & Hardt (2023)](https://doi.org/10.1145/3617694.3623225) in `backward_predictor/README.md`.
+TableShift includes the preprocessing of the data files in their implementation. For the tasks `Utilization` and `Poverty`, follow the instructions provided by [Hardt & Kim (2023)](https://doi.org/10.1145/3617694.3623225) in `backward_predictor/README.md`.
 
 ## Differences to TableShift
 We list in the following which files/folders we changed for our experiments:
 - created folder `experiments_causal` with python scripts to run experiments, launch experiments on a cluster, and plot figures for the paper
-- created folder `backward_prediction` with preprocessing files adapted from [Kim & Hardt (2023)](https://doi.org/10.1145/3617694.3623225)
+- created folder `backward_prediction` with preprocessing files adapted from [Hardt & Kim (2023)](https://doi.org/10.1145/3617694.3623225)
 - added tasks `meps` and `sipp`, as well as causal feature selections of all tasks in their respective Python scripts in the folder `tableshift/datasets`
 - added data source for `meps` and `sipp` in `tableshift/core/data_source.py`
 - added tasks `meps` and `sipp`, as well as causal feature selection of all tasks in `tableshift/core/tasks.py`
