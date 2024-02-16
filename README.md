@@ -119,5 +119,13 @@ We list in the following which files/folders we changed for our experiments:
 
 ## Citing
 This repository contains code and supplementary materials for the following preprint:
-> Vivian Y. Nastl and Moritz Hardt. "Predictors from causal features do not generalize better to new domains", 2024.
-<!-- add bibtex citation from archiv -->
+```
+@misc{nastl2024predictors,
+      title={Predictors from causal features do not generalize better to new domains}, 
+      author={Vivian Y. Nastl and Moritz Hardt},
+      year={2024},
+      eprint={2402.09891},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG}
+}
+```
