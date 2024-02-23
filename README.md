@@ -1,5 +1,5 @@
 > :exclamation: This repository is heavily based on the [TableShift GitHub repository](https://github.com/mlfoundations/tableshift).
-> Our code is built on top of TableShift and code from [Hardt & Kim (2023)](https://doi.org/10.1145/3617694.3623225).
+> Our code is built on top of TableShift and code from Ricardo Sandoval and [Hardt & Kim (2023)](https://doi.org/10.1145/3617694.3623225).
 
 # Predictors from causal features do not generalize better to new domains
 
@@ -108,7 +108,7 @@ TableShift includes the preprocessing of the data files in their implementation.
 ## Differences to TableShift
 We list in the following which files/folders we changed for our experiments:
 - created folder `experiments_causal` with python scripts to run experiments, launch experiments on a cluster, and plot figures for the paper
-- created folder `backward_prediction` with preprocessing files adapted from [Hardt & Kim (2023)](https://doi.org/10.1145/3617694.3623225)
+- created folder `backward_prediction` with preprocessing files adapted from [Hardt & Kim (2023)](https://doi.org/10.1145/3617694.3623225) with `backward_predictor/sipp/data/data_cleaning.ipynb` &copy; Ricardo Sandoval
 - added tasks `meps` and `sipp`, as well as causal feature selections of all tasks in their respective Python scripts in the folder `tableshift/datasets`
 - added data source for `meps` and `sipp` in `tableshift/core/data_source.py`
 - added tasks `meps` and `sipp`, as well as causal feature selection of all tasks in `tableshift/core/tasks.py`
