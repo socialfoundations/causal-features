@@ -659,6 +659,7 @@ domain = Feature('VCF0112', cat_dtype, """Region - U.S. Census 1. Northeast (CT,
                      '4.0': 'West', })
 
 ANES_FEATURES_CAUSAL_SUBSETS = get_causal_robust(ANES_FEATURES_CAUSAL, target, domain)
+ANES_FEATURES_CAUSAL_SUBSETS_NUMBER = len(ANES_FEATURES_CAUSAL_SUBSETS)
 
 ANES_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
     Feature('VCF0702', int, "DID RESPONDENT VOTE IN THE NATIONAL "
