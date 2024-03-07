@@ -5,9 +5,9 @@ import numpy as np
 
 
 def binary_stat_scores_format(
-        target: pd.Series | np.array,
+        target: pd.Series,
         prediction: np.array,
-        threshold: float = 0.5) -> (torch.tensor, torch.tensor):
+        threshold: float = 0.5) -> tuple:
     """Transform inputs into binary torch.
 
     Parameters
@@ -44,8 +44,8 @@ def binary_stat_scores_format(
 
 
 def balanced_accuracy_score(
-        target: pd.Series | np.array,
-        prediction: np.array,) -> (torch.number, torch.number):
+        target: pd.Series,
+        prediction: np.array,) -> tuple:
     """Compute balanced accuracy and its standard error.
 
     Parameters

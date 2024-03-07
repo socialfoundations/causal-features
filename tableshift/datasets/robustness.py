@@ -105,7 +105,8 @@ def get_causal_robust(
 
     """
     causal_features = featurelist.features.copy()
-    causal_features.remove(target)
+    if target in causal_features:
+        causal_features.remove(target)
     causal_features.remove(domain)
     causal_subsets = select_subset_minus_one(causal_features)
     subsets = []

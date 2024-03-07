@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: tableshift
+Version: 0.1
+Summary: A tabular data benchmarking toolkit.
+Home-page: https://tableshift.org
+Author: Josh Gardner
+Author-email: jpgard@cs.washington.edu
+License-File: LICENSE
+Requires-Dist: numpy==1.23.5
+Requires-Dist: ray==2.2
+Requires-Dist: torch
+Requires-Dist: torchvision
+Requires-Dist: scikit-learn
+Requires-Dist: pandas
+Requires-Dist: fairlearn
+Requires-Dist: folktables
+Requires-Dist: frozendict
+Requires-Dist: rtdl
+Requires-Dist: xport
+Requires-Dist: tqdm
+Requires-Dist: hyperopt
+Requires-Dist: h5py
+Requires-Dist: tables
+Requires-Dist: category_encoders
+Requires-Dist: einops
+Requires-Dist: tab-transformer-pytorch
+Requires-Dist: openpyxl
+Requires-Dist: optuna
+Requires-Dist: kaggle
+Requires-Dist: datasets
+Requires-Dist: torchinfo
+
+A benchmarking toolkit for tabular data under distirbution shift. For more details, see the paper "Benchmarking Distribution Shift in Tabular Data with TableShift", Gardner, Popovic, and Schmidt, 2023.

@@ -25,7 +25,6 @@ botocore==1.29.106
 build==0.10.0
 cachetools==5.2.0
 catalogue==2.0.8
-catboost==1.2
 category-encoders==2.6.0
 certifi==2022.09.24
 cffi==1.15.1

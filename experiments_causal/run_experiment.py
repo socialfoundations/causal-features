@@ -140,7 +140,7 @@ if __name__ == "__main__":
         "--cache_dir", default="tmp", help="Directory to cache raw data files to."
     )
     parser.add_argument(
-        "--save_dir", default="tmp", help="Directory to save result files to."
+        "--save_dir", default="tmp/results", help="Directory to save result files to."
     )
     parser.add_argument(
         "--debug",
