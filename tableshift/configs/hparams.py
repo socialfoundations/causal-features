@@ -1,3 +1,7 @@
+"""Configuration of hyperparameter spaces.
+
+Modified for 'Predictors from Causal Features Do Not Generalize Better to New Domains'.
+"""
 from ray import tune
 
 from tableshift.models.compat import OPTIMIZER_ARGS
@@ -206,6 +210,56 @@ _tabtransformer_search_space = {
     "heads": tune.choice([2, 4, 8]),
 }
 
+# Hyperparameter spaces for additional causal machine learning models
+
+_and_mask_search_space = {
+    **_DEFAULT_NN_SEARCH_SPACE,
+    # Same tuning space as  for AND-mask parameters as DomainBed; see
+    # https://github.com/facebookresearch/DomainBed/blob
+    # /2ed9edf781fe4b336c2fb6ffe7ca8a7c6f994422/domainbed/hparams_registry.py
+    # #L61
+    "tau": tune.uniform(0.5, 1.),
+}
+
+_ib_erm_search_space = {
+    **_DEFAULT_NN_SEARCH_SPACE,
+    # Same tuning space as  for IB-ERM parameters as DomainBed; see
+    # https://github.com/facebookresearch/DomainBed/blob
+    # /2ed9edf781fe4b336c2fb6ffe7ca8a7c6f994422/domainbed/hparams_registry.py
+    # #L61
+    "ib_lambda": 10**tune.uniform(-1, 5),
+    "ib_penalty_anneal_iters": 10**tune.uniform(0, 4),
+}
+
+_ib_irm_search_space = {
+    **_DEFAULT_NN_SEARCH_SPACE,
+    # Same tuning space as  for IB-ERM parameters as DomainBed; see
+    # https://github.com/facebookresearch/DomainBed/blob
+    # /2ed9edf781fe4b336c2fb6ffe7ca8a7c6f994422/domainbed/hparams_registry.py
+    # #L61
+    "irm_lambda": tune.loguniform(1e-1, 1e5),
+    "irm_penalty_anneal_iters": tune.loguniform(1, 1e4),
+    "ib_lambda": 10**tune.uniform(-1, 5),
+    "ib_penalty_anneal_iters": 10**tune.uniform(0, 4),
+}
+
+_causirl_coral_search_space = {
+    **_DEFAULT_NN_SEARCH_SPACE,
+    # Same range as DomainBed, see
+    # https://github.com/facebookresearch/DomainBed/blob/main/domainbed
+    # /hparams_registry.py#L72
+    "mmd_gamma": tune.loguniform(1e-1, 1e1),
+}
+
+_causirl_mmd_search_space = {
+    **_DEFAULT_NN_SEARCH_SPACE,
+    # Same range as DomainBed, see
+    # https://github.com/facebookresearch/DomainBed/blob/main/domainbed
+    # /hparams_registry.py#L72
+    "mmd_gamma": tune.loguniform(1e-1, 1e1),
+}
+
+
 search_space = {
     "aldro": _aldro_search_space,
     "dann": _dann_search_space,
@@ -227,4 +281,11 @@ search_space = {
     "vrex": _vrex_search_space,
     "wcs": _wcs_search_space,
     "xgb": _xgb_search_space,
+    # Add hyperparameter spaces for additional cauasl machine learning models
+    "and_mask": _and_mask_search_space,
+    "ib_erm": _ib_erm_search_space,
+    "ib_irm": _ib_irm_search_space,
+    "causirl_coral": _causirl_coral_search_space,
+    "causirl_mmd": _causirl_mmd_search_space,
 }
+

@@ -1,5 +1,4 @@
-"""
-Definition of pytorch model with an sklearn-style interface.
+"""Definition of pytorch model with an sklearn-style interface.
 
 Modified for 'Predictors from Causal Features Do Not Generalize Better to New Domains'.
 """
@@ -125,8 +124,9 @@ class SklearnStylePytorchModel(ABC, nn.Module):
         return fit_metrics
 
 
+# Add additional causal machine learning to domain generalization models
 DOMAIN_GENERALIZATION_MODEL_NAMES = ["dann", "deepcoral", "irm", "mixup", "mmd",
-                                     "vrex"]
+                                     "vrex", "and_mask", "ib_erm", "ib_irm", "causirl_coral", "causirl_mmd"]
 DOMAIN_ADAPTATION_MODEL_NAMES = []
 DOMAIN_ROBUSTNESS_MODEL_NAMES = ["group_dro", "dro"]
 LABEL_ROBUSTNESS_MODEL_NAMES = ["aldro", "label_group_dro"]

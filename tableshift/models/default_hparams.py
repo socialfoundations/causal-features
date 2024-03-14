@@ -1,3 +1,7 @@
+"""Configuration of default hyperparameters.
+
+Modified for 'Predictors from Causal Features Do Not Generalize Better to New Domains'.
+"""
 from fairlearn.reductions import ErrorRateParity
 from frozendict import frozendict
 from torch.nn import functional as F
@@ -121,7 +125,7 @@ _DEFAULT_CONFIGS = frozendict({
             "depth": 4,
             "num_layers": 2,
             "total_tree_count": 1024,
-        },
+    },
     "tabtransformer":
         {"dim": 32,
          "depth": 6,
@@ -135,6 +139,37 @@ _DEFAULT_CONFIGS = frozendict({
          "d_hidden": 512,
          "vrex_penalty_anneal_iters": 1,
          "vrex_lambda": 0.01,
+         "dropouts": 0.},
+    # Add default hyperparameters for additional cauasl machine learning models
+    "and_mask":
+        {"num_layers": 2,
+         "d_hidden": 256,
+         "dropouts": 0.,
+         "tau": 0.9},
+    "ib_erm":
+        {"num_layers": 2,
+         "d_hidden": 256,
+         "dropouts": 0.,
+         "ib_lambda": 10**2,
+         "ib_penalty_anneal_iters": 10},
+    "ib_irm":
+        {"num_layers": 2,
+         "d_hidden": 256,
+         "dropouts": 0.,
+         "ib_lambda": 10**2,
+         "ib_penalty_anneal_iters": 10,
+         "irm_lambda": 1e-2,
+         # set irm_penalty_anneal_iters s.t. optimizer resets after 1 update
+         "irm_penalty_anneal_iters": 1},
+    "causirl_coral":
+        {"num_layers": 4,
+         "d_hidden": 512,
+         "mmd_gamma": 0.01,
+         "dropouts": 0.},
+    "causirl_mmd":
+        {"num_layers": 4,
+         "d_hidden": 512,
+         "mmd_gamma": 0.01,
          "dropouts": 0.},
 })
 
@@ -169,7 +204,6 @@ def get_default_config(model: str, dset: TabularDataset) -> dict:
     elif model == "label_group_dro":
         config["n_groups"] = 2  # assume binary classification
         config["criterion"] = GroupDROLoss(n_groups=2)
-
 
     elif model_is_pt:
         config["criterion"] = F.binary_cross_entropy_with_logits

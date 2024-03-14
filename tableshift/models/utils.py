@@ -1,3 +1,7 @@
+"""Fetching estimators.
+
+Modified for 'Predictors from Causal Features Do Not Generalize Better to New Domains'.
+"""
 import copy
 import logging
 
@@ -21,8 +25,12 @@ from tableshift.models.saint import SaintModel
 from tableshift.models.tab_transformer import TabTransformerModel
 from tableshift.models.wcs import WeightedCovariateShiftClassifier
 
+from tableshift.models.andmask import ANDMaskModel
+from tableshift.models.information_bottleneck import IBERMModel, IBIRMModel
+from tableshift.models.causal_irl import CausIRL_CORAL, CausIRL_MMD
 
-def get_estimator(model:str, d_out=1, **kwargs):
+
+def get_estimator(model: str, d_out=1, **kwargs):
     """
     Fetch an estimator for training.
 
@@ -272,6 +280,64 @@ def get_estimator(model:str, d_out=1, **kwargs):
 
     elif model == "xgb":
         return xgb.XGBClassifier(**kwargs)
+
+    # Adding additional causal machine learning models
+    elif model == "and_mask":
+        return ANDMaskModel(
+            d_in=kwargs["d_in"],
+            d_layers=[kwargs["d_hidden"]] * kwargs["num_layers"],
+            d_out=d_out,
+            dropouts=kwargs["dropouts"],
+            activation=kwargs["activation"],
+            tau=kwargs['tau'],
+            **{k: kwargs[k] for k in OPTIMIZER_ARGS},
+        )
+
+    elif model == "ib_erm":
+        return IBERMModel(
+            d_in=kwargs["d_in"],
+            d_layers=[kwargs["d_hidden"]] * kwargs["num_layers"],
+            d_out=d_out,
+            dropouts=kwargs["dropouts"],
+            activation=kwargs["activation"],
+            ib_lambda=kwargs['ib_lambda'],
+            ib_penalty_anneal_iters=kwargs['ib_penalty_anneal_iters'],
+            **{k: kwargs[k] for k in OPTIMIZER_ARGS},
+        )
+
+    elif model == "ib_irm":
+        return IBIRMModel(
+            d_in=kwargs["d_in"],
+            d_layers=[kwargs["d_hidden"]] * kwargs["num_layers"],
+            d_out=d_out,
+            dropouts=kwargs["dropouts"],
+            activation=kwargs["activation"],
+            ib_lambda=kwargs['ib_lambda'],
+            ib_penalty_anneal_iters=kwargs['ib_penalty_anneal_iters'],
+            irm_lamda=kwargs['irm_lambda'],
+            irm_penalty_anneal_iters=kwargs['irm_penalty_anneal_iters'],
+            **{k: kwargs[k] for k in OPTIMIZER_ARGS},
+        )
+
+    elif model == "causirl_coral":
+        return CausIRL_CORAL(d_in=kwargs["d_in"],
+                             d_layers=[kwargs["d_hidden"]] * kwargs[
+            "num_layers"],
+            d_out=d_out,
+            dropouts=kwargs["dropouts"],
+            activation=kwargs["activation"],
+            mmd_gamma=kwargs["mmd_gamma"],
+            **{k: kwargs[k] for k in OPTIMIZER_ARGS})
+
+    elif model == "causirl_mmd":
+        return CausIRL_MMD(d_in=kwargs["d_in"],
+                           d_layers=[kwargs["d_hidden"]] * kwargs[
+            "num_layers"],
+            d_out=d_out,
+            dropouts=kwargs["dropouts"],
+            activation=kwargs["activation"],
+            mmd_gamma=kwargs["mmd_gamma"],
+            **{k: kwargs[k] for k in OPTIMIZER_ARGS})
 
     else:
         raise NotImplementedError(f"model {model} not implemented.")

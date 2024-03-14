@@ -123,6 +123,9 @@ def main(
             )
             evaluation[test_split + "_balanced" + "_conf"] = balanced_acc_conf
             print(
+                f"training completed! {test_split} accuracy: {evaluation[test_split]:.4f}"
+            )
+            print(
                 f"training completed! {test_split} balanced accuracy: {balanced_acc:.4f}"
             )
 
