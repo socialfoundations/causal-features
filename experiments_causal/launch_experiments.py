@@ -63,10 +63,10 @@ JOB_MEMORY_GB = 128  # GBs of memory
 VERBOSE = True
 
 TASKS = [
-    "acsincome",
-    "acsincome_causal",
-    "acsincome_arguablycausal",
-    "acsincome_anticausal",
+    # "acsincome",
+    # "acsincome_causal",
+    # "acsincome_arguablycausal",
+    # "acsincome_anticausal",
     # "acspubcov",
     # "acspubcov_causal",
     # "acspubcov_arguablycausal",
@@ -97,7 +97,7 @@ TASKS = [
     # "nhanes_lead",
     # "nhanes_lead_causal",
     # "nhanes_lead_arguablycausal",
-    # "diabetes_readmission",
+    "diabetes_readmission",
     # "diabetes_readmission_causal",
     # "diabetes_readmission_arguablycausal",
     # "mimic_extract_los_3",
