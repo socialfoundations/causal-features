@@ -302,7 +302,7 @@ if __name__ == "__main__":
                 "executable": "/home/vnastl/miniconda3/envs/tableshift/bin/python3",
                 # "arguments": "foo.py",    # NOTE: used for testing
                 "arguments": (
-                    "/home/vnastl/tableshift/experiments_causal/launch_one_experiment.py "
+                    "/home/vnastl/causal-features/experiments_causal/launch_one_experiment.py "
                     f"--task {exp_obj.name} "
                     f"--DATA_DIR {str(DATA_DIR)} "
                     f"--RESULTS_DIR {str(EXP_RESULTS_DIR)} "
