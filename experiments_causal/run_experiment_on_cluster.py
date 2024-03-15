@@ -20,7 +20,7 @@ def main(
         model: str,
         cache_dir: str,
         save_dir: str,
-        trial: str | int,
+        trial: str,
         debug: bool):
     """Run the experiment with the specified model.
 
@@ -34,7 +34,7 @@ def main(
         Directory to the preprocessed data.
     save_dir : str
         Directory to save result files to.
-    trial : str | int
+    trial : str
         Number of trial.
     debug : bool
         Debug mode.
