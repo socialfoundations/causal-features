@@ -1,4 +1,4 @@
-name: causalfeatures
+name: tableshift
 channels:
   - defaults
 dependencies:
