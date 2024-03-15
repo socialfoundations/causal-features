@@ -22,37 +22,36 @@ if __name__ == "__main__":
 ####################################################
 # List of models
 # MODELS = (
-#     # "ft_transformer",
-#     # "histgbm",
-#     # "mlp",
-#     # "saint",
-#     # "tabtransformer",
-#     # "resnet",
-#     # "xgb",
-#     # "lightgbm",
-#     # "aldro",
-#     # "dro",
-#     # "node",
-#     # "group_dro",
-#     # "label_group_dro",
+#     "ft_transformer",
+#     "histgbm",
+#     "mlp",
+#     "saint",
+#     "tabtransformer",
+#     "resnet",
+#     "xgb",
+#     "lightgbm",
+#     "aldro",
+#     "dro",
+#     "node",
+#     "group_dro",
+#     "label_group_dro",
 # )
 MODELS = ()
 
 # List of domain generalization models
 # DG_MODELS = (
-#     # "dann",
-#     # "irm",
-#     # "vrex",
-#     # "mixup",
-#     # "mmd",
-#     # "deepcoral",
+#     "dann",
+#     "irm",
+#     "vrex",
+#     "mixup",
+#     "mmd",
+#     "deepcoral",
 #     "and_mask",
 #     "ib_erm",
 #     "ib_irm",
 #     "causirl_coral",
 #     "causirl_mmd"
 # )
-
 DG_MODELS = (
     "and_mask",
     "ib_erm",
