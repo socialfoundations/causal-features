@@ -68,6 +68,15 @@ experiment_groups = {
         "mimic_extract_los_3",
     ],
 }
+
+markers_causalml = {
+                "irm": "v",
+                "vrex": "^",
+                "ib_irm": ">",
+                "and_mask": "h",
+                "causirl_mmd": "<",
+                "causirl_coral": "<",}
+
 for experiment_group, experiments in experiment_groups.items():
     fig = plt.figure(figsize=(6.75, 1.75 * len(experiments)))
     subfigs = fig.subfigures(len(experiments), 1, hspace=0.2)  # create 4x1 subfigures
@@ -80,7 +89,7 @@ for experiment_group, experiments in experiment_groups.items():
         subfig.suptitle(
             dic_title[experiment_name], fontsize=11
         )  # set suptitle for subfig1
-        eval_all, causal_features = get_results_causalml(experiment_name)
+        eval_all = get_results_causalml(experiment_name)
         eval_constant = eval_all[eval_all["features"] == "constant"]
         dic_shift = {}
 
@@ -120,6 +129,10 @@ for experiment_group, experiments in experiment_groups.items():
             & (eval_plot["model"] != "vrex")
             & (eval_plot["model"] != "tableshift:irm")
             & (eval_plot["model"] != "tableshift:vrex")
+            & (eval_plot["model"] != "ib_irm")
+            & (eval_plot["model"] != "causirl_mmd")
+            & (eval_plot["model"] != "causirl_coral")
+            & (eval_plot["model"] != "and_mask")
         ]
         eval_plot.sort_values("id_test", inplace=True)
         # Calculate the pareto set
@@ -156,6 +169,10 @@ for experiment_group, experiments in experiment_groups.items():
             & (eval_plot["model"] != "vrex")
             & (eval_plot["model"] != "tableshift:irm")
             & (eval_plot["model"] != "tableshift:vrex")
+            & (eval_plot["model"] != "ib_irm")
+            & (eval_plot["model"] != "causirl_mmd")
+            & (eval_plot["model"] != "causirl_coral")
+            & (eval_plot["model"] != "and_mask")
         ]
         eval_plot.sort_values("id_test", inplace=True)
         # Calculate the pareto set
@@ -192,6 +209,10 @@ for experiment_group, experiments in experiment_groups.items():
                 & (eval_plot["model"] != "vrex")
                 & (eval_plot["model"] != "tableshift:irm")
                 & (eval_plot["model"] != "tableshift:vrex")
+                & (eval_plot["model"] != "ib_irm")
+                & (eval_plot["model"] != "causirl_mmd")
+                & (eval_plot["model"] != "causirl_coral")
+                & (eval_plot["model"] != "and_mask")
             ]
             eval_plot.sort_values("id_test", inplace=True)
             # Calculate the pareto set
@@ -248,7 +269,40 @@ for experiment_group, experiments in experiment_groups.items():
                 y=markers["ood_test"],
                 xerr=markers["id_test_ub"] - markers["id_test"],
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
-                fmt="v" if causalml == "irm" else "^",
+                fmt=markers_causalml[causalml],
+                color=eval(f"color_{causalml}"),
+                ecolor=color_error,
+                markersize=markersize,
+                capsize=capsize,
+                label="causal ml",
+            )
+            # highlight bar
+
+            shift = markers
+            shift = shift[shift["ood_test"] == shift["ood_test"].max()]
+            shift["type"] = causalml
+            dic_shift[causalml] = shift
+
+        for causalml in ["ib_irm", "causirl_mmd", "causirl_coral", "and_mask"]:
+            eval_model = eval_plot[
+                (eval_plot["model"] == causalml)
+            ]
+            points = eval_model[["id_test", "ood_test"]]
+            mask = paretoset(points, sense=["max", "max"])
+            points = points[mask]
+            points = points[
+                points["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
+            ]
+            markers = eval_model[mask]
+            markers = markers[
+                markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
+            ]
+            errors = ax[0].errorbar(
+                x=markers["id_test"],
+                y=markers["ood_test"],
+                xerr=markers["id_test_ub"] - markers["id_test"],
+                yerr=markers["ood_test_ub"] - markers["ood_test"],
+                fmt=markers_causalml[causalml],
                 color=eval(f"color_{causalml}"),
                 ecolor=color_error,
                 markersize=markersize,
@@ -298,6 +352,10 @@ for experiment_group, experiments in experiment_groups.items():
             & (eval_plot["model"] != "vrex")
             & (eval_plot["model"] != "tableshift:irm")
             & (eval_plot["model"] != "tableshift:vrex")
+            & (eval_plot["model"] != "ib_irm")
+            & (eval_plot["model"] != "causirl_mmd")
+            & (eval_plot["model"] != "causirl_coral")
+            & (eval_plot["model"] != "and_mask")
         ]
         eval_plot.sort_values("id_test", inplace=True)
         # Calculate the pareto set
@@ -343,6 +401,10 @@ for experiment_group, experiments in experiment_groups.items():
             & (eval_plot["model"] != "vrex")
             & (eval_plot["model"] != "tableshift:irm")
             & (eval_plot["model"] != "tableshift:vrex")
+            & (eval_plot["model"] != "ib_irm")
+            & (eval_plot["model"] != "causirl_mmd")
+            & (eval_plot["model"] != "causirl_coral")
+            & (eval_plot["model"] != "and_mask")
         ]
         eval_plot.sort_values("id_test", inplace=True)
         # Calculate the pareto set
@@ -391,6 +453,10 @@ for experiment_group, experiments in experiment_groups.items():
                 & (eval_plot["model"] != "vrex")
                 & (eval_plot["model"] != "tableshift:irm")
                 & (eval_plot["model"] != "tableshift:vrex")
+                & (eval_plot["model"] != "ib_irm")
+                & (eval_plot["model"] != "causirl_mmd")
+                & (eval_plot["model"] != "causirl_coral")
+                & (eval_plot["model"] != "and_mask")
             ]
             eval_plot.sort_values("id_test", inplace=True)
             # Calculate the pareto set
@@ -432,44 +498,44 @@ for experiment_group, experiments in experiment_groups.items():
         #############################################################################
         # plot pareto dominated area for causalml
         #############################################################################
-        eval_plot = eval_all[eval_all["features"] == "all"]
+        # eval_plot = eval_all[eval_all["features"] == "all"]
 
-        for causalml in ["irm", "vrex"]:
-            # Calculate the pareto set
-            points = eval_plot[
-                (eval_plot["model"] == causalml)
-                | (eval_plot["model"] == f"tableshift:{causalml}")
-            ][["id_test", "ood_test"]]
-            mask = paretoset(points, sense=["max", "max"])
-            points = points[mask]
-            # get extra points for the plot
-            new_row = pd.DataFrame(
-                {
-                    "id_test": [xmin, max(points["id_test"])],
-                    "ood_test": [max(points["ood_test"]), ymin],
-                },
-            )
-            points = pd.concat([points, new_row], ignore_index=True)
-            points.sort_values("id_test", inplace=True)
-            ax[0].plot(
-                points["id_test"],
-                points["ood_test"],
-                color=eval(f"color_{causalml}"),
-                linestyle=(0, (1, 1)),
-                linewidth=linewidth_bound,
-            )
-            new_row = pd.DataFrame(
-                {"id_test": [xmin], "ood_test": [ymin]},
-            )
-            points = pd.concat([points, new_row], ignore_index=True)
-            points = points.to_numpy()
-            hull = ConvexHull(points)
-            ax[0].fill(
-                points[hull.vertices, 0],
-                points[hull.vertices, 1],
-                color=eval(f"color_{causalml}"),
-                alpha=0.05,
-            )
+        # for causalml in ["irm", "vrex"]:
+        #     # Calculate the pareto set
+        #     points = eval_plot[
+        #         (eval_plot["model"] == causalml)
+        #         | (eval_plot["model"] == f"tableshift:{causalml}")
+        #     ][["id_test", "ood_test"]]
+        #     mask = paretoset(points, sense=["max", "max"])
+        #     points = points[mask]
+        #     # get extra points for the plot
+        #     new_row = pd.DataFrame(
+        #         {
+        #             "id_test": [xmin, max(points["id_test"])],
+        #             "ood_test": [max(points["ood_test"]), ymin],
+        #         },
+        #     )
+        #     points = pd.concat([points, new_row], ignore_index=True)
+        #     points.sort_values("id_test", inplace=True)
+        #     ax[0].plot(
+        #         points["id_test"],
+        #         points["ood_test"],
+        #         color=eval(f"color_{causalml}"),
+        #         linestyle=(0, (1, 1)),
+        #         linewidth=linewidth_bound,
+        #     )
+        #     new_row = pd.DataFrame(
+        #         {"id_test": [xmin], "ood_test": [ymin]},
+        #     )
+        #     points = pd.concat([points, new_row], ignore_index=True)
+        #     points = points.to_numpy()
+        #     hull = ConvexHull(points)
+        #     ax[0].fill(
+        #         points[hull.vertices, 0],
+        #         points[hull.vertices, 1],
+        #         color=eval(f"color_{causalml}"),
+        #         alpha=0.05,
+        #     )
         #############################################################################
         # Add legend & diagonal, save plot
         #############################################################################
@@ -491,10 +557,35 @@ for experiment_group, experiments in experiment_groups.items():
                 "all": "s",
                 "causal": "o",
                 "arguablycausal": "D",
-                "irm": "v",
-                "vrex": "^",
             }
             for type, marker in markers.items():
+                type_shift = shift_acc[shift_acc["type"] == type]
+                type_shift["gap"] = type_shift["id_test"] - type_shift["ood_test"]
+                type_shift["id_test_var"] = (
+                    (type_shift["id_test_ub"] - type_shift["id_test"])
+                ) ** 2
+                type_shift["ood_test_var"] = (
+                    (type_shift["ood_test_ub"] - type_shift["ood_test"])
+                ) ** 2
+                type_shift["gap_var"] = (
+                    type_shift["id_test_var"] + type_shift["ood_test_var"]
+                )
+
+                # Get markers
+                ax[1].errorbar(
+                    x=-type_shift["gap"],
+                    y=type_shift["ood_test"],
+                    xerr=type_shift["gap_var"] ** 0.5,
+                    yerr=type_shift["ood_test_ub"] - type_shift["ood_test"],
+                    color=eval(f"color_{type}"),
+                    ecolor=color_error,
+                    fmt=marker,
+                    markersize=markersize,
+                    capsize=capsize,
+                    label="arguably\ncausal" if type == "arguablycausal" else f"{type}",
+                    zorder=3,
+                )
+            for type, marker in markers_causalml.items():
                 type_shift = shift_acc[shift_acc["type"] == type]
                 type_shift["gap"] = type_shift["id_test"] - type_shift["ood_test"]
                 type_shift["id_test_var"] = (
@@ -562,23 +653,32 @@ for experiment_group, experiments in experiment_groups.items():
                 )
 
     list_color_causalml = list_color.copy()
-    list_color_causalml.remove(color_constant)
+    # list_color_causalml.remove(color_constant)
     list_color_causalml.append(color_irm)
     list_color_causalml.append(color_vrex)
-    list_color_causalml.append(color_constant)
+    list_color_causalml.append(color_ib_irm)
+    list_color_causalml.append(color_causirl_mmd)
+    list_color_causalml.append(color_and_mask)
+    # list_color_causalml.append(color_constant)
     list_mak_causalml = list_mak.copy()
-    list_mak_causalml.remove(list_mak[-1])
+    # list_mak_causalml.remove(list_mak[-1])
     list_mak_causalml.append("v")
     list_mak_causalml.append("^")
-    list_mak_causalml.append(list_mak[-1])
+    list_mak_causalml.append(">")
+    list_mak_causalml.append("<")
+    list_mak_causalml.append("h")
+    # list_mak_causalml.append(list_mak[-1])
     list_lab_causalml = list_lab.copy()
-    list_lab_causalml.remove("Constant")
+    # list_lab_causalml.remove("Constant")
     list_lab_causalml.append("IRM")
     list_lab_causalml.append("REx")
-    list_lab_causalml.append("Constant")
+    list_lab_causalml.append("IB-IRM")
+    list_lab_causalml.append("Causal IRL")
+    list_lab_causalml.append("AND-Mask")
+    # list_lab_causalml.append("Constant")
     list_mak_causalml.append("_")
     list_color_causalml.append("Diagonal")
-    list_color_results.append("black")
+    list_color_causalml.append("black")
     fig.legend(
         list(zip(list_color_causalml, list_mak_causalml)),
         list_lab_causalml,
@@ -586,7 +686,7 @@ for experiment_group, experiments in experiment_groups.items():
         loc="upper center",
         bbox_to_anchor=(0.5, -0.05),
         fancybox=True,
-        ncol=6,
+        ncol=5,
     )
 
     fig.savefig(

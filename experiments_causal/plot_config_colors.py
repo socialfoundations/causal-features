@@ -9,8 +9,12 @@ color_constant = "#454545"  # color for majority label prediction
 color_causal_robust = "#69a8c9"  # color for robustness tests of causal features
 color_arguablycausal_robust = "#4d6775"  # color for robustness tests of arguably causal features
 color_ml = "#029e73"  # color for causal machine learning features (if IRM and REx don't have separeate colors)
-color_irm = "#8ec965"  # color for IRM
-color_vrex = "#779F5D"  # color for Rex
+color_irm = "#B5EC70" # "#8ec965"  # color for IRM
+color_vrex = "#86C42C" #"#779F5D"  # color for Rex
+color_and_mask = "#436917"
+color_causirl_mmd = "#2E4B0A"
+color_causirl_coral = "#2E4B0A"
+color_ib_irm = "#5A9522"
 color_error = "#000000"  # color for errorbars
 
 # Configuration of markers, lines, etc.
