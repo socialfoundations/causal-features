@@ -171,7 +171,7 @@ def get_random_subset(featurelist: FeatureList,
     if target in features:
         features.remove(target)
     features.remove(domain)
-    powerset = select_powerset(features)
+    powerset = select_powerset(pd.DataFrame(columns=features))
 
     k = min(k,len(powerset))
     random_subsets = random.sample(powerset, k)
