@@ -244,7 +244,7 @@ if __name__ == "__main__":
                 "concurrency_limits": "user.theoremfivepointsix:10",  # 5000 jobs in parallel
                 "+MaxRunningPrice": 100,
                 # "+RunningPriceExceededAction": classad.quote("restart"),
-                "periodic_remove": f"(JobStatus == 2) && (time() - EnteredCurrentStatus) > (6 * 3600)",
+                "periodic_remove": f"(JobStatus == 2) && (time() - EnteredCurrentStatus) > (4 * 3600)",
             }
         )
 
