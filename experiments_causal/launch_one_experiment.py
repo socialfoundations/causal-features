@@ -218,7 +218,7 @@ if __name__ == "__main__":
                 "executable": "/home/vnastl/miniconda3/envs/icmlcausalfeatures/bin/python3",
                 # "arguments": "foo.py",    # NOTE: used for testing
                 "arguments": (
-                    "/home/vnastl/icml-causal-features/experiments_causal/run_experiment_on_cluster.py "
+                    "/home/vnastl/icml-causal-features/causal-features/experiments_causal/run_experiment_on_cluster.py "
                     f"--experiment {exp_obj.name} "
                     f"--model {exp_obj.model} "
                     f"--cache_dir {str(DATA_DIR_PREPROCESSED)} "
