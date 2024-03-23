@@ -233,7 +233,7 @@ if __name__ == "__main__":
     RESULTS_DIR.mkdir(exist_ok=True, parents=False)
 
     # Directory to save cluster logs and job stdout/stderr
-    CLUSTER_LOGS_SAVE_DIR = ROOT_DIR / "fast/vnastl/cluster-logs"
+    CLUSTER_LOGS_SAVE_DIR = ROOT_DIR / "fast/vnastl/new-cluster-logs"
     CLUSTER_LOGS_SAVE_DIR.mkdir(exist_ok=True)
 
     CLUSTER_LOGS_SAVE_ERR_DIR = CLUSTER_LOGS_SAVE_DIR / "error"
