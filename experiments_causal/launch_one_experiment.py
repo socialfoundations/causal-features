@@ -21,36 +21,44 @@ if __name__ == "__main__":
 #  START of: details on which experiments to run.  #
 ####################################################
 # List of models
-MODELS = (
-    "ft_transformer",
-    # "histgbm",
-    # "mlp",
-    "saint",
-    # "tabtransformer",
-    # "resnet",
-    "xgb",
-    "lightgbm",
-    # "aldro",
-    # "dro",
-    # "node",
-    # "group_dro",
-    # "label_group_dro",
-)
+# MODELS = (
+#     "ft_transformer",
+#     "histgbm",
+#     "mlp",
+#     "saint",
+#     "tabtransformer",
+#     "resnet",
+#     "xgb",
+#     "lightgbm",
+#     "aldro",
+#     "dro",
+#     "node",
+#     "group_dro",
+#     "label_group_dro",
+# )
+MODELS = ()
 
 # List of domain generalization models
+# DG_MODELS = (
+#     "dann",
+#     "irm",
+#     "vrex",
+#     "mixup",
+#     "mmd",
+#     "deepcoral",
+#     "and_mask",
+#     "ib_erm",
+#     "ib_irm",
+#     "causirl_coral",
+#     "causirl_mmd"
+# )
 DG_MODELS = (
-    # "dann",
-    # "irm",
-    # "vrex",
-    # "mixup",
-    # "mmd",
-    # "deepcoral",
-    # "and_mask",
-    # "ib_erm",
-    # "ib_irm",
-    # "causirl_coral",
-    # "causirl_mmd"
-)
+    "and_mask",
+    "ib_erm",
+    "ib_irm",
+    "causirl_coral",
+    "causirl_mmd",
+    )
 
 # List of task that do not allow domain generalization
 NOT_DG_TASKS = (
@@ -215,10 +223,10 @@ if __name__ == "__main__":
         # Construct job description
         job_description = htcondor.Submit(
             {
-                "executable": "/home/vnastl/miniconda3/envs/icmlcausalfeatures/bin/python3",
+                "executable": "/home/vnastl/miniconda3/envs/causalfeatures/bin/python3",
                 # "arguments": "foo.py",    # NOTE: used for testing
                 "arguments": (
-                    "/home/vnastl/icml-causal-features/experiments_causal/run_experiment_on_cluster.py "
+                    "/home/vnastl/causal-features/experiments_causal/run_experiment_on_cluster.py "
                     f"--experiment {exp_obj.name} "
                     f"--model {exp_obj.model} "
                     f"--cache_dir {str(DATA_DIR_PREPROCESSED)} "
