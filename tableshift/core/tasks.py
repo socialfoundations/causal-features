@@ -315,100 +315,106 @@ _TASK_REGISTRY: Dict[str, TaskConfig] = {
 # Tasks for robustness tests
 ################################################################################
 
-for index, subset in enumerate(ACS_INCOME_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["acsincome_causal_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
+# for index, subset in enumerate(ACS_INCOME_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["acsincome_causal_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
 
-for index, superset in enumerate(ACS_INCOME_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["acsincome_arguablycausal_test_"+f"{index}"] = TaskConfig(ACSDataSource, superset)
+# for index, superset in enumerate(ACS_INCOME_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["acsincome_arguablycausal_test_"+f"{index}"] = TaskConfig(ACSDataSource, superset)
 
-for index, subset in enumerate(ACS_FOODSTAMPS_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["acsfoodstamps_causal_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
+# for index, subset in enumerate(ACS_FOODSTAMPS_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["acsfoodstamps_causal_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
 
-for index, superset in enumerate(ACS_FOODSTAMPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["acsfoodstamps_arguablycausal_test_"+f"{index}"] = TaskConfig(ACSDataSource, superset)
+# for index, superset in enumerate(ACS_FOODSTAMPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["acsfoodstamps_arguablycausal_test_"+f"{index}"] = TaskConfig(ACSDataSource, superset)
 
-for index, subset in enumerate(ACS_PUBCOV_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["acspubcov_causal_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
+# for index, subset in enumerate(ACS_PUBCOV_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["acspubcov_causal_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
 
-for index, superset in enumerate(ACS_PUBCOV_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["acspubcov_arguablycausal_test_"+f"{index}"] = TaskConfig(ACSDataSource, superset)
+# for index, superset in enumerate(ACS_PUBCOV_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["acspubcov_arguablycausal_test_"+f"{index}"] = TaskConfig(ACSDataSource, superset)
 
-for index, subset in enumerate(ACS_UNEMPLOYMENT_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["acsunemployment_causal_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
+# for index, subset in enumerate(ACS_UNEMPLOYMENT_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["acsunemployment_causal_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
 
-for index, superset in enumerate(ACS_UNEMPLOYMENT_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["acsunemployment_arguablycausal_test_"+f"{index}"] = TaskConfig(ACSDataSource, superset)
+# for index, superset in enumerate(ACS_UNEMPLOYMENT_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["acsunemployment_arguablycausal_test_"+f"{index}"] = TaskConfig(ACSDataSource, superset)
 
-for index, subset in enumerate(BRFSS_DIABETES_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["brfss_diabetes_causal_test_"+f"{index}"] = TaskConfig(BRFSSDataSource, subset)
+# for index, subset in enumerate(BRFSS_DIABETES_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["brfss_diabetes_causal_test_"+f"{index}"] = TaskConfig(BRFSSDataSource, subset)
 
-for index, superset in enumerate(BRFSS_DIABETES_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["brfss_diabetes_arguablycausal_test_"+f"{index}"] = TaskConfig(BRFSSDataSource, superset)
+# for index, superset in enumerate(BRFSS_DIABETES_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["brfss_diabetes_arguablycausal_test_"+f"{index}"] = TaskConfig(BRFSSDataSource, superset)
 
-for index, subset in enumerate(BRFSS_BLOOD_PRESSURE_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["brfss_blood_pressure_causal_test_"+f"{index}"] = TaskConfig(BRFSSDataSource, subset)
+# for index, subset in enumerate(BRFSS_BLOOD_PRESSURE_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["brfss_blood_pressure_causal_test_"+f"{index}"] = TaskConfig(BRFSSDataSource, subset)
 
-for index, superset in enumerate(BRFSS_BLOOD_PRESSURE_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["brfss_blood_pressure_arguablycausal_test_"+f"{index}"] = TaskConfig(BRFSSDataSource, superset)
+# for index, superset in enumerate(BRFSS_BLOOD_PRESSURE_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["brfss_blood_pressure_arguablycausal_test_"+f"{index}"] = TaskConfig(BRFSSDataSource, superset)
 
-for index, subset in enumerate(DIABETES_READMISSION_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["diabetes_readmission_causal_test_"+f"{index}"] = TaskConfig(DiabetesReadmissionDataSource, subset)
+# for index, subset in enumerate(DIABETES_READMISSION_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["diabetes_readmission_causal_test_"+f"{index}"] = TaskConfig(DiabetesReadmissionDataSource, subset)
 
-for index, superset in enumerate(DIABETES_READMISSION_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["diabetes_readmission_arguablycausal_test_" +
-                   f"{index}"] = TaskConfig(DiabetesReadmissionDataSource, superset)
+# for index, superset in enumerate(DIABETES_READMISSION_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["diabetes_readmission_arguablycausal_test_" +
+#                    f"{index}"] = TaskConfig(DiabetesReadmissionDataSource, superset)
 
-for index, subset in enumerate(ANES_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["anes_causal_test_"+f"{index}"] = TaskConfig(ANESDataSource, subset)
+# for index, subset in enumerate(ANES_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["anes_causal_test_"+f"{index}"] = TaskConfig(ANESDataSource, subset)
 
-for index, superset in enumerate(ANES_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["anes_arguablycausal_test_"+f"{index}"] = TaskConfig(ANESDataSource, superset)
+# for index, superset in enumerate(ANES_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["anes_arguablycausal_test_"+f"{index}"] = TaskConfig(ANESDataSource, superset)
 
-for index, subset in enumerate(ASSISTMENTS_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["assistments_causal_test_"+f"{index}"] = TaskConfig(AssistmentsDataSource, subset)
+# for index, subset in enumerate(ASSISTMENTS_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["assistments_causal_test_"+f"{index}"] = TaskConfig(AssistmentsDataSource, subset)
 
-for index, superset in enumerate(ASSISTMENTS_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["assistments_arguablycausal_test_"+f"{index}"] = TaskConfig(AssistmentsDataSource, superset)
+# for index, superset in enumerate(ASSISTMENTS_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["assistments_arguablycausal_test_"+f"{index}"] = TaskConfig(AssistmentsDataSource, superset)
 
-for index, subset in enumerate(COLLEGE_SCORECARD_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["college_scorecard_causal_test_"+f"{index}"] = TaskConfig(CollegeScorecardDataSource, subset)
+# for index, subset in enumerate(COLLEGE_SCORECARD_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["college_scorecard_causal_test_"+f"{index}"] = TaskConfig(CollegeScorecardDataSource, subset)
 
-for index, superset in enumerate(COLLEGE_SCORECARD_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["college_scorecard_arguablycausal_test_" +
-                   f"{index}"] = TaskConfig(CollegeScorecardDataSource, superset)
+# for index, superset in enumerate(COLLEGE_SCORECARD_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["college_scorecard_arguablycausal_test_" +
+#                    f"{index}"] = TaskConfig(CollegeScorecardDataSource, superset)
 
-for index, subset in enumerate(MIMIC_EXTRACT_LOS_3_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["mimic_extract_los_3_causal_test_"+f"{index}"] = TaskConfig(MIMICExtractDataSource, subset)
+# for index, subset in enumerate(MIMIC_EXTRACT_LOS_3_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["mimic_extract_los_3_causal_test_"+f"{index}"] = TaskConfig(MIMICExtractDataSource, subset)
 
-for index, subset in enumerate(MIMIC_EXTRACT_MORT_HOSP_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["mimic_extract_mort_hosp_causal_test_"+f"{index}"] = TaskConfig(MIMICExtractDataSource, subset)
-
-
-for index, subset in enumerate(SIPP_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["sipp_causal_test_"+f"{index}"] = TaskConfig(SIPPDataSource, subset)
-
-for index, superset in enumerate(SIPP_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["sipp_arguablycausal_test_"+f"{index}"] = TaskConfig(SIPPDataSource, superset)
-
-for index, subset in enumerate(MEPS_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["meps_causal_test_"+f"{index}"] = TaskConfig(MEPSDataSource, subset)
-
-for index, superset in enumerate(MEPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["meps_arguablycausal_test_"+f"{index}"] = TaskConfig(MEPSDataSource, superset)
-
-for index, subset in enumerate(PHYSIONET_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["physionet_causal_test_"+f"{index}"] = TaskConfig(PhysioNetDataSource, subset)
-
-for index, superset in enumerate(PHYSIONET_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["physionet_arguablycausal_test_"+f"{index}"] = TaskConfig(PhysioNetDataSource, superset)
-
-for index, subset in enumerate(NHANES_LEAD_FEATURES_CAUSAL_SUBSETS):
-    _TASK_REGISTRY["nhanes_lead_causal_test_"+f"{index}"] = TaskConfig(NHANESDataSource, subset)
-
-for index, superset in enumerate(NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
-    _TASK_REGISTRY["nhanes_lead_arguablycausal_test_"+f"{index}"] = TaskConfig(NHANESDataSource, superset)
+# for index, subset in enumerate(MIMIC_EXTRACT_MORT_HOSP_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["mimic_extract_mort_hosp_causal_test_"+f"{index}"] = TaskConfig(MIMICExtractDataSource, subset)
 
 
+# for index, subset in enumerate(SIPP_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["sipp_causal_test_"+f"{index}"] = TaskConfig(SIPPDataSource, subset)
+
+# for index, superset in enumerate(SIPP_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["sipp_arguablycausal_test_"+f"{index}"] = TaskConfig(SIPPDataSource, superset)
+
+# for index, subset in enumerate(MEPS_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["meps_causal_test_"+f"{index}"] = TaskConfig(MEPSDataSource, subset)
+
+# for index, superset in enumerate(MEPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["meps_arguablycausal_test_"+f"{index}"] = TaskConfig(MEPSDataSource, superset)
+
+# for index, subset in enumerate(PHYSIONET_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["physionet_causal_test_"+f"{index}"] = TaskConfig(PhysioNetDataSource, subset)
+
+# for index, superset in enumerate(PHYSIONET_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["physionet_arguablycausal_test_"+f"{index}"] = TaskConfig(PhysioNetDataSource, superset)
+
+# for index, subset in enumerate(NHANES_LEAD_FEATURES_CAUSAL_SUBSETS):
+#     _TASK_REGISTRY["nhanes_lead_causal_test_"+f"{index}"] = TaskConfig(NHANESDataSource, subset)
+
+# for index, superset in enumerate(NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS):
+#     _TASK_REGISTRY["nhanes_lead_arguablycausal_test_"+f"{index}"] = TaskConfig(NHANESDataSource, superset)
+
+################################################################################
+# Tasks for additional robustness tests
+################################################################################
+
+for index, subset in enumerate(ACS_INCOME_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["acsincome_random_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
+    
 def get_task_config(name: str) -> TaskConfig:
     if name in _TASK_REGISTRY:
         return _TASK_REGISTRY[name]

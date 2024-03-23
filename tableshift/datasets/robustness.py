@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import torch
 from itertools import combinations
+import random
 from tableshift.core.features import Feature, FeatureList
 
 
@@ -33,8 +34,7 @@ def select_powerset(x: pd.DataFrame) -> list:
         if len(item) == 0:
             powerset.remove(item)
     return powerset
-
-
+    
 def select_subset_minus_one(x: list) -> list:
     """Generate subsets missing one feature.
 
@@ -141,3 +141,43 @@ def get_arguablycausal_robust(
     for superset in arguablycausal_supersets:
         supersets.append(FeatureList(superset))
     return supersets
+
+def get_random_subset(featurelist: FeatureList,
+        target: Feature,
+        domain: Feature,
+        k: int) -> list:
+    """Generate random subset of features
+
+    Parameters
+    ----------
+    featurelist : list
+        List of all features.
+    target : Feature
+        Target.
+    domain : Feature
+        Domain variable.
+    k: int
+        Number of random subsets
+
+    Returns
+    -------
+    list
+        List of random subsets.
+
+    """
+    random.seed(42)
+
+    features = featurelist.copy()
+    if target in features:
+        features.remove(target)
+    features.remove(domain)
+    powerset = select_powerset(features)
+
+    k = min(k,len(powerset))
+    random_subsets = random.sample(powerset, k)
+    subsets = []
+    for subset in random_subsets:
+        subset.append(target)
+        subset.append(domain)
+        subsets.append(FeatureList(subset))
+    return subsets

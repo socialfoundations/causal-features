@@ -21,7 +21,7 @@ import pandas as pd
 from itertools import combinations
 
 from tableshift.core.features import Feature, FeatureList, cat_dtype
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
 
 ################################################################################
 # Shared features used in more than one task
@@ -828,6 +828,9 @@ ACS_INCOME_FEATURES_ANTICAUSAL = FeatureList([
     NWLK_FEATURE,
 ],
     documentation="https://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2014-2018.pdf")
+
+ACS_INCOME_FEATURES_RANDOM_SUBSETS = get_random_subset(ACS_INCOME_FEATURES.features + ACS_SHARED_FEATURES.features, target, domain, k=1000)
+ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER = len(ACS_INCOME_FEATURES_RANDOM_SUBSETS)
 
 # PUBLIC COVERAGE
 ACS_PUBCOV_FEATURES_CAUSAL = FeatureList(features=[

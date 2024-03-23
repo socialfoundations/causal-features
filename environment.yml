@@ -1,4 +1,4 @@
-name: tableshift
+name: icmlcausalfeatures
 channels:
   - defaults
 dependencies:
