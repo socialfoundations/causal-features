@@ -1,4 +1,4 @@
-name: icmlcausalfeatures
+name: causalfeatures
 channels:
   - defaults
 dependencies:

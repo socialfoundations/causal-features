@@ -305,10 +305,10 @@ if __name__ == "__main__":
         # Construct job description
         job_description = htcondor.Submit(
             {
-                "executable": "/home/vnastl/miniconda3/envs/icmlcausalfeatures/bin/python3",
+                "executable": "/home/vnastl/miniconda3/envs/causalfeatures/bin/python3",
                 # "arguments": "foo.py",    # NOTE: used for testing
                 "arguments": (
-                    "/home/vnastl/icml-causal-features/causal-features/experiments_causal/launch_one_experiment.py "
+                    "/home/vnastl/causal-features/causal-features/experiments_causal/launch_one_experiment.py "
                     f"--task {exp_obj.name} "
                     f"--DATA_DIR {str(DATA_DIR)} "
                     f"--RESULTS_DIR {str(EXP_RESULTS_DIR)} "
