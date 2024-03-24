@@ -125,8 +125,8 @@ TASKS = [
 # Task for additional robustness tests
 ################################################################################
 
-# for index in range(ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
-#     TASKS.append("acsincome_random_test_" + f"{index}")
+for index in range(471,ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
+    TASKS.append("acsincome_random_test_" + f"{index}")
 
 for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
     TASKS.append("brfss_diabetes_random_test_" + f"{index}")
