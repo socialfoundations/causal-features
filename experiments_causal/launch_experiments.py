@@ -46,7 +46,7 @@ from time import sleep
 # )
 from tableshift.datasets import (
     ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER,
-    BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER
+    # BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER
 )
 
 if __name__ == "__main__":
