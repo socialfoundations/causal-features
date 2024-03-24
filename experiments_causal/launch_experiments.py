@@ -45,8 +45,8 @@ from time import sleep
 #     NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
 # )
 from tableshift.datasets import (
-    ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER,
-    # BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER
+    # ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER,
+    BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER
 )
 
 if __name__ == "__main__":
@@ -125,11 +125,11 @@ TASKS = [
 # Task for additional robustness tests
 ################################################################################
 
-for index in range(471,ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
-    TASKS.append("acsincome_random_test_" + f"{index}")
+# for index in range(471,ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     TASKS.append("acsincome_random_test_" + f"{index}")
 
-# for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
-#     TASKS.append("brfss_diabetes_random_test_" + f"{index}")
+for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
+    TASKS.append("brfss_diabetes_random_test_" + f"{index}")
 
 ################################################################################
 # Task for robustness tests

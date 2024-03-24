@@ -829,8 +829,8 @@ ACS_INCOME_FEATURES_ANTICAUSAL = FeatureList([
 ],
     documentation="https://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2014-2018.pdf")
 
-ACS_INCOME_FEATURES_RANDOM_SUBSETS = get_random_subset(ACS_INCOME_FEATURES.features + ACS_SHARED_FEATURES.features, target, domain, k=500)
-ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER = len(ACS_INCOME_FEATURES_RANDOM_SUBSETS)
+# ACS_INCOME_FEATURES_RANDOM_SUBSETS = get_random_subset(ACS_INCOME_FEATURES.features + ACS_SHARED_FEATURES.features, target, domain, k=500)
+# ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER = len(ACS_INCOME_FEATURES_RANDOM_SUBSETS)
 
 # PUBLIC COVERAGE
 ACS_PUBCOV_FEATURES_CAUSAL = FeatureList(features=[

@@ -35,8 +35,8 @@ from tableshift.datasets import BRFSS_YEARS, ACS_YEARS, NHANES_YEARS
 #     PHYSIONET_FEATURES_CAUSAL_SUBSETS_NUMBER, PHYSIONET_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER, \
 #     NHANES_LEAD_FEATURES_CAUSAL_SUBSETS_NUMBER, NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER
 from tableshift.datasets import (
-    ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER,
-    # BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER,
+    # ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER,
+    BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER,
 )
 from tableshift.datasets.mimic_extract import MIMIC_EXTRACT_STATIC_FEATURES, \
     MIMIC_EXTRACT_LOS_3_FEATURES_CAUSAL, MIMIC_EXTRACT_MORT_HOSP_FEATURES_CAUSAL, \
@@ -1458,29 +1458,29 @@ NON_BENCHMARK_CONFIGS.update(CAUSAL_BENCHMARK_CONFIGS)
 # Configuration for additional robustness tests
 ################################################################################
 
-for index in range(ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
-    NON_BENCHMARK_CONFIGS["acsincome_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname="DIVISION",
-                                domain_split_ood_values=['01']),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(),
-        tabular_dataset_kwargs={"acs_task": "acsincome"})
-    
-# for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
-#      NON_BENCHMARK_CONFIGS["brfss_diabetes_random_test_"+f"{index}"] = ExperimentConfig(
+# for index in range(ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     NON_BENCHMARK_CONFIGS["acsincome_random_test_"+f"{index}"] = ExperimentConfig(
 #         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
 #                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
 #                                 random_state=DEFAULT_RANDOM_STATE,
 #                                 id_test_size=DEFAULT_ID_TEST_SIZE,
-#                                 domain_split_varname="PRACE1",
-#                                 domain_split_ood_values=[
-#                                     2, 3, 4, 5, 6],
-#                                 domain_split_id_values=[1, ]),
+#                                 domain_split_varname="DIVISION",
+#                                 domain_split_ood_values=['01']),
 #         grouper=None,
-#         preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
-#         tabular_dataset_kwargs={"name": "brfss_diabetes_random_test_"+f"{index}",
-#                                 "task": "diabetes", "years": BRFSS_YEARS})
+#         preprocessor_config=PreprocessorConfig(),
+#         tabular_dataset_kwargs={"acs_task": "acsincome"})
+    
+for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
+     NON_BENCHMARK_CONFIGS["brfss_diabetes_random_test_"+f"{index}"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname="PRACE1",
+                                domain_split_ood_values=[
+                                    2, 3, 4, 5, 6],
+                                domain_split_id_values=[1, ]),
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
+        tabular_dataset_kwargs={"name": "brfss_diabetes_random_test_"+f"{index}",
+                                "task": "diabetes", "years": BRFSS_YEARS})
