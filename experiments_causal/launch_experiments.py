@@ -46,7 +46,8 @@ from time import sleep
 # )
 from tableshift.datasets import (
     # ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER,
-    BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER
+    BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER,
+    # ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER
 )
 
 if __name__ == "__main__":
@@ -130,6 +131,9 @@ TASKS = [
 
 for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
     TASKS.append("brfss_diabetes_random_test_" + f"{index}")
+
+# for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     TASKS.append("acsunemployment_random_test_" + f"{index}")
 
 ################################################################################
 # Task for robustness tests

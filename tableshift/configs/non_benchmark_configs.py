@@ -37,6 +37,7 @@ from tableshift.datasets import BRFSS_YEARS, ACS_YEARS, NHANES_YEARS
 from tableshift.datasets import (
     # ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER,
     BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER,
+    # ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER
 )
 from tableshift.datasets.mimic_extract import MIMIC_EXTRACT_STATIC_FEATURES, \
     MIMIC_EXTRACT_LOS_3_FEATURES_CAUSAL, MIMIC_EXTRACT_MORT_HOSP_FEATURES_CAUSAL, \
@@ -1484,3 +1485,19 @@ for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
         preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
         tabular_dataset_kwargs={"name": "brfss_diabetes_random_test_"+f"{index}",
                                 "task": "diabetes", "years": BRFSS_YEARS})
+     
+# for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     NON_BENCHMARK_CONFIGS["acsunemployment_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname='SCHL',
+#                                 # No high school diploma vs. GED/diploma or higher.
+#                                 domain_split_ood_values=['01', '02', '03', '04',
+#                                                          '05', '06', '07', '08',
+#                                                          '09', '10', '11', '12',
+#                                                          '13', '14', '15']),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(),
+#         tabular_dataset_kwargs={"acs_task": "acsunemployment"})

@@ -418,6 +418,9 @@ _TASK_REGISTRY: Dict[str, TaskConfig] = {
 for index, subset in enumerate(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS):
     _TASK_REGISTRY["brfss_diabetes_random_test_"+f"{index}"] = TaskConfig(BRFSSDataSource, subset)
 
+# for index, subset in enumerate(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS):
+#     _TASK_REGISTRY["acsunemployment_random_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
+
 def get_task_config(name: str) -> TaskConfig:
     if name in _TASK_REGISTRY:
         return _TASK_REGISTRY[name]
