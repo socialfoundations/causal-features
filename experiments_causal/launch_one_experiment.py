@@ -22,14 +22,14 @@ if __name__ == "__main__":
 ####################################################
 # List of models
 MODELS = (
+    "xgb",
+    "lightgbm",
     "ft_transformer",
     # "histgbm",
     # "mlp",
     "saint",
     # "tabtransformer",
     # "resnet",
-    "xgb",
-    "lightgbm",
     # "aldro",
     # "dro",
     # "node",

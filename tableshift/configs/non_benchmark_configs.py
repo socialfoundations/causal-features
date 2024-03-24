@@ -1470,17 +1470,17 @@ for index in range(ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
         preprocessor_config=PreprocessorConfig(),
         tabular_dataset_kwargs={"acs_task": "acsincome"})
     
-for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
-     NON_BENCHMARK_CONFIGS["brfss_diabetes_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname="PRACE1",
-                                domain_split_ood_values=[
-                                    2, 3, 4, 5, 6],
-                                domain_split_id_values=[1, ]),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
-        tabular_dataset_kwargs={"name": "brfss_diabetes_random_test_"+f"{index}",
-                                "task": "diabetes", "years": BRFSS_YEARS})
+# for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
+#      NON_BENCHMARK_CONFIGS["brfss_diabetes_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname="PRACE1",
+#                                 domain_split_ood_values=[
+#                                     2, 3, 4, 5, 6],
+#                                 domain_split_id_values=[1, ]),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
+#         tabular_dataset_kwargs={"name": "brfss_diabetes_random_test_"+f"{index}",
+#                                 "task": "diabetes", "years": BRFSS_YEARS})
