@@ -114,7 +114,7 @@ def get_results(experiment_name: str) -> pd.DataFrame:
                                 "ood_test_ub": eval_json["ood_test" + "_conf"][1],
                                 "validation": eval_json["validation"],
                                 "features": get_feature_selection(experiment),
-                                "model": run.split("_")[0],
+                                "model": run.split("_", 2)[0] + "_" + run.split("_", 2)[1] if run.split("_")[0] in ["ib", "and", "causirl"] else run.split("_")[0],
                                 "number": len(eval_json["features"]),
                             }
                         ]
