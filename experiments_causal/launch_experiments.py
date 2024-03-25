@@ -46,8 +46,8 @@ from time import sleep
 # )
 from tableshift.datasets import (
     # ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER,
-    BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER,
-    # ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER
+    # BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER,
+    ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER
 )
 
 if __name__ == "__main__":
@@ -129,22 +129,11 @@ TASKS = [
 # for index in range(471,ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("acsincome_random_test_" + f"{index}")
 
-outstanding_exp = [6, 8, 12, 18, 19, 20, 21, 23, 30, 31, 37, 39, 43, 45, 50, 51, 54, 65, 66, 69, 72,
- 83, 87, 89, 100, 101, 103, 105, 106, 116, 122, 124, 125, 126, 129, 133, 135, 136,
- 139, 141, 145, 147, 148, 158, 159, 160, 161, 164, 165, 172, 183, 186, 189, 190, 192,
- 197, 198, 199, 210, 211, 212, 215, 218, 227, 230, 236, 241, 246, 258, 259, 263, 266, 267,
- 269, 273, 275, 276, 279, 283, 284, 290, 293, 295, 304, 305, 315, 317, 323, 327, 328, 329,
- 336, 338, 341, 346, 350, 356, 362, 363, 366, 369, 372, 381, 382, 386, 387, 396, 402, 403,
- 412, 414, 422, 427, 431, 435, 438, 439, 442, 447, 449, 451, 454, 459, 464, 468, 469, 474,
- 483, 485, 486, 490, 495, 497, 498, 499]
+# for index in BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER:
+#     TASKS.append("brfss_diabetes_random_test_" + f"{index}")
 
-for index in outstanding_exp:
-    TASKS.append("brfss_diabetes_random_test_" + f"{index}")
-
-    
-
-# for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
-#     TASKS.append("acsunemployment_random_test_" + f"{index}")
+for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
+    TASKS.append("acsunemployment_random_test_" + f"{index}")
 
 ################################################################################
 # Task for robustness tests
