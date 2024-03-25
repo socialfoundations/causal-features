@@ -22,7 +22,7 @@ import pandas as pd
 from tableshift.core.features import Feature, FeatureList, cat_dtype
 from tableshift.core.splitter import idx_where_not_in
 
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset, get_random_subset_add_additional
 
 # Features present in every year of BRFSS
 BRFSS_GLOBAL_FEATURES = [
@@ -1085,9 +1085,11 @@ BRFSS_DIABETES_FEATURES_ANTICAUSAL = FeatureList([
             }),
 ])
 
-BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS = get_random_subset(BRFSS_DIABETES_FEATURES.features + BRFSS_SHARED_FEATURES.features, target, domain, k=500)
-BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER = len(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS)
+additional = Feature("IYEAR", float, "Year of BRFSS dataset.",
+            name_extended="Survey year"),
 
+BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS = get_random_subset_add_additional(BRFSS_DIABETES_FEATURES.features + BRFSS_SHARED_FEATURES.features, target, domain, k=500, additional=additional)
+BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER = len(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS)
 
 BRFSS_BLOOD_PRESSURE_FEATURES_CAUSAL = FeatureList(features=[
     # Derived feature for year.

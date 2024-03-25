@@ -188,3 +188,56 @@ def get_random_subset(featurelist: FeatureList,
         subset.append(domain)
         subsets.append(FeatureList(subset))
     return subsets
+
+
+def get_random_subset_add_additional(featurelist: FeatureList,
+        target: Feature,
+        domain: Feature,
+        k: int,
+        additional = None,) -> list:
+    """Generate random subset of features
+
+    Parameters
+    ----------
+    featurelist : list
+        List of all features.
+    target : Feature
+        Target.
+    domain : Feature
+        Domain variable.
+    k: int
+        Number of random subsets
+
+    Returns
+    -------
+    list
+        List of random subsets.
+
+    """
+    random.seed(42)
+
+    features = featurelist.copy()
+    if target in features:
+        features.remove(target)
+    if domain in features:
+        features.remove(domain)
+
+    if len(features) < 25:
+        powerset = select_powerset(pd.DataFrame(columns=features))
+        k = min(k,len(powerset))
+        random_subsets = random.sample(powerset, k)
+    else:
+        random_subsets = []
+        for j in range(k):
+            sampled_subset = [x for x in features if random.choice((True, False))]
+            random_subsets.append(sampled_subset)
+    subsets = []
+    indeces = []
+    for index, subset in enumerate(random_subsets):
+            subset.append(target)
+            subset.append(domain)
+            if (additional != None) and (additional not in subset):
+                subset.append(additional)
+                indeces.apppend(index)
+            subsets.append(FeatureList(subset))
+    return subsets
