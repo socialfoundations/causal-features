@@ -138,7 +138,7 @@ outstanding_exp = [6, 8, 12, 18, 19, 20, 21, 23, 30, 31, 37, 39, 43, 45, 50, 51,
  412, 414, 422, 427, 431, 435, 438, 439, 442, 447, 449, 451, 454, 459, 464, 468, 469, 474,
  483, 485, 486, 490, 495, 497, 498, 499]
 
-for index in outstanding_exp:
+for index in outstanding_exp[:10]:
     TASKS.append("brfss_diabetes_random_test(_" + f"{index}")
 
     
