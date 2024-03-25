@@ -1086,9 +1086,10 @@ BRFSS_DIABETES_FEATURES_ANTICAUSAL = FeatureList([
 ])
 
 additional = Feature("IYEAR", float, "Year of BRFSS dataset.",
-            name_extended="Survey year"),
+                     name_extended="Survey year"),
 
-BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS = get_random_subset_add_additional(BRFSS_DIABETES_FEATURES.features + BRFSS_SHARED_FEATURES.features, target, domain, k=500, additional=additional)
+BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS = get_random_subset_add_additional(
+    BRFSS_DIABETES_FEATURES.features + BRFSS_SHARED_FEATURES.features, target, domain, k=500, additional=additional)
 BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER = len(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS)
 
 BRFSS_BLOOD_PRESSURE_FEATURES_CAUSAL = FeatureList(features=[
