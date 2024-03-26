@@ -282,13 +282,33 @@ experiments = [
     "meps",
     "sipp",
 ]
+
+
 for index, experiment_name in enumerate(experiments):
     sns.set_style("white")
-    fig = plt.figure(figsize=(6.75, 1.5))
-    ax = fig.subplots(
-        1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "wspace": 0.3}
-    )  # create 1x4 subplots on subfig1
-    fig.suptitle(dic_title[experiment_name], fontsize=9)  # set suptitle for subfig1
+    if index % 4 == 0:
+        fig = plt.figure(figsize=[6.75, 1.5 * 4])
+        (subfig1, subfig2, subfig3, subfig4) = fig.subfigures(4, 1, hspace=0.5)  # create 4x1 subfigures
+
+        subfigs = (subfig1, subfig2, subfig3, subfig4)
+
+        ax1 = subfig1.subplots(
+            1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "top": 0.85}
+        )  # create 1x4 subplots on subfig1
+        ax2 = subfig2.subplots(
+            1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "top": 0.85}
+        )  # create 1x4 subplots on subfig2
+        ax3 = subfig3.subplots(
+            1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "top": 0.85}
+        )  # create 1x4 subplots on subfig2
+        ax4 = subfig4.subplots(
+            1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "top": 0.85}
+        )  # create 1x4 subplots on subfig2
+        axes = (ax1, ax2, ax3, ax4)
+    subfig = subfigs[index % 4]
+    subfig.subplots_adjust(wspace=0.4, bottom=0.3)
+    ax = axes[index % 4]
+    subfig.suptitle(dic_title[experiment_name], fontsize=9)  # set suptitle for subfig1
     eval_all = get_results(experiment_name)
     eval_plot = pd.DataFrame()
     for set in eval_all["features"].unique():
@@ -669,18 +689,22 @@ for index, experiment_name in enumerate(experiments):
                     linewidth=linewidth_bound,
                 )
 
-    fig.legend(
-        list(zip(["k" for model in list_models], markermap.values())),
-        [encode_model[model] for model in list_models],
-        handler_map={tuple: MarkerHandler()},
-        loc="upper center",
-        bbox_to_anchor=(0.5, -0.2),
-        fancybox=True,
-        ncol=5,
-    )
+    if index % 4 == 3:
+        fig.legend(
+            list(zip(["k" for model in list_models], markermap.values())),
+            [encode_model[model] for model in list_models],
+            handler_map={tuple: MarkerHandler()},
+            loc="upper center",
+            bbox_to_anchor=(0.5, 0),
+            fancybox=True,
+            ncol=5,
+        )
 
+        fig.savefig(
+            str(Path(__file__).parents[0] / f"plots_rebuttal/performance_across_models/plot_performance_{int(index/4)}.pdf"),
+            bbox_inches="tight",
+        )
 
-    fig.savefig(
-        str(Path(__file__).parents[0] / f"plots_rebuttal/performance_across_models/plot_performance_{experiment_name}.pdf"),
-        bbox_inches="tight",
-    )
+        fig.show()
+
+# %%
