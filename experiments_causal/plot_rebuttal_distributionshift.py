@@ -270,16 +270,16 @@ if __name__ == "__main__":
                       c=colormap[plot_distance["color"]], marker=markermap[index])
 
     ax[0].set_xlabel("Log Optimal Transport Data Distance")
-    ax[0].set_ylabel("Ood accuracy")
+    ax[0].set_ylabel("Out-of-domain\naccuracy")
     ax[1].set_xlabel("Label Shift")
-    ax[1].set_ylabel("Ood accuracy")
+    ax[1].set_ylabel("Out-of-domain\naccuracy")
 
     fig.legend(
         list(zip(["k" for experiment in list_experiments], markermap[:len(list_experiments)+1])),
         [dic_title[experiment] for experiment in list_experiments],
         handler_map={tuple: MarkerHandler()},
         loc="upper center",
-        bbox_to_anchor=(0.5, -0.2),
+        bbox_to_anchor=(0.5, -0.15),
         fancybox=True,
         ncol=4,
     )

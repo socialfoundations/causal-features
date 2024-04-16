@@ -305,10 +305,12 @@ for index, experiment_name in enumerate(experiments):
             1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "top": 0.85}
         )  # create 1x4 subplots on subfig2
         axes = (ax1, ax2, ax3, ax4)
+
     subfig = subfigs[index % 4]
     subfig.subplots_adjust(wspace=0.4, bottom=0.3)
     ax = axes[index % 4]
     subfig.suptitle(dic_title[experiment_name], fontsize=9)  # set suptitle for subfig1
+
     eval_all = get_results(experiment_name)
     eval_plot = pd.DataFrame()
     for set in eval_all["features"].unique():
@@ -688,6 +690,9 @@ for index, experiment_name in enumerate(experiments):
                     linestyle=(0, (1, 1)),
                     linewidth=linewidth_bound,
                 )
+         
+        # ax2 = sns.barplot(x="model", y="ood_test", hue="type", data=shift_acc)
+        
 
     if index % 4 == 3:
         fig.legend(
@@ -704,7 +709,101 @@ for index, experiment_name in enumerate(experiments):
             str(Path(__file__).parents[0] / f"plots_rebuttal/performance_across_models/plot_performance_{int(index/4)}.pdf"),
             bbox_inches="tight",
         )
-
         fig.show()
 
+# %%
+        
+
+experiments = [
+    "acsfoodstamps",
+    "acsincome",
+    "acspubcov",
+    "acsunemployment",
+    "anes",
+    "assistments",
+    "brfss_blood_pressure",
+    "brfss_diabetes",
+    "college_scorecard",
+    "diabetes_readmission",
+    "mimic_extract_mort_hosp",
+    "mimic_extract_los_3",
+    "nhanes_lead",
+    "physionet",
+    "meps",
+    "sipp",
+]
+
+for index, experiment_name in enumerate(experiments):
+    sns.set_style("white")
+    if index %3 == 0:
+        fig, axes = plt.subplots(3, 1,figsize=[6.75, 2 * 3])  # create 4x1 subfigures
+        fig.subplots_adjust(hspace=2.5)
+
+    axes[index %3].set_title(dic_title[experiment_name], fontsize=9)  # set suptitle for subfig1
+
+    eval_all = get_results(experiment_name)
+    eval_plot = pd.DataFrame()
+    for set in eval_all["features"].unique():
+        eval_feature = eval_all[eval_all["features"] == set]
+        for model in eval_feature["model"]:
+            eval_model = eval_feature[eval_feature["model"] == model]
+            if model.startswith("tableshift"):
+                eval_model["model"] = encode_tableshift[model]
+            if model != 'tableshift:catboost':
+                eval_plot = pd.concat([eval_plot, eval_model])
+    eval_all = eval_plot
+
+    eval_constant = eval_all[eval_all["features"] == "constant"]
+    dic_shift = {}
+    dic_shift_acc = {}
+
+    for model in list_models:
+        eval_model = eval_plot[eval_plot["model"] == model]
+        # get pareto set for shift vs accuracy
+        shift_acc = eval_model.drop_duplicates()
+        shift_acc["type"] = "causal"
+        shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
+        shift_acc["model"] = encode_model[model]
+        dic_shift_acc["causal_"+model] = shift_acc
+
+    if (eval_all["features"] == "arguablycausal").any():
+        eval_plot = eval_all[eval_all["features"] == "arguablycausal"]
+        eval_plot.sort_values("id_test", inplace=True)
+        eval_plot = eval_plot[eval_plot["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
+
+        for model in list_models:
+            eval_model = eval_plot[eval_plot["model"] == model]
+            # get pareto set for shift vs accuracy
+            shift_acc = eval_model.drop_duplicates()
+            shift_acc["type"] = "arguablycausal"
+            shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
+            shift_acc["model"] = encode_model[model]
+            dic_shift_acc["arguablycausal_"+model] = shift_acc
+
+    eval_plot = eval_all[eval_all["features"] == "all"]
+    eval_plot.sort_values("id_test", inplace=True)
+    eval_plot = eval_plot[eval_plot["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
+
+    for model in list_models:
+        eval_model = eval_plot[eval_plot["model"] == model]
+        # get pareto set for shift vs accuracy
+        shift_acc = eval_model.drop_duplicates()
+        shift_acc["type"] = "all"
+        shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
+        shift_acc["model"] = encode_model[model]
+        dic_shift_acc["all_"+model] = shift_acc
+
+    shift_acc = pd.concat(dic_shift_acc.values(), ignore_index=True)
+
+    sns.barplot(x="model", y="ood_test", hue="type", data=shift_acc, palette=[color_causal,color_arguablycausal,color_all], legend=False, ax=axes[index %3])
+    axes[index %3].tick_params(axis="x", labelrotation=90)
+    axes[index %3].set_xlabel("Model")
+    axes[index %3].set_ylabel("Out-of-domain\naccuracy")
+
+    if index %3 == 2:
+        fig.savefig(
+            str(Path(__file__).parents[0] / f"plots_rebuttal/performance_across_models/plot_oodaccuracy_{int(index/3)}.pdf"),
+            bbox_inches="tight",
+        )
+        fig.show()
 # %%
