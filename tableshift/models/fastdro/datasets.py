@@ -7,7 +7,6 @@ Code from https://github.com/daniellevy/fast-dro
 import torch
 import numpy as np
 
-from torchvision.datasets import ImageNet
 from torch.utils.data import Sampler, Dataset, TensorDataset
 
 from scipy.optimize import minimize
