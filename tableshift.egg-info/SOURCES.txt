@@ -59,8 +59,6 @@ tableshift/datasets/sipp.py
 tableshift/datasets/uci.py
 tableshift/datasets/utils.py
 tableshift/models/__init__.py
-tableshift/models/andmask.py
-tableshift/models/causal_irl.py
 tableshift/models/compat.py
 tableshift/models/coral.py
 tableshift/models/dann.py
@@ -68,7 +66,6 @@ tableshift/models/default_hparams.py
 tableshift/models/domain_generalization.py
 tableshift/models/dro.py
 tableshift/models/expgrad.py
-tableshift/models/information_bottleneck.py
 tableshift/models/irm.py
 tableshift/models/losses.py
 tableshift/models/mixup.py

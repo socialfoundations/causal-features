@@ -5,7 +5,7 @@ library(jsonlite)
 
 setwd("/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed") 
 
-task = "income"
+task = "voting"
 
 dataset_name <- paste(task,"csv",sep=".")
 data <- read.csv(dataset_name, header = TRUE, sep = ",")

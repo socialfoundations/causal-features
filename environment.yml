@@ -1,4 +1,4 @@
-name: causalfeatures
+name: causaldiscovery
 channels:
   - defaults
 dependencies:
