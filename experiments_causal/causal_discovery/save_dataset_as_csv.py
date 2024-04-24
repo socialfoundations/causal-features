@@ -1,4 +1,4 @@
-"""Python script to run experiment and record the performance."""
+"""Python script to save experiments into csv files in different encodings."""
 import argparse
 from pathlib import Path
 import torch
@@ -14,15 +14,17 @@ from tableshift.datasets import *
 from experiments_causal.plot_config_tasks import dic_domain_label
 
 from sklearn.preprocessing import LabelEncoder
+from tableshift.core.features import cat_dtype
 
 cache_dir = "/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp"
 cache_dir = Path(cache_dir)
 
-experiment = "acsincome"
-experiment_name = "income"
-feature_list = ACS_INCOME_FEATURES
+experiment = "college_scorecard"
+experiment_name = "college"
+feature_list = COLLEGE_SCORECARD_FEATURES
 target = feature_list.target
 domain = dic_domain_label[experiment]
+execption = [] # voting ['VCF0104','VCF0105a']
 
 dset = get_dataset(experiment, cache_dir)
 
@@ -43,15 +45,16 @@ feature_list.to_jsonl(f"/Users/vnastl/Seafile/My Library/mpi project causal vs n
 tmp = list()
 data_tmp = list()
 for feature in feature_list:
-    if feature.kind != float:
-        tmp.append(feature.name)
-        discovery_data_tmp = pd.from_dummies(discovery_data[[col for col in discovery_data.columns if col.startswith(feature.name)]], sep="_")
-        data_tmp.append(discovery_data_tmp.copy())
+    if feature.kind == cat_dtype:
+        if (feature.name != domain) & (feature.name != target) & (feature.name not in execption):
+            tmp.append(feature.name)
+            discovery_data_tmp = pd.from_dummies(discovery_data[[col for col in discovery_data.columns if col.startswith(feature.name)]], sep="_")
+            data_tmp.append(discovery_data_tmp.copy())
 
 # Get dataset with categorical variables
 discovery_data_categories = pd.DataFrame()
 for feature in feature_list:
-    if feature.kind == float:
+    if (feature.kind != cat_dtype) | (feature.name in execption):
         if (feature.name != domain) & (feature.name != target):
             discovery_data_categories[feature.name] = discovery_data[feature.name]
 
@@ -69,7 +72,7 @@ maximal_bins = 5
 
 discovery_data_discrete = pd.DataFrame()
 for feature in feature_list:
-    if feature.kind == float:
+    if (feature.kind != cat_dtype) | (feature.name in execption):
         if (feature.name != domain) & (feature.name != target):
             number_values = len(discovery_data[feature.name].unique())
             number_bins = int(min(number_values,maximal_bins))
@@ -89,7 +92,7 @@ maximal_bins = 10
 
 discovery_data_discrete = pd.DataFrame()
 for feature in feature_list:
-    if feature.kind == float:
+    if (feature.kind != cat_dtype) | (feature.name in execption):
         if (feature.name != domain) & (feature.name != target):
             number_values = len(discovery_data[feature.name].unique())
             number_bins = int(min(number_values,maximal_bins))
