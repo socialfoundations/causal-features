@@ -1,6 +1,7 @@
 tmp
+tmp_preprocessed
 *.pyc
-.DS_Store
-.idea
 *.vscode
 model/*.pt
+.DS_Store
+.idea
