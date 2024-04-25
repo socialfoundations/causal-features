@@ -10,15 +10,16 @@ task = "college"
 
 dataset_name <- paste(task,"csv",sep=".")
 data <- read.csv(dataset_name, header = TRUE, sep = ",")
-
+if (task == "college"){
+  data <- data[-(which(data$domain %in% c(3, 4, 9, 13, 23, 29, 30))),]
+} else if (task == "readmission"){
+  data <- data[-(which(data$domain %in% c(9,11,12,15))),]
+}
 # get dataframe of features, target as factors and domains as column
 X <- as.matrix(subset(data, select = -c(target, domain)))
 y <- as.factor(data$target)
 domains <- data$domain
 
-if (task == "college"){
-  domains[domains == 3 | domains == 4 | domains == 9 | domains == 13 | domains == 23 | domains == 29 | domains == 30 ] <- 1
-}
 ###############################################################################
 # ICP with boosting
 ###############################################################################
