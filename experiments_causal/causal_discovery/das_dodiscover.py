@@ -15,8 +15,8 @@ import pandas as pd
 from dodiscover.toporder import CAM, SCORE, DAS, NoGAM
 
 
-experiment = "acsincome"
-experiment_name = "income"
+experiment = "acsunemployment"
+experiment_name = "unemployment"
 
 data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}_discrete_5.csv").astype("int")
 
