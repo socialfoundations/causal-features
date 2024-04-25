@@ -20,3 +20,5 @@ suffStat <- list(dm = dm, adaptDF = FALSE)
 pc_results <- pc(suffStat,
             ## independence test: G^2 statistic
             indepTest = disCItest, alpha = 0.0001, labels = V, verbose = TRUE)
+
+save(pc_results,file=paste(task,"pc.RData",sep="_"))
