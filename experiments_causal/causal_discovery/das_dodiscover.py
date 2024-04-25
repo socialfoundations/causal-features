@@ -15,8 +15,8 @@ import pandas as pd
 from dodiscover.toporder import CAM, SCORE, DAS, NoGAM
 
 
-experiment = "bfrss_diabetes"
-experiment_name = "diabetes"
+experiment = "acsincome"
+experiment_name = "income"
 
 data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}_discrete_5.csv").astype("int")
 
