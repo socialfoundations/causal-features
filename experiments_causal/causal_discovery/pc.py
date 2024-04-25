@@ -7,11 +7,7 @@ from causallearn.search.ConstraintBased.PC import pc
 # from scipy import stats
 
 # from dodiscover.toporder import CAM, SCORE, DAS, NoGAM
-
-
 import pandas as pd
-from dowhy import gcm
-from dowhy.gcm.util.general import set_random_seed
 
 experiment = "bfrss_diabetes"
 experiment_name = "diabetes"

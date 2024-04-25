@@ -8,16 +8,12 @@ from dodiscover.ci import GSquareCITest
 from dodiscover import make_context
 from dodiscover.constraint import PC, FCI
 import pickle
+import pandas as pd
 # import numpy as np
 # import networkx as nx
 # from scipy import stats
-
 # from dodiscover.toporder import CAM, SCORE, DAS, NoGAM
 
-
-import pandas as pd
-from dowhy import gcm
-from dowhy.gcm.util.general import set_random_seed
 
 experiment = "bfrss_diabetes"
 experiment_name = "diabetes"
