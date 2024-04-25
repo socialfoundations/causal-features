@@ -1,6 +1,6 @@
 library(pcalg)
 
-setwd("/home/vnastl/tmp_preprocessed") # cluster 
+setwd("/home/vnastl/causal-features/tmp_preprocessed") # cluster 
 
 task = "diabetes"
 disc_task = paste(task,"discrete","5",sep="_")

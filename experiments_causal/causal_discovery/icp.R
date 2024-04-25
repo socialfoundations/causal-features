@@ -4,7 +4,7 @@ require(forstringr)
 require(jsonlite)
 
 setwd("/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed") 
-# cluster setwd("/home/vnastl/tmp_preprocessed") 
+# cluster setwd("/home/vnastl/causal-features/tmp_preprocessed") 
 
 task = "unemployment"
 
