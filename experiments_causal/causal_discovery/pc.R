@@ -1,6 +1,6 @@
 library(pcalg)
 
-setwd("/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed") 
+setwd("/home/vnastl/tmp_preprocessed") # cluster 
 
 task = "diabetes"
 disc_task = paste(task,"discrete","5",sep="_")

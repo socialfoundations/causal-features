@@ -1,11 +1,12 @@
-library(InvariantCausalPrediction)
-library(dplyr)
-library(forstringr)
-library(jsonlite)
+require(InvariantCausalPrediction)
+require(dplyr)
+require(forstringr)
+require(jsonlite)
 
 setwd("/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed") 
+# cluster setwd("/home/vnastl/tmp_preprocessed") 
 
-task = "voting"
+task = "unemployment"
 
 dataset_name <- paste(task,"csv",sep=".")
 data <- read.csv(dataset_name, header = TRUE, sep = ",")

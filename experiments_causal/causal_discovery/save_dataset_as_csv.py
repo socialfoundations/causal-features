@@ -19,12 +19,12 @@ from sklearn.preprocessing import LabelEncoder
 cache_dir = "/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp"
 cache_dir = Path(cache_dir)
 
-experiment = "diabetes_readmission"
-experiment_name = "readmission"
-feature_list = DIABETES_READMISSION_FEATURES
+experiment = "college_scorecard"
+experiment_name = "college"
+feature_list = COLLEGE_SCORECARD_FEATURES
 target = feature_list.target
 domain = dic_domain_label[experiment]
-execption = ["race","gender"] # voting ['VCF0104','VCF0105a']
+execption = [] # voting ['VCF0104','VCF0105a'], readmission ["race","gender"]
 dset = get_dataset(experiment, cache_dir)
 
 # Case: non-pytorch estimator; perform test-split evaluation.
@@ -47,7 +47,10 @@ for feature in feature_list:
     if feature.kind == cat_dtype:
         if (feature.name != domain) & (feature.name != target) & (feature.name not in execption):
             tmp.append(feature.name)
-            discovery_data_tmp = pd.from_dummies(discovery_data[[col for col in discovery_data.columns if col.startswith(feature.name)]], sep="_")
+            if experiment_name == "college":
+                discovery_data_tmp = pd.DataFrame(discovery_data[feature.name])
+            else:
+                discovery_data_tmp = pd.from_dummies(discovery_data[[col for col in discovery_data.columns if col.startswith(feature.name)]], sep="_")
             if len(discovery_data.columns)>1:
                 data_tmp.append(pd.DataFrame(discovery_data_tmp.iloc[:,0]).copy())
             else:
