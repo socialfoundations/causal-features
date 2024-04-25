@@ -1,12 +1,5 @@
-"""Python script to save experiments into csv files in different encodings.
-
-We use the python library "dodiscover", which is not officially released yet. (https://github.com/py-why/dodiscover)
-"""
+"""Python script to run pc algorithm."""
 #%%
-from pywhy_graphs.viz import draw
-from dodiscover.ci import GSquareCITest
-from dodiscover import make_context
-from dodiscover.constraint import PC, FCI
 import pickle
 from causallearn.search.ConstraintBased.PC import pc
 # import numpy as np
@@ -30,18 +23,6 @@ cg = pc(data, indep_test="gsq")
 with open(f"/home/vnastl/causal-features/tmp_preprocessed/causallearn_pc_{experiment_name}.pickle", 'wb') as handle:
     pickle.dump(cg, handle)
 
-#%% dodiscover package
-context = make_context().variables(data=data).build()
 
-ci_estimator = GSquareCITest(data_type="discrete")
-dd_pc = PC(ci_estimator=ci_estimator)
-dd_pc.learn_graph(data, context)
-with open(f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_pc_{experiment_name}.pickle", 'wb') as handle:
-    pickle.dump(dd_pc, handle)
-
-graph = dd_pc.graph_
-
-dot_graph = draw(graph)
-dot_graph.render(outfile=f"/home/vnastl/causal-features/tmp_preprocessed/ci_cpdag.png")
 
 

@@ -10,6 +10,7 @@ disc_task = paste(task,"discrete","5",sep="_")
 ###############################################################################
 dataset_name <- paste(disc_task,"csv",sep=".")
 data <- read.csv(dataset_name, header = TRUE, sep = ",")
+print("sucessfully loaded data")
 
 # PC algorithm
 dm <- subset(data, select = -c(domain))

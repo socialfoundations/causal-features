@@ -6,7 +6,7 @@ require(jsonlite)
 setwd("/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed") 
 # cluster setwd("/home/vnastl/causal-features/tmp_preprocessed") 
 
-task = "unemployment"
+task = "college"
 
 dataset_name <- paste(task,"csv",sep=".")
 data <- read.csv(dataset_name, header = TRUE, sep = ",")
@@ -16,6 +16,9 @@ X <- as.matrix(subset(data, select = -c(target, domain)))
 y <- as.factor(data$target)
 domains <- data$domain
 
+if (task == "college"){
+  domains[domains == 3 | domains == 4 | domains == 9 | domains == 13 | domains == 23 | domains == 29 | domains == 30 ] <- 1
+}
 ###############################################################################
 # ICP with boosting
 ###############################################################################
