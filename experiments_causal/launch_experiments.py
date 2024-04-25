@@ -123,19 +123,6 @@ TASKS = [
 ]
 
 ################################################################################
-# Task for additional robustness tests
-################################################################################
-
-# for index in range(471,ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
-#     TASKS.append("acsincome_random_test_" + f"{index}")
-
-# for index in BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER:
-#     TASKS.append("brfss_diabetes_random_test_" + f"{index}")
-
-for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
-    TASKS.append("acsunemployment_random_test_" + f"{index}")
-
-################################################################################
 # Task for robustness tests
 ################################################################################
     
@@ -234,6 +221,24 @@ for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
 
 # for index in range(NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
 #     TASKS.append("nhanes_lead_arguablycausal_test_" + f"{index}")
+
+################################################################################
+# Task for additional robustness tests
+################################################################################
+
+# for index in range(471,ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     TASKS.append("acsincome_random_test_" + f"{index}")
+
+# for index in BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER:
+#     TASKS.append("brfss_diabetes_random_test_" + f"{index}")
+
+# for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     TASKS.append("acsunemployment_random_test_" + f"{index}")
+
+################################################################################
+# Task for invariant causal prediction
+################################################################################
+TASKS.append("acsunemployment_icp")
 
 # Useful directories
 if __name__ == "__main__":

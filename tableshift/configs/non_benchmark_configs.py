@@ -944,7 +944,6 @@ NON_BENCHMARK_CONFIGS.update(CAUSAL_BENCHMARK_CONFIGS)
 # Configuration for robustness tests
 ################################################################################
 
-
 # for index in range(SIPP_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     NON_BENCHMARK_CONFIGS["sipp_causal_test_"+f"{index}"] = ExperimentConfig(
 #         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
@@ -1501,3 +1500,22 @@ NON_BENCHMARK_CONFIGS.update(CAUSAL_BENCHMARK_CONFIGS)
 #         grouper=None,
 #         preprocessor_config=PreprocessorConfig(),
 #         tabular_dataset_kwargs={"acs_task": "acsunemployment"})
+
+################################################################################
+# Configuration for invariant causal prediction
+################################################################################
+
+NON_BENCHMARK_CONFIGS["acsunemployment_icp"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname='SCHL',
+                                # No high school diploma vs. GED/diploma or higher.
+                                domain_split_ood_values=['01', '02', '03', '04',
+                                                         '05', '06', '07', '08',
+                                                         '09', '10', '11', '12',
+                                                         '13', '14', '15']),
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(),
+        tabular_dataset_kwargs={"acs_task": "acsunemployment"})

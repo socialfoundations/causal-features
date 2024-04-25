@@ -1240,6 +1240,49 @@ ACS_UNEMPLOYMENT_FEATURES_ANTICAUSAL = FeatureList(features=[
 ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS = get_random_subset(ACS_UNEMPLOYMENT_FEATURES.features + ACS_SHARED_FEATURES.features, target, domain, k=500)
 ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER = len(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS)
 
+ACS_UNEMPLOYMENT_FEATURES_ICP = FeatureList(features=[
+    Feature('ESR', int, "Employment status (is unemployed)", is_target=True),
+    Feature('SCHL', cat_dtype, "Educational attainment",
+            name_extended="Educational attainment",
+            value_mapping={
+                np.nan: 'NA (less than 3 years old)',
+                1: 'No schooling completed',
+                2: 'Nursery school, preschool',
+                3: 'Kindergarten',
+                4: 'Grade 1',
+                5: 'Grade 2',
+                6: 'Grade 3',
+                7: 'Grade 4',
+                8: 'Grade 5',
+                9: 'Grade 6',
+                10: 'Grade 7',
+                11: 'Grade 8',
+                12: 'Grade 9',
+                13: 'Grade 10',
+                14: 'Grade 11',
+                15: '12th grade - no diploma',
+                16: 'Regular high school diploma',
+                17: 'GED or alternative credential',
+                18: 'Some college, but less than 1 year',
+                19: '1 or more years of college credit, no degree',
+                20: "Associate's degree",
+                21: "Bachelor's degree",
+                22: "Master's degree",
+                23: "Professional degree beyond a bachelor's degree",
+                24: 'Doctorate degree',
+            }),
+    Feature('WRK', cat_dtype, "Worked last week",
+            name_extended="Worked last week",
+            value_mapping={
+                '00': 'N/A (not reported',
+                '01': 'Worked',
+                '02': 'Did not work'}),
+    RELP_FEATURE,
+],
+    documentation="https://www2.census.gov/programs-surveys/acs/tech_docs"
+                  "/pums/data_dict/PUMS_Data_Dictionary_2019.pdf"
+)
+
 # FOODSTAMPS
 
 ACS_FOODSTAMPS_FEATURES_CAUSAL = FeatureList(features=[
