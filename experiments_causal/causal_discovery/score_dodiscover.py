@@ -1,4 +1,4 @@
-"""Python script to run PC algorithm.
+"""Python script to run SCORE algorithm.
 
 We use the python library "dodiscover", which is not officially released yet. (https://github.com/py-why/dodiscover)
 """
@@ -12,7 +12,7 @@ import pandas as pd
 # import numpy as np
 # import networkx as nx
 # from scipy import stats
-# from dodiscover.toporder import CAM, SCORE, DAS, NoGAM
+from dodiscover.toporder import CAM, SCORE, DAS, NoGAM
 
 
 experiment = "bfrss_diabetes"
@@ -23,13 +23,11 @@ data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_n
 #%% dodiscover package
 context = make_context().variables(data=data).build()
 
-ci_estimator = GSquareCITest(data_type="discrete")
-dd_pc = PC(ci_estimator=ci_estimator)
-dd_pc.learn_graph(data, context)
-with open(f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_pc_{experiment_name}.pickle", 'wb') as handle:
-    pickle.dump(dd_pc, handle)
+dd_score = SCORE()
+dd_score.learn_graph(data, context)
+with open(f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_score_{experiment_name}.pickle", 'wb') as handle:
+    pickle.dump(dd_score, handle)
 
-graph = dd_pc.graph_
+graph = dd_score.graph_
 
 dot_graph = draw(graph)
-dot_graph.render(outfile=f"/home/vnastl/causal-features/tmp_preprocessed/ci_cpdag.png")

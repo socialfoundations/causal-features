@@ -1,4 +1,4 @@
-"""Python script to run pc algorithm.
+"""Python script to run FCI algorithm.
 
 We use the python library "dodiscover", which is not officially released yet. (https://github.com/py-why/dodiscover)
 """
