@@ -1,9 +1,23 @@
-library(pcalg)
+# R script to run pc algorithm
+###############################################################################
+# install packages
+###############################################################################
+# BiocManager::install("RBGL")
+# install.packages("pcalg")
+# BiocManager::install("Rgraphviz")
 
-setwd("/home/vnastl/causal-features/tmp_preprocessed") # cluster 
+library(pcalg, lib.loc="/home/vnastl//R/x86_64-pc-linux-gnu-library/4.3")
+# setwd("/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed") 
+setwd("/home/vnastl/causal-features/tmp_preprocessed") # cluster
 
-task = "diabetes"
+###############################################################################
+# get task and alpha
+###############################################################################
+
+args = commandArgs(trailingOnly=TRUE)
+task = args[1] # "diabetes"
 disc_task = paste(task,"discrete","5",sep="_")
+alpha = args[2] # 0.0001
 
 ###############################################################################
 # use preprocessed data
@@ -19,7 +33,14 @@ V <- colnames(dm)
 suffStat <- list(dm = dm, adaptDF = FALSE)
 ## estimate CPDAG
 pc_results <- pc(suffStat,
-            ## independence test: G^2 statistic
-            indepTest = disCItest, alpha = 0.0001, labels = V, verbose = TRUE)
+                 ## independence test: G^2 statistic
+                 indepTest = disCItest, alpha = alpha, labels = V, verbose = TRUE)
 
-save(pc_results,file=paste(task,"pc.RData",sep="_"))
+save(pc_results,file=paste(paste(task,"pc","alpha",format(alpha, scientific = FALSE),sep="_"),"RData",sep="."))
+
+# if (require(Rgraphviz)) {
+#   ## show estimated CPDAG
+#   png(file=paste(paste(task,"pc","alpha",format(alpha, scientific = FALSE),sep="_"),"png",sep="."))
+#   plot(pc_results, main = "Estimated CPDAG")
+#   dev.off()
+# }
