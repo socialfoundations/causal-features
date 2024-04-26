@@ -19,9 +19,38 @@ from sklearn.preprocessing import LabelEncoder
 cache_dir = "/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp"
 cache_dir = Path(cache_dir)
 
-experiment = "college_scorecard"
-experiment_name = "college"
-feature_list = COLLEGE_SCORECARD_FEATURES
+experiment = "brfss_blood_pressure"
+experiment_name = "bloodpressure"
+feature_list = BRFSS_BLOOD_PRESSURE_FEATURES
+
+# experiment = "physionet"
+# experiment_name = "sepsis"
+# feature_list = PHYSIONET_FEATURES
+
+# experiment = "meps"
+# experiment_name = "utilization"
+# feature_list = MEPS_FEATURES
+
+# experiment = "sipp"
+# experiment_name = "poverty"
+# feature_list = SIPP_FEATURES
+
+# experiment = "acspubcov"
+# experiment_name = "pubcov"
+# feature_list = ACS_PUBCOV_FEATURES
+
+# experiment = "assistments"
+# experiment_name = "assistments"
+# feature_list = ASSISTMENTS_FEATURES
+
+# experiment = "nhanes_lead"
+# experiment_name = "lead"
+# feature_list = NHANES_LEAD_FEATURES
+
+# experiment = "physionet"
+# experiment_name = "sepsis"
+# feature_list = PHYSIONET_FEATURES
+
 target = feature_list.target
 domain = dic_domain_label[experiment]
 execption = [] # voting ['VCF0104','VCF0105a'], readmission ["race","gender"]
