@@ -19,9 +19,9 @@ from sklearn.preprocessing import LabelEncoder
 cache_dir = "/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp"
 cache_dir = Path(cache_dir)
 
-experiment = "brfss_blood_pressure"
-experiment_name = "bloodpressure"
-feature_list = BRFSS_BLOOD_PRESSURE_FEATURES
+# experiment = "brfss_blood_pressure"
+# experiment_name = "bloodpressure"
+# feature_list = BRFSS_BLOOD_PRESSURE_FEATURES
 
 # experiment = "physionet"
 # experiment_name = "sepsis"
@@ -35,9 +35,9 @@ feature_list = BRFSS_BLOOD_PRESSURE_FEATURES
 # experiment_name = "poverty"
 # feature_list = SIPP_FEATURES
 
-# experiment = "acspubcov"
-# experiment_name = "pubcov"
-# feature_list = ACS_PUBCOV_FEATURES
+experiment = "acspubcov"
+experiment_name = "pubcov"
+feature_list = ACS_PUBCOV_FEATURES
 
 # experiment = "assistments"
 # experiment_name = "assistments"
@@ -53,7 +53,7 @@ feature_list = BRFSS_BLOOD_PRESSURE_FEATURES
 
 target = feature_list.target
 domain = dic_domain_label[experiment]
-execption = [] # voting ['VCF0104','VCF0105a'], readmission ["race","gender"]
+execption = [] # voting ['VCF0104','VCF0105a'], readmission ["race","gender"], meps ["SEX"], sipp ["GENDER"]
 dset = get_dataset(experiment, cache_dir)
 
 # Case: non-pytorch estimator; perform test-split evaluation.
@@ -67,6 +67,8 @@ discovery_data["target"] = y_te
 discovery_data["domain"] = domains_te
 discovery_data.to_csv(f"/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed/{experiment_name}.csv", index = False)
 
+if experiment_name == "poverty":
+    discovery_data.rename(columns={"UNEMPLOYMENT_COMP_AMOUNT":"AMOUNT_UNEMPLOYMENT_COMP"},inplace=True)
 feature_list.to_jsonl(f"/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed/{experiment_name}_variables.json")
 
 # Get categorical variables
@@ -84,6 +86,9 @@ for feature in feature_list:
                 data_tmp.append(pd.DataFrame(discovery_data_tmp.iloc[:,0]).copy())
             else:
                 data_tmp.append(discovery_data_tmp.copy())
+
+if experiment_name == "poverty":
+    discovery_data.rename(columns={"AMOUNT_UNEMPLOYMENT_COMP":"UNEMPLOYMENT_COMP_AMOUNT"},inplace=True)
 
 # Get dataset with categorical variables
 discovery_data_categories = pd.DataFrame()

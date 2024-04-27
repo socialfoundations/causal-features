@@ -24,9 +24,10 @@ alpha = args[2] # 0.0001
 ###############################################################################
 dataset_name <- paste(disc_task,"csv",sep=".")
 data <- read.csv(dataset_name, header = TRUE, sep = ",")
+data <- sapply(data, as.numeric )
 print("sucessfully loaded data")
 
-# FCI algorithm
+# RFCI algorithm
 dm <- subset(data, select = -c(domain))
 V <- colnames(dm)
 ## define sufficient statistics
