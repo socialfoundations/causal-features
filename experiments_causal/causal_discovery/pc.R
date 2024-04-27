@@ -6,18 +6,18 @@
 # install.packages("pcalg")
 # BiocManager::install("Rgraphviz")
 
-# library(pcalg, lib.loc="/home/vnastl//R/x86_64-pc-linux-gnu-library/4.3")
-setwd("/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed")
-# setwd("/home/vnastl/causal-features/tmp_preprocessed") # cluster
+library(pcalg, lib.loc="/home/vnastl//R/x86_64-pc-linux-gnu-library/4.3")
+# setwd("/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed")
+setwd("/home/vnastl/causal-features/tmp_preprocessed") # cluster
 
 ###############################################################################
 # get task and alpha
 ###############################################################################
 
 args = commandArgs(trailingOnly=TRUE)
-task = "unemployment" #args[1] # "diabetes"
+task = args[1] # "diabetes"
 disc_task = paste(task,"discrete","5",sep="_")
-alpha = 0.01 # args[2] # 0.0001
+alpha = args[2] # 0.0001
 
 ###############################################################################
 # use preprocessed data
