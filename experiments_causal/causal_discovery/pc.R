@@ -6,18 +6,18 @@
 # install.packages("pcalg")
 # BiocManager::install("Rgraphviz")
 
-library(pcalg, lib.loc="/home/vnastl//R/x86_64-pc-linux-gnu-library/4.3")
-# setwd("/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed") 
-setwd("/home/vnastl/causal-features/tmp_preprocessed") # cluster
+# library(pcalg, lib.loc="/home/vnastl//R/x86_64-pc-linux-gnu-library/4.3")
+setwd("/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed")
+# setwd("/home/vnastl/causal-features/tmp_preprocessed") # cluster
 
 ###############################################################################
 # get task and alpha
 ###############################################################################
 
 args = commandArgs(trailingOnly=TRUE)
-task = args[1] # "diabetes"
+task = "unemployment" #args[1] # "diabetes"
 disc_task = paste(task,"discrete","5",sep="_")
-alpha = args[2] # 0.0001
+alpha = 0.01 # args[2] # 0.0001
 
 ###############################################################################
 # use preprocessed data
@@ -25,11 +25,11 @@ alpha = args[2] # 0.0001
 dataset_name <- paste(disc_task,"csv",sep=".")
 data <- read.csv(dataset_name, header = TRUE, sep = ",")
 data <- sapply(data, as.numeric )
-data <- data[sapply(data, function(x) length(unique(x)) > 1)]
 print("sucessfully loaded data")
 
 # PC algorithm
 dm <- subset(data, select = -c(domain))
+dm <- dm[,apply(dm, MARGIN=2, function(x)(length(unique(x))>1))]
 V <- colnames(dm)
 ## define sufficient statistics
 suffStat <- list(dm = dm, adaptDF = FALSE)

@@ -26,11 +26,11 @@ alpha = args[2] # 0.0001
 dataset_name <- paste(disc_task,"csv",sep=".")
 data <- read.csv(dataset_name, header = TRUE, sep = ",")
 data <- sapply(data, as.numeric )
-data <- data[sapply(data, function(x) length(unique(x)) > 1)]
 print("sucessfully loaded data")
 
 # FCI algorithm
 dm <- subset(data, select = -c(domain))
+dm <- dm[,apply(dm, MARGIN=2, function(x)(length(unique(x))>1))]
 V <- colnames(dm)
 ## define sufficient statistics
 suffStat <- list(dm = dm, adaptDF = FALSE)
