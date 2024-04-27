@@ -6,10 +6,10 @@
 # install.packages("pcalg")
 # BiocManager::install("Rgraphviz")
 
-library(pcalg)
-# library(pcalg, lib.loc="/home/vnastl//R/x86_64-pc-linux-gnu-library/4.3")
-setwd("/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed")
-# setwd("/home/vnastl/causal-features/tmp_preprocessed") # cluster
+# library(pcalg)
+library(pcalg, lib.loc="/home/vnastl//R/x86_64-pc-linux-gnu-library/4.3")
+# setwd("/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed")
+setwd("/home/vnastl/causal-features/tmp_preprocessed") # cluster
 
 ###############################################################################
 # get task and alpha
