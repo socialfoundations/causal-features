@@ -44,11 +44,11 @@ from time import sleep
 #     NHANES_LEAD_FEATURES_CAUSAL_SUBSETS_NUMBER,
 #     NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
 # )
-from tableshift.datasets import (
+# from tableshift.datasets import (
     # ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER,
     # BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER,
-    ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER
-)
+    # ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER
+# )
 
 if __name__ == "__main__":
     import htcondor
@@ -238,7 +238,13 @@ TASKS = [
 ################################################################################
 # Task for invariant causal prediction
 ################################################################################
-TASKS.append("acsunemployment_icp")
+# TASKS.append("acsunemployment_icp")
+
+################################################################################
+# Task for pc/fci causal discovery
+################################################################################
+TASKS.append("brfss_diabetes_pc")
+TASKS.append("acsunemployment_pc")
 
 # Useful directories
 if __name__ == "__main__":

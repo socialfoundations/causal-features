@@ -1519,3 +1519,36 @@ NON_BENCHMARK_CONFIGS["acsunemployment_icp"] = ExperimentConfig(
         grouper=None,
         preprocessor_config=PreprocessorConfig(),
         tabular_dataset_kwargs={"acs_task": "acsunemployment"})
+
+################################################################################
+# Configuration for pc causal discovery
+################################################################################
+NON_BENCHMARK_CONFIGS["brfss_diabetes_pc"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname="PRACE1",
+                                domain_split_ood_values=[
+                                    2, 3, 4, 5, 6],
+                                domain_split_id_values=[1, ]),
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
+        tabular_dataset_kwargs={"name": "brfss_diabetes_pc",
+                                "task": "diabetes", "years": BRFSS_YEARS})
+    
+NON_BENCHMARK_CONFIGS["acsunemployment_pc"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname='SCHL',
+                                # No high school diploma vs. GED/diploma or higher.
+                                domain_split_ood_values=['01', '02', '03', '04',
+                                                         '05', '06', '07', '08',
+                                                         '09', '10', '11', '12',
+                                                         '13', '14', '15']),
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(),
+        tabular_dataset_kwargs={"acs_task": "acsunemployment"})
+

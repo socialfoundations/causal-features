@@ -1092,6 +1092,51 @@ additional = Feature("IYEAR", float, "Year of BRFSS dataset.",
 #     BRFSS_DIABETES_FEATURES.features + BRFSS_SHARED_FEATURES.features, target, domain, k=500, additional=additional)
 # BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER = len(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS)
 
+BRFSS_DIABETES_FEATURES_PC = FeatureList([
+    # Derived feature for year.
+    Feature("IYEAR", float, "Year of BRFSS dataset.",
+            name_extended="Survey year"),
+    ################ Target ################
+    Feature("DIABETES", float,
+            '(Ever told) you have diabetes',
+            name_extended='(Ever told) you have diabetes',
+            is_target=True,
+            na_values=(7, 9),
+            # value_mapping={
+            #     1: 'Yes',
+            #     2: 'Yes but female told only during pregnancy',
+            #     3: 'No',
+            #     4: 'No, prediabetes or borderline diabetes',
+            #     7: 'Don’t know / Not Sure',
+            #     9: 'Refused'
+            # }
+            ),
+    # Preferred race category; note that ==1 is equivalent to
+    # "White non-Hispanic race group" variable _RACEG21
+    Feature("PRACE1", float, """Preferred race category.""",
+            name_extended="Preferred race category",
+            na_values=(7., 8., 77., 99.),
+            value_mapping={
+                1: 'White',
+                2: 'Black or African American',
+                3: 'American Indian or Alaskan Native',
+                4: 'Asian', 5: 'Native Hawaiian or other Pacific Islander',
+                6: 'Other race',
+                7: 'No preferred race',
+                8: 'Multiracial but preferred race not answered',
+                77: 'Don’t know/Not sure', 9: 'refused', }),
+
+    # Below are a set of indicators for known risk factors for diabetes.
+    ################ High blood pressure ################
+    Feature("HIGH_BLOOD_PRESS", cat_dtype, na_values=(9,),
+            description="Adults who have been told they have high blood "
+                        "pressure by a doctor, nurse, or other health "
+                        "professional.",
+            name_extended="(Ever told) you have high blood pressure",
+            value_mapping={1: 'No', 2: 'Yes',
+                           9: " Don’t know/Not Sure/Refused/Missing"}),
+])
+
 BRFSS_BLOOD_PRESSURE_FEATURES_CAUSAL = FeatureList(features=[
     # Derived feature for year.
     Feature("IYEAR", float, "Year of BRFSS dataset.",
