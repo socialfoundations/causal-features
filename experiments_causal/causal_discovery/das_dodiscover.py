@@ -20,6 +20,7 @@ experiment_name = "unemployment"
 
 data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}_discrete_5.csv").astype("int16")
 data = data.sample(n=1000, random_state=0)
+data = data.loc[:,data.apply(pd.Series.nunique) != 1]
 
 #%% dodiscover package
 context = make_context().variables(data=data).build()
