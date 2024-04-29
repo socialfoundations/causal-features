@@ -35,9 +35,9 @@ cache_dir = Path(cache_dir)
 # experiment_name = "poverty"
 # feature_list = SIPP_FEATURES
 
-experiment = "acspubcov"
-experiment_name = "pubcov"
-feature_list = ACS_PUBCOV_FEATURES
+# experiment = "acspubcov"
+# experiment_name = "pubcov"
+# feature_list = ACS_PUBCOV_FEATURES
 
 # experiment = "assistments"
 # experiment_name = "assistments"
@@ -50,6 +50,10 @@ feature_list = ACS_PUBCOV_FEATURES
 # experiment = "physionet"
 # experiment_name = "sepsis"
 # feature_list = PHYSIONET_FEATURES
+
+experiment = "mimic_extract_mort_hosp"
+experiment_name = "mortality"
+feature_list = MIMIC_EXTRACT_MORT_HOSP_FEATURES
 
 target = feature_list.target
 domain = dic_domain_label[experiment]
