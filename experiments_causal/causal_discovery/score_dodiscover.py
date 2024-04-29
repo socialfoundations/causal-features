@@ -15,10 +15,11 @@ import pandas as pd
 from dodiscover.toporder import CAM, SCORE, DAS, NoGAM
 
 
-experiment = "bfrss_diabetes"
-experiment_name = "diabetes"
+experiment = "acsunemployment"
+experiment_name = "unemployment"
 
-data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}_discrete_5.csv").astype("int")
+data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}_discrete_5.csv").astype("int16")
+data = data.sample(n=1000, random_state=0)
 
 #%% dodiscover package
 context = make_context().variables(data=data).build()
