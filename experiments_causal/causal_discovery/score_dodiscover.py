@@ -22,6 +22,8 @@ experiment_name = "unemployment"
 data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
 data = data.sample(n=1000, random_state=0)
 data = data.loc[:,data.apply(pd.Series.nunique) != 1]
+data.drop_duplicates(inplace=True)
+data.reset_index(inplace=True, drop=True)
 
 #%% dodiscover package
 context = make_context().variables(data=data).build()
