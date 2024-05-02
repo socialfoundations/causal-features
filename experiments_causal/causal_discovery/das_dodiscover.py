@@ -15,14 +15,15 @@ import pandas as pd
 from dodiscover.toporder import CAM, SCORE, DAS, NoGAM
 
 
-experiment = "acsunemployment"
-experiment_name = "unemployment"
+experiment = "acsincome"
+experiment_name = "income"
 
 # assume additive gaussian noise model
-data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
+# data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
+data = pd.read_csv(f"/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
 data = data.sample(n=1000, random_state=0)
-data = data.loc[:,data.apply(pd.Series.nunique) != 1]
-data.drop_duplicates(inplace=True)
+# data = data.loc[:,data.apply(pd.Series.nunique) != 1]
+# data.drop_duplicates(inplace=True)
 data.reset_index(inplace=True, drop=True)
 
 #%% dodiscover package
@@ -30,10 +31,10 @@ context = make_context().variables(data=data).build()
 
 dd_das = DAS()
 dd_das.learn_graph(data, context)
-with open(f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_das_{experiment_name}.pickle", 'wb') as handle:
-    pickle.dump(dd_das, handle)
+# with open(f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_das_{experiment_name}.pickle", 'wb') as handle:
+#     pickle.dump(dd_das, handle)
 
 graph = dd_das.graph_
 
 dot_graph = draw(graph)
-dot_graph.render(outfile=f"/home/vnastl/causal-features/tmp_preprocessed/das_{experiment_name}.png")
+# dot_graph.render(outfile=f"/home/vnastl/causal-features/tmp_preprocessed/das_{experiment_name}.png")
