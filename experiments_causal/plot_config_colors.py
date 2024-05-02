@@ -15,7 +15,7 @@ color_and_mask = "#436917"
 color_causirl_mmd = "#2E4B0A"
 color_causirl_coral = "#2E4B0A"
 color_ib_irm = "#5A9522"
-color_error = "#000000"  # color for errorbars
+color_error = "black"  # color for errorbars
 
 # Configuration of markers, lines, etc.
 markersize = 3

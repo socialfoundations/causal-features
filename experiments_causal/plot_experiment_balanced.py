@@ -172,4 +172,5 @@ def get_results(experiment_name: str) -> pd.DataFrame:
         ]
     )
     eval_all = pd.concat([eval_all, eval_pd], ignore_index=True)
-    return eval_all, causal_features, extra_features
+    
+    return eval_all

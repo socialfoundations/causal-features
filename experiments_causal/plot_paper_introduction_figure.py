@@ -82,7 +82,7 @@ for index, experiment_name in enumerate(experiments):
     dic_shift_acc = {}
 
 
-fig = plt.figure(figsize=(6.75, 1.5))
+fig = plt.figure(figsize=(5.5, 1.25))
 ax = fig.subplots(
     1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "wspace": 0.3}
 )  # create 1x4 subplots on subfig1
@@ -170,7 +170,7 @@ fig.legend(
     list_lab,
     handler_map={tuple: MarkerHandler()},
     loc="lower center",
-    bbox_to_anchor=(0.5, -0.9),
+    bbox_to_anchor=(0.5, 1),
     fancybox=True,
     ncol=5,
 )

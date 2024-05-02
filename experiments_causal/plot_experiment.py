@@ -251,5 +251,5 @@ def get_results(experiment_name: str) -> pd.DataFrame:
             eval_all = pd.concat([eval_all, eval_pd], ignore_index=True)
 
     # Save to csv
-    eval_all.to_csv(str(Path(__file__).parents[0] / f"{experiment_name}_eval.csv"))
+    eval_all.to_csv(str(Path(__file__).parents[0] / f"results/{experiment_name}_eval.csv"))
     return eval_all
