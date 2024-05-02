@@ -412,14 +412,23 @@ _TASK_REGISTRY: Dict[str, TaskConfig] = {
 # Tasks for additional robustness tests
 ################################################################################
 
-# for index, subset in enumerate(ACS_INCOME_FEATURES_RANDOM_SUBSETS):
-#     _TASK_REGISTRY["acsincome_random_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
-    
-# for index, subset in enumerate(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS):
-#     _TASK_REGISTRY["brfss_diabetes_random_test_"+f"{index}"] = TaskConfig(BRFSSDataSource, subset)
+for index, subset in enumerate(ACS_INCOME_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["acsincome_random_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
 
-# for index, subset in enumerate(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS):
-#     _TASK_REGISTRY["acsunemployment_random_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
+for index, subset in enumerate(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["acspubcov_random_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
+
+for index, subset in enumerate(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["acsfoodstamps_random_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
+
+for index, subset in enumerate(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["acsunemployment_random_test_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
+    
+for index, subset in enumerate(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["brfss_diabetes_random_test_"+f"{index}"] = TaskConfig(BRFSSDataSource, subset)
+
+for index, subset in enumerate(BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["brfss_blood_pressure_random_test_"+f"{index}"] = TaskConfig(BRFSSDataSource, subset)
 
 ################################################################################
 # Tasks for invariant causal prediction

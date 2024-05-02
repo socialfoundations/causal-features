@@ -10,45 +10,7 @@ import numpy as np
 import pandas as pd
 import json
 from time import sleep
-# from tableshift.datasets import (
-#     ACS_INCOME_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     ACS_INCOME_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-#     ACS_FOODSTAMPS_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     ACS_FOODSTAMPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-#     ACS_PUBCOV_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     ACS_PUBCOV_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-#     ACS_UNEMPLOYMENT_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     ACS_UNEMPLOYMENT_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-#     BRFSS_DIABETES_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     BRFSS_DIABETES_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-#     BRFSS_BLOOD_PRESSURE_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     BRFSS_BLOOD_PRESSURE_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-#     DIABETES_READMISSION_FEATURES_CAUSAL_NUMBER,
-#     DIABETES_READMISSION_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-#     ANES_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     ANES_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-#     ASSISTMENTS_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     ASSISTMENTS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-#     COLLEGE_SCORECARD_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     COLLEGE_SCORECARD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-#     MIMIC_EXTRACT_LOS_3_FEATURES_CAUSAL_SUBSETS,
-#     MIMIC_EXTRACT_LOS_3_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     MIMIC_EXTRACT_MORT_HOSP_FEATURES_CAUSAL_SUBSETS,
-#     MIMIC_EXTRACT_MORT_HOSP_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     SIPP_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     SIPP_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-#     MEPS_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     MEPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-#     PHYSIONET_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     PHYSIONET_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-#     NHANES_LEAD_FEATURES_CAUSAL_SUBSETS_NUMBER,
-#     NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-# )
-# from tableshift.datasets import (
-    # ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER,
-    # BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER,
-    # ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER
-# )
+from tableshift.datasets import *
 
 if __name__ == "__main__":
     import htcondor
@@ -229,11 +191,21 @@ TASKS = [
 # for index in range(471,ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("acsincome_random_test_" + f"{index}")
 
-# for index in BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER:
-#     TASKS.append("brfss_diabetes_random_test_" + f"{index}")
 
 # for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("acsunemployment_random_test_" + f"{index}")
+
+# for index in range(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     TASKS.append("acspubcov_random_test_" + f"{index}")
+
+for index in range(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS_NUMBER):
+    TASKS.append("acsfoodtstamps_random_test_" + f"{index}")
+
+# for index in BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER:
+#     TASKS.append("brfss_diabetes_random_test_" + f"{index}")
+
+for index in BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS_NUMBER:
+    TASKS.append("brfss_blood_pressure_random_test_" + f"{index}")
 
 ################################################################################
 # Task for invariant causal prediction
@@ -243,8 +215,8 @@ TASKS = [
 ################################################################################
 # Task for pc/fci causal discovery
 ################################################################################
-TASKS.append("brfss_diabetes_pc")
-TASKS.append("acsunemployment_pc")
+# TASKS.append("brfss_diabetes_pc")
+# TASKS.append("acsunemployment_pc")
 
 # Useful directories
 if __name__ == "__main__":

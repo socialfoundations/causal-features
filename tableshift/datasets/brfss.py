@@ -725,6 +725,9 @@ def preprocess_brfss(df, task: str):
 ################################################################################
 # Feature list for causal, arguably causal and (if applicable) anticausal features
 ################################################################################
+# Feature is part of preprocessing and needs to be added
+additional = Feature("IYEAR", float, "Year of BRFSS dataset.",
+                     name_extended="Survey year") 
 
 
 BRFSS_DIABETES_FEATURES_CAUSAL = FeatureList([
@@ -1085,12 +1088,9 @@ BRFSS_DIABETES_FEATURES_ANTICAUSAL = FeatureList([
             }),
 ])
 
-additional = Feature("IYEAR", float, "Year of BRFSS dataset.",
-                     name_extended="Survey year")
-
-# BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS = get_random_subset_add_additional(
-#     BRFSS_DIABETES_FEATURES.features + BRFSS_SHARED_FEATURES.features, target, domain, k=500, additional=additional)
-# BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER = len(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS)
+BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS = get_random_subset_add_additional(
+    BRFSS_DIABETES_FEATURES.features + BRFSS_SHARED_FEATURES.features, target, domain, k=500, additional=additional)
+BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER = len(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS)
 
 BRFSS_DIABETES_FEATURES_PC = FeatureList([
     # Derived feature for year.
@@ -1354,3 +1354,7 @@ BRFSS_BLOOD_PRESSURE_FEATURES_ANTICAUSAL = FeatureList(features=[
             value_mapping={1: 'Yes', 2: 'No', 7: "Don’t know/Not Sure",
                            9: 'Refused', }),
 ])
+
+BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS = get_random_subset_add_additional(
+    BRFSS_BLOOD_PRESSURE_FEATURES.features + BRFSS_SHARED_FEATURES.features, target, domain, k=500, additional=additional)
+BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS_NUMBER = len(BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS)
