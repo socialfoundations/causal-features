@@ -18,7 +18,7 @@ if __name__ == "__main__":
     import classad
 
 # Number of task to run per algorithm, per dataset
-N_TRIALS    = 10
+N_TRIALS    = 1
 # N_TRIALS = 50
 # N_TRIALS    = 100
 
@@ -30,41 +30,41 @@ JOB_MEMORY_GB = 128  # GBs of memory
 VERBOSE = True
 
 TASKS = [
-    # "acsincome",
+    "acsincome",
     # "acsincome_causal",
     # "acsincome_arguablycausal",
     # "acsincome_anticausal",
     # "acspubcov",
     # "acspubcov_causal",
     # "acspubcov_arguablycausal",
-    # "acsfoodstamps",
+    "acsfoodstamps",
     # "acsfoodstamps_causal",
     # "acsfoodstamps_arguablycausal",
     "acsunemployment",
     # "acsunemployment_causal",
     # "acsunemployment_arguablycausal",
     # "acsunemployment_anticausal",
-    # "anes",
+    "anes",
     # "anes_causal",
     # "anes_arguablycausal",
-    # "assistments",
+    "assistments",
     # "assistments_causal",
     # "assistments_arguablycausal",
-    # "brfss_diabetes",
+    "brfss_diabetes",
     # "brfss_diabetes_causal",
     # "brfss_diabetes_arguablycausal",
     # "brfss_diabetes_anticausal",
-    # "brfss_blood_pressure",
+    "brfss_blood_pressure",
     # "brfss_blood_pressure_causal",
     # "brfss_blood_pressure_arguablycausal",
     # "brfss_blood_pressure_anticausal",
-    # "college_scorecard",
+    "college_scorecard",
     # "college_scorecard_causal",
     # "college_scorecard_arguablycausal",
-    # "nhanes_lead",
+    "nhanes_lead",
     # "nhanes_lead_causal",
     # "nhanes_lead_arguablycausal",
-    # "diabetes_readmission",
+    "diabetes_readmission",
     # "diabetes_readmission_causal",
     # "diabetes_readmission_arguablycausal",
     # "mimic_extract_los_3",
@@ -73,14 +73,14 @@ TASKS = [
     # "mimic_extract_mort_hosp",
     # "mimic_extract_mort_hosp_causal",
     # "mimic_extract_mort_hosp_arguablycausal",
-    # "physionet",
+    "physionet",
     # "physionet_causal",
     # "physionet_arguablycausal",
-    # "sipp",
+    "sipp",
     # "sipp_causal",
     # "sipp_arguablycausal",
     # "sipp_anticausal",
-    # "meps",
+    "meps",
     # "meps_causal",
     # "meps_arguablycausal",
 ]
@@ -224,14 +224,14 @@ if __name__ == "__main__":
     ROOT_DIR = Path("/home")
 
     # Data directory
-    DATA_DIR = ROOT_DIR / "fast/vnastl/data"
+    DATA_DIR = ROOT_DIR / "fast/vnastl/data/causal_discovery"
 
     # Results directory
-    RESULTS_DIR = ROOT_DIR / "vnastl/results"
+    RESULTS_DIR = ROOT_DIR / "vnastl/causal_discovery_results"
     RESULTS_DIR.mkdir(exist_ok=True, parents=False)
 
     # Directory to save cluster logs and job stdout/stderr
-    CLUSTER_LOGS_SAVE_DIR = ROOT_DIR / "fast/vnastl/discover-cluster-logs"
+    CLUSTER_LOGS_SAVE_DIR = ROOT_DIR / "fast/vnastl/discovery-cluster-logs"
     CLUSTER_LOGS_SAVE_DIR.mkdir(exist_ok=True)
 
     CLUSTER_LOGS_SAVE_ERR_DIR = CLUSTER_LOGS_SAVE_DIR / "error"
@@ -306,7 +306,7 @@ if __name__ == "__main__":
                 "executable": "/home/vnastl/miniconda3/envs/causaldiscovery/bin/python3",
                 # "arguments": "foo.py",    # NOTE: used for testing
                 "arguments": (
-                    "/home/vnastl/causal-features/experiments_causal/launch_one_experiment.py "
+                    "/home/vnastl/causal-features/experiments_causal/causal_discovery/launch_one_experiment.py "
                     f"--task {exp_obj.name} "
                     f"--DATA_DIR {str(DATA_DIR)} "
                     f"--RESULTS_DIR {str(EXP_RESULTS_DIR)} "
