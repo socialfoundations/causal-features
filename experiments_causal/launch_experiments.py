@@ -195,8 +195,8 @@ TASKS = [
 # for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("acsunemployment_random_test_" + f"{index}")
 
-# for index in range(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER):
-#     TASKS.append("acspubcov_random_test_" + f"{index}")
+for index in range(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER):
+    TASKS.append("acspubcov_random_test_" + f"{index}")
 
 # for index in range(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("acsfoodtstamps_random_test_" + f"{index}")
