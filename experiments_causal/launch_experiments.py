@@ -40,7 +40,7 @@ TASKS = [
     # "acsfoodstamps",
     # "acsfoodstamps_causal",
     # "acsfoodstamps_arguablycausal",
-    "acsunemployment",
+    # "acsunemployment",
     # "acsunemployment_causal",
     # "acsunemployment_arguablycausal",
     # "acsunemployment_anticausal",
@@ -192,21 +192,20 @@ TASKS = [
 # for index in range(471,ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("acsincome_random_test_" + f"{index}")
 
-
 # for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("acsunemployment_random_test_" + f"{index}")
 
 # for index in range(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("acspubcov_random_test_" + f"{index}")
 
-# for index in range(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS_NUMBER):
-#     TASKS.append("acsfoodtstamps_random_test_" + f"{index}")
+for index in range(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS_NUMBER):
+    TASKS.append("acsfoodtstamps_random_test_" + f"{index}")
 
 # for index in BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER:
 #     TASKS.append("brfss_diabetes_random_test_" + f"{index}")
 
-# for index in BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS_NUMBER:
-#     TASKS.append("brfss_blood_pressure_random_test_" + f"{index}")
+for index in BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS_NUMBER:
+    TASKS.append("brfss_blood_pressure_random_test_" + f"{index}")
 
 ################################################################################
 # Task for invariant causal prediction
