@@ -231,7 +231,7 @@ if __name__ == "__main__":
     RESULTS_DIR.mkdir(exist_ok=True, parents=False)
 
     # Directory to save cluster logs and job stdout/stderr
-    CLUSTER_LOGS_SAVE_DIR = ROOT_DIR / "fast/vnastl/new-cluster-logs"
+    CLUSTER_LOGS_SAVE_DIR = ROOT_DIR / "fast/vnastl/discover-cluster-logs"
     CLUSTER_LOGS_SAVE_DIR.mkdir(exist_ok=True)
 
     CLUSTER_LOGS_SAVE_ERR_DIR = CLUSTER_LOGS_SAVE_DIR / "error"
@@ -303,8 +303,8 @@ if __name__ == "__main__":
         # Construct job description
         job_description = htcondor.Submit(
             {
-                "executable": "/home/vnastl/miniconda3/envs/causaldiscovery/bin/python3", #TODO change executable
-                # "arguments": "foo.py",    # NOTE used for testing
+                "executable": "/home/vnastl/miniconda3/envs/causaldiscovery/bin/python3",
+                # "arguments": "foo.py",    # NOTE: used for testing
                 "arguments": (
                     "/home/vnastl/causal-features/experiments_causal/launch_one_experiment.py "
                     f"--task {exp_obj.name} "
