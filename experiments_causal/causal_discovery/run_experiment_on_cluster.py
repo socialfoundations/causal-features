@@ -1,4 +1,4 @@
-"""Python script to run DAS algorithm.
+"""Python script to run causal discovery experiments.
 
 We use the python library "dodiscover", which is not officially released yet. (https://github.com/py-why/dodiscover)
 """

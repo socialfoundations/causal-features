@@ -201,10 +201,10 @@ TASKS = [
 for index in range(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS_NUMBER):
     TASKS.append("acsfoodtstamps_random_test_" + f"{index}")
 
-# for index in BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER:
+# for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("brfss_diabetes_random_test_" + f"{index}")
 
-for index in BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS_NUMBER:
+for index in range(BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS_NUMBER):
     TASKS.append("brfss_blood_pressure_random_test_" + f"{index}")
 
 ################################################################################
