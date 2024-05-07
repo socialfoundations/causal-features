@@ -1513,6 +1513,32 @@ for index in range(BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS_NUMBER):
                                 "years": BRFSS_YEARS},
     )
 
+for index in range(ANES_FEATURES_RANDOM_SUBSETS_NUMBER):
+    NON_BENCHMARK_CONFIGS["anes_random_test_"+f"{index}"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname='VCF0112',
+                                domain_split_ood_values=['3.0']),
+        # male vs. all others; white non-hispanic vs. others
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(numeric_features="kbins",
+                                               dropna=None),
+        tabular_dataset_kwargs={}),
+
+for index in range(SIPP_FEATURES_RANDOM_SUBSETS_NUMBER):
+    NON_BENCHMARK_CONFIGS["sipp_random_test_"+f"{index}"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname="CITIZENSHIP_STATUS",
+                                domain_split_ood_values=['1.0']),
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(),
+        tabular_dataset_kwargs={})
+    
 #####################################s###########################################
 # Configuration for invariant causal prediction
 ################################################################################

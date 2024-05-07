@@ -14,7 +14,7 @@ import pandas as pd
 
 from tableshift.core.features import Feature, cat_dtype, FeatureList
 
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
 
 # Note that "state" feature is named as VCF0901b; see below. Note that '99' is
 # also a valid value, but it contains all missing targets .
@@ -971,3 +971,6 @@ ANES_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
 ANES_FEATURES_ARGUABLYCAUSAL_SUPERSETS = get_arguablycausal_robust(ANES_FEATURES_ARGUABLYCAUSAL,
                                                                    ANES_FEATURES.features)
 ANES_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER = len(ANES_FEATURES_ARGUABLYCAUSAL_SUPERSETS)
+
+ANES_FEATURES_RANDOM_SUBSETS = get_random_subset(ANES_FEATURES.features, target, domain, k=500)
+ANES_FEATURES_RANDOM_SUBSETS_NUMBER = len(ANES_FEATURES_RANDOM_SUBSETS)

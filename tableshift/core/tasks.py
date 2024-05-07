@@ -430,6 +430,12 @@ for index, subset in enumerate(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS):
 for index, subset in enumerate(BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS):
     _TASK_REGISTRY["brfss_blood_pressure_random_test_"+f"{index}"] = TaskConfig(BRFSSDataSource, subset)
 
+for index, subset in enumerate(ANES_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["anes_random_test_"+f"{index}"] = TaskConfig(ANESDataSource, subset)
+
+for index, subset in enumerate(SIPP_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["sipp_random_test_"+f"{index}"] = TaskConfig(SIPPDataSource, subset)
+
 ################################################################################
 # Tasks for invariant causal prediction
 ################################################################################

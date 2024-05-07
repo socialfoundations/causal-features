@@ -14,7 +14,7 @@ import json
 import os
 
 from tableshift.core.features import Feature, FeatureList, cat_dtype
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
 # Get the absolute path of the current file
 current_file_path = os.path.abspath(__file__)
 # Get the directory of the current file
@@ -105,3 +105,6 @@ SIPP_FEATURES_ANTICAUSAL = FeatureList(features=[
     Feature('OPM_RATIO', int, is_target=True,
             name_extended="Household income-to-poverty ratio in the 2019 calendar year, excluding Type 2 individuals"),
 ] + SIPP_ONLY_ANTICAUSAL_FEATURES)
+
+SIPP_FEATURES_RANDOM_SUBSETS = get_random_subset(SIPP_FEATURES.features, target, domain, k=500)
+SIPP_FEATURES_RANDOM_SUBSETS_NUMBER = len(SIPP_FEATURES_RANDOM_SUBSETS)
