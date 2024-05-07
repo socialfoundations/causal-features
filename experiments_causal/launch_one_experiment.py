@@ -25,31 +25,31 @@ MODELS = (
     "xgb", #random subset
     "lightgbm", #random subset
     "ft_transformer", #random subset
-    "histgbm",
-    "mlp",
+    # "histgbm",
+    # "mlp",
     "saint", #random subset
-    "tabtransformer",
-    "resnet",
-    "aldro",
-    "dro",
-    "node",
-    "group_dro",
-    "label_group_dro",
+    # "tabtransformer",
+    # "resnet",
+    # "aldro",
+    # "dro",
+    # "node",
+    # "group_dro",
+    # "label_group_dro",
 )
 
 # List of domain generalization models
 DG_MODELS = (
-    "dann",
-    "irm",
-    "vrex",
-    "mixup",
-    "mmd",
-    "deepcoral",
-    "and_mask",
-    "ib_erm",
-    "ib_irm",
-    "causirl_coral",
-    "causirl_mmd"
+    # "dann",
+    # "irm",
+    # "vrex",
+    # "mixup",
+    # "mmd",
+    # "deepcoral",
+    # "and_mask",
+    # "ib_erm",
+    # "ib_irm",
+    # "causirl_coral",
+    # "causirl_mmd"
 )
 
 # List of task that do not allow domain generalization
