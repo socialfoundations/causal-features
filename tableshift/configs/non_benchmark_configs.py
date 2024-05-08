@@ -1525,7 +1525,7 @@ for index in range(ANES_FEATURES_RANDOM_SUBSETS_NUMBER):
         grouper=None,
         preprocessor_config=PreprocessorConfig(numeric_features="kbins",
                                                dropna=None),
-        tabular_dataset_kwargs={}),
+        tabular_dataset_kwargs={})
 
 for index in range(SIPP_FEATURES_RANDOM_SUBSETS_NUMBER):
     NON_BENCHMARK_CONFIGS["sipp_random_test_"+f"{index}"] = ExperimentConfig(
