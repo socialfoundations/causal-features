@@ -25,7 +25,7 @@ N_TRIALS    = 10
 # Cluster settings
 JOB_MIN_BID = 50  # htcondor bid (min. is 15 apparently...)
 JOB_CPUS = 1  # number of CPUs per experiment (per cluster job)
-JOB_MEMORY_GB = int(2*128)  # GBs of memory
+JOB_MEMORY_GB = int(128)  # GBs of memory
 
 VERBOSE = True
 
@@ -195,8 +195,8 @@ TASKS = [
 # for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("acsunemployment_random_test_" + f"{index}")
 
-for index in range(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER):
-    TASKS.append("acspubcov_random_test_" + f"{index}")
+# for index in range(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     TASKS.append("acspubcov_random_test_" + f"{index}")
 
 # for index in range(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("acsfoodtstamps_random_test_" + f"{index}")
@@ -204,7 +204,6 @@ for index in range(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER):
 # for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("brfss_diabetes_random_test_" + f"{index}")
 
-# blood_pressure_experiments = (31,  32,  33,  35,  37,  38,  39,  40,  41,  42,  43,  44,  46,  47,  48,  49,  50,  51,  52,  53,  54,  55,  56,  57,  59,  60,  61,  62,  63,  65,  66,  68,  70,  72,  73,  74,  75,  83,  85,  88,  89,  91,  93,  94,  99, 102, 104, 106, 107, 109, 111, 112, 113, 115, 116, 118, 120, 121, 123, 125, 126, 127, 128, 129, 131, 132, 134, 136, 137, 138, 139, 143, 144, 146, 151, 152, 153, 156, 157, 158, 159, 160, 161, 162, 163, 164, 166, 167, 168, 169, 170, 173, 175, 179, 180, 188, 190, 191, 193, 194, 195, 197, 199, 200, 201, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 221, 222, 226, 227, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 252, 253, 254, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 275, 276, 277, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 295, 296, 298, 299, 300, 301, 303, 304, 306, 307, 308, 309, 310, 311, 312, 313, 314, 316, 317, 318, 319, 320, 324, 327, 328, 331, 332, 333, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 348, 349, 350, 351, 352, 353, 355, 356, 357, 358, 359, 360, 361, 363, 364, 365, 366, 368, 369, 370, 371, 372, 374, 376, 377, 380, 381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 393, 394, 395, 396, 397, 399, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 415, 418, 420, 421, 422, 423, 424, 425, 426, 427, 428, 429, 430, 431, 433, 434, 435, 437, 440, 443, 444, 445, 446, 447, 448, 450, 451, 453, 455, 456, 457, 459, 460, 461, 463, 464, 465, 466, 467, 468, 469, 470, 471, 472, 473, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 491, 492, 493, 494, 495, 496, 498, 499)
 # for index in range(BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("brfss_blood_pressure_random_test_" + f"{index}")
     
@@ -213,6 +212,28 @@ for index in range(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER):
 
 # for index in range(SIPP_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("sipp_random_test_" + f"{index}")
+
+
+for index in range(DIABETES_READMISSION_FEATURES_RANDOM_SUBSETS):
+    TASKS.append("diabetes_readmission_random_test_" + f"{index}")
+
+for index in range(MEPS_FEATURES_RANDOM_SUBSETS):
+    TASKS.append("meps_random_test_" + f"{index}")
+
+
+for index in range(COLLEGE_SCORECARD_FEATURES_RANDOM_SUBSETS_NUMBER):
+    TASKS.append("college_scorecard_random_test_" + f"{index}")
+
+for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS):
+    TASKS.append("nhanes_lead_random_test_" + f"{index}")
+
+for index in range(PHYSIONET_FEATURES_RANDOM_SUBSETS):
+    TASKS.append("physionet_random_test_" + f"{index}")
+
+for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS):
+    TASKS.append("assistments_random_test_" + f"{index}")
+
+
 
 ################################################################################
 # Task for invariant causal prediction

@@ -14,7 +14,7 @@ from tableshift.core.features import Feature, FeatureList, cat_dtype
 import json
 import os
 
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
 
 # Get the absolute path of the current file
 current_file_path = os.path.abspath(__file__)
@@ -176,3 +176,6 @@ MEPS_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
 
 MEPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS = get_arguablycausal_robust(MEPS_FEATURES_ARGUABLYCAUSAL, MEPS_FEATURES.features)
 MEPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER = len(MEPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS)
+
+MEPS_FEATURES_RANDOM_SUBSETS = get_random_subset(MEPS_FEATURES.features, target, domain, k=500)
+MEPS_FEATURES_RANDOM_SUBSETS_NUMBER = len(MEPS_FEATURES_RANDOM_SUBSETS)

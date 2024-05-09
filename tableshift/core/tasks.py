@@ -436,6 +436,25 @@ for index, subset in enumerate(ANES_FEATURES_RANDOM_SUBSETS):
 for index, subset in enumerate(SIPP_FEATURES_RANDOM_SUBSETS):
     _TASK_REGISTRY["sipp_random_test_"+f"{index}"] = TaskConfig(SIPPDataSource, subset)
 
+for index, subset in enumerate(DIABETES_READMISSION_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["diabetes_readmission_random_test_"+f"{index}"] = TaskConfig(DiabetesReadmissionDataSource, subset)
+
+for index, subset in enumerate(MEPS_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["meps_random_test_"+f"{index}"] = TaskConfig(MEPSDataSource, subset)
+
+for index, subset in enumerate(COLLEGE_SCORECARD_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["college_scorecard_random_test_"+f"{index}"] = TaskConfig(CollegeScorecardDataSource, subset)
+
+for index, subset in enumerate(NHANES_LEAD_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["nhanes_lead_random_test_"+f"{index}"] = TaskConfig(NHANESDataSource, subset)
+
+for index, subset in enumerate(PHYSIONET_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["physionet_random_test_"+f"{index}"] = TaskConfig(PhysioNetDataSource, subset)
+
+for index, subset in enumerate(ASSISTMENTS_FEATURES_RANDOM_SUBSETS):
+    _TASK_REGISTRY["assistments_random_test_"+f"{index}"] = TaskConfig(AssistmentsDataSource, subset)
+
+
 ################################################################################
 # Tasks for invariant causal prediction
 ################################################################################

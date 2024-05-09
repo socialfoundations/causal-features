@@ -9,7 +9,7 @@ import numpy as np
 from pandas import DataFrame
 
 from tableshift.core.features import Feature, FeatureList, cat_dtype
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
 
 
 ASSISTMENTS_FEATURES = FeatureList(features=[
@@ -945,3 +945,6 @@ ASSISTMENTS_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
 ASSISTMENTS_FEATURES_ARGUABLYCAUSAL_SUPERSETS = get_arguablycausal_robust(
     ASSISTMENTS_FEATURES_ARGUABLYCAUSAL, ASSISTMENTS_FEATURES.features)
 ASSISTMENTS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER = len(ASSISTMENTS_FEATURES_ARGUABLYCAUSAL_SUPERSETS)
+
+ASSISTMENTS_FEATURES_RANDOM_SUBSETS = get_random_subset(ASSISTMENTS_FEATURES.features, target, domain, k=500)
+ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER = len(ASSISTMENTS_FEATURES_RANDOM_SUBSETS)

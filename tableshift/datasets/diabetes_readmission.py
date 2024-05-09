@@ -18,7 +18,7 @@ from typing import Dict
 import pandas as pd
 from tableshift.core.features import Feature, FeatureList, cat_dtype
 
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
 
 
 DIABETES_READMISSION_RESOURCES = [
@@ -683,3 +683,6 @@ DIABETES_READMISSION_FEATURES_ARGUABLYCAUSAL_SUPERSETS = get_arguablycausal_robu
                                                                                    DIABETES_READMISSION_FEATURES.features)
 DIABETES_READMISSION_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER = len(
     DIABETES_READMISSION_FEATURES_ARGUABLYCAUSAL_SUPERSETS)
+
+DIABETES_READMISSION_FEATURES_RANDOM_SUBSETS = get_random_subset(DIABETES_READMISSION_FEATURES.features, target, domain, k=500)
+DIABETES_READMISSION_FEATURES_RANDOM_SUBSETS_NUMBER = len(DIABETES_READMISSION_FEATURES_RANDOM_SUBSETS)

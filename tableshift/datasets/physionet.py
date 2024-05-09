@@ -15,7 +15,7 @@ import pandas as pd
 
 from tableshift.core.features import Feature, FeatureList, cat_dtype
 
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
 
 ################################################################################
 # Feature list
@@ -198,3 +198,6 @@ PHYSIONET_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
 PHYSIONET_FEATURES_ARGUABLYCAUSAL_SUPERSETS = get_arguablycausal_robust(
     PHYSIONET_FEATURES_ARGUABLYCAUSAL, PHYSIONET_FEATURES.features)
 PHYSIONET_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER = len(PHYSIONET_FEATURES_ARGUABLYCAUSAL_SUPERSETS)
+
+PHYSIONET_FEATURES_RANDOM_SUBSETS = get_random_subset(PHYSIONET_FEATURES.features, target, domain, k=500)
+PHYSIONET_FEATURES_RANDOM_SUBSETS_NUMBER = len(PHYSIONET_FEATURES_RANDOM_SUBSETS)

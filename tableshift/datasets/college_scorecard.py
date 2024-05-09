@@ -12,7 +12,7 @@ Modified for 'Predictors from Causal Features Do Not Generalize Better to New Do
 """
 import pandas as pd
 from tableshift.core.features import Feature, FeatureList, cat_dtype
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
 
 ################################################################################
 # Feature list
@@ -286,3 +286,6 @@ COLLEGE_SCORECARD_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
 COLLEGE_SCORECARD_FEATURES_ARGUABLYCAUSAL_SUPERSETS = get_arguablycausal_robust(COLLEGE_SCORECARD_FEATURES_ARGUABLYCAUSAL,
                                                                                 COLLEGE_SCORECARD_FEATURES.features)
 COLLEGE_SCORECARD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER = len(COLLEGE_SCORECARD_FEATURES_ARGUABLYCAUSAL_SUPERSETS)
+
+COLLEGE_SCORECARD_FEATURES_RANDOM_SUBSETS = get_random_subset(COLLEGE_SCORECARD_FEATURES.features, target, domain, k=500)
+COLLEGE_SCORECARD_FEATURES_RANDOM_SUBSETS_NUMBER = len(COLLEGE_SCORECARD_FEATURES_RANDOM_SUBSETS)
