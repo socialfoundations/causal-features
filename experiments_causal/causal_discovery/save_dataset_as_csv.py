@@ -16,7 +16,7 @@ from experiments_causal.plot_config_tasks import dic_domain_label
 
 from sklearn.preprocessing import LabelEncoder
 
-cache_dir = "/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp"
+cache_dir = "tmp"
 cache_dir = Path(cache_dir)
 
 # experiment = "brfss_blood_pressure"
@@ -39,9 +39,9 @@ cache_dir = Path(cache_dir)
 # experiment_name = "pubcov"
 # feature_list = ACS_PUBCOV_FEATURES
 
-# experiment = "assistments"
-# experiment_name = "assistments"
-# feature_list = ASSISTMENTS_FEATURES
+experiment = "assistments"
+experiment_name = "assistments"
+feature_list = ASSISTMENTS_FEATURES
 
 # experiment = "nhanes_lead"
 # experiment_name = "lead"
@@ -51,9 +51,9 @@ cache_dir = Path(cache_dir)
 # experiment_name = "sepsis"
 # feature_list = PHYSIONET_FEATURES
 
-experiment = "mimic_extract_mort_hosp"
-experiment_name = "mortality"
-feature_list = MIMIC_EXTRACT_MORT_HOSP_FEATURES
+# experiment = "mimic_extract_mort_hosp"
+# experiment_name = "mortality"
+# feature_list = MIMIC_EXTRACT_MORT_HOSP_FEATURES
 
 target = feature_list.target
 domain = dic_domain_label[experiment]

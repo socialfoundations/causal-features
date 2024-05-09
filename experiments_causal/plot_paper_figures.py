@@ -486,7 +486,7 @@ fig.legend(
 )
 
 fig.savefig(
-    str(Path(__file__).parents[0] / f"plots_paper/plot_main_result.pdf"),
+    str(Path(__file__).parents[0] / f"plots_paper/plot_main_result.pdf"),bbox_inches="tight",
 )
 
 #%%
@@ -1117,5 +1117,5 @@ for index, experiment_name in enumerate(experiments):
 
 
 fig.savefig(
-    str(Path(__file__).parents[0] / f"plots_paper/plot_main_causalml.pdf"),
+    str(Path(__file__).parents[0] / f"plots_paper/plot_main_causalml.pdf"), bbox_inches="tight",
 )

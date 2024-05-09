@@ -19,7 +19,9 @@ experiment = "acsunemployment"
 experiment_name = "unemployment"
 
 # assume additive gaussian noise model
-data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
+# data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
+data = pd.read_csv(f"/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
+
 data = data.sample(n=1000, random_state=0)
 data = data.loc[:,data.apply(pd.Series.nunique) != 1]
 data.drop_duplicates(inplace=True)
@@ -30,8 +32,8 @@ context = make_context().variables(data=data).build()
 
 dd_nogam = NoGAM()
 dd_nogam.learn_graph(data, context)
-with open(f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_nogam_{experiment_name}.pickle", 'wb') as handle:
-    pickle.dump(dd_nogam, handle)
+# with open(f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_nogam_{experiment_name}.pickle", 'wb') as handle:
+#     pickle.dump(dd_nogam, handle)
 
 graph = dd_nogam.graph_
 

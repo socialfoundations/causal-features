@@ -25,7 +25,7 @@ N_TRIALS    = 10
 # Cluster settings
 JOB_MIN_BID = 50  # htcondor bid (min. is 15 apparently...)
 JOB_CPUS = 1  # number of CPUs per experiment (per cluster job)
-JOB_MEMORY_GB = int(128)  # GBs of memory
+JOB_MEMORY_GB = int(2*128)  # GBs of memory
 
 VERBOSE = True
 
@@ -195,8 +195,8 @@ TASKS = [
 # for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("acsunemployment_random_test_" + f"{index}")
 
-# for index in range(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER):
-#     TASKS.append("acspubcov_random_test_" + f"{index}")
+for index in range(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER):
+    TASKS.append("acspubcov_random_test_" + f"{index}")
 
 # for index in range(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("acsfoodtstamps_random_test_" + f"{index}")
@@ -208,8 +208,8 @@ TASKS = [
 # for index in range(BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("brfss_blood_pressure_random_test_" + f"{index}")
     
-for index in range(ANES_FEATURES_RANDOM_SUBSETS_NUMBER):
-    TASKS.append("anes_random_test_" + f"{index}")
+# for index in range(ANES_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     TASKS.append("anes_random_test_" + f"{index}")
 
 # for index in range(SIPP_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("sipp_random_test_" + f"{index}")
