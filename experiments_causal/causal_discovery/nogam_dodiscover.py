@@ -14,13 +14,19 @@ import pandas as pd
 # from scipy import stats
 from dodiscover.toporder import CAM, SCORE, DAS, NoGAM
 
-
-experiment = "acsunemployment"
-experiment_name = "unemployment"
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument(
+        "--experiment",
+        default="diabetes_readmission",
+        help="Experiment to run. Overridden when debug=True.",
+    )
+args = parser.parse_args()
+experiment_name = args[0]
 
 # assume additive gaussian noise model
-# data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
-data = pd.read_csv(f"/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
+data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
+# data = pd.read_csv(f"/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
 
 data = data.sample(n=1000, random_state=0)
 data = data.loc[:,data.apply(pd.Series.nunique) != 1]
@@ -32,9 +38,10 @@ context = make_context().variables(data=data).build()
 
 dd_nogam = NoGAM()
 dd_nogam.learn_graph(data, context)
-# with open(f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_nogam_{experiment_name}.pickle", 'wb') as handle:
-#     pickle.dump(dd_nogam, handle)
+with open(f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_nogam_{experiment_name}.pickle", 'wb') as handle:
+    pickle.dump(dd_nogam, handle)
 
 graph = dd_nogam.graph_
 
 dot_graph = draw(graph)
+dot_graph.render(outfile=f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_nogam_{experiment_name}.png")

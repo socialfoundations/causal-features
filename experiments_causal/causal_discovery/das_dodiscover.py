@@ -43,4 +43,4 @@ with open(f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_das_{experi
 graph = dd_das.graph_
 
 dot_graph = draw(graph)
-dot_graph.render(outfile=f"/home/vnastl/causal-features/tmp_preprocessed/das_{experiment_name}.png")
+dot_graph.render(outfile=f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_das_{experiment_name}.png")

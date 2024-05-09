@@ -42,3 +42,4 @@ with open(f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_score_{expe
 graph = dd_score.graph_
 
 dot_graph = draw(graph)
+dot_graph.render(outfile=f"/home/vnastl/causal-features/tmp_preprocessed/dodiscover_score_{experiment_name}.png")
