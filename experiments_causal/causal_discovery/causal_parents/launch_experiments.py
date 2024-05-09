@@ -222,8 +222,10 @@ TASKS = [
 ################################################################################
 # Task for pc/fci causal discovery
 ################################################################################
-TASKS.append("brfss_diabetes_pc")
-TASKS.append("acsunemployment_pc")
+# TASKS.append("brfss_diabetes_pc")
+# TASKS.append("acsunemployment_pc")
+TASKS.append("acsfoodstamps_pc")
+TASKS.append("acspubcov_fci")
 
 # Useful directories
 if __name__ == "__main__":

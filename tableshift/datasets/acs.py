@@ -975,6 +975,28 @@ ACS_PUBCOV_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER = len(ACS_PUBCOV_FEATURES_AR
 ACS_PUBCOV_FEATURES_RANDOM_SUBSETS = get_random_subset(ACS_PUBCOV_FEATURES.features + ACS_SHARED_FEATURES.features, target, domain, k=500)
 ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER = len(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS)
 
+ACS_PUBCOV_FEATURES_FCI = FeatureList(features=[
+    DIS_FEATURE,
+    Feature('PUBCOV', int, """Public health coverage recode =With public
+    health coverage 0=Without public health coverage""", is_target=True),
+    Feature('PINCP', float, "Total person's income",
+            name_extended="Total person's income in dollars"),
+    Feature('ESR', cat_dtype, """Employment status recode b .N/A (less than
+    16 years old) 1 .Civilian employed, at work 2 .Civilian employed, with a
+    job but not at work 3 .Unemployed 4 .Armed forces, at work 5 .Armed
+    forces, with a job but not at work 6 .Not in labor force""",
+            name_extended="Employment status",
+            value_mapping={
+                '00': 'N/A (less than 16 years old)',
+                '01': 'Civilian employed, at work',
+                '02': 'Civilian employed, with a job but not at work',
+                '03': 'Unemployed',
+                '04': 'Armed forces, at work',
+                '05': 'Armed forces, with a job but not at work',
+                '06': 'Not in labor force'}),
+    ESP_FEATURE]
+)
+
 # UNEMPLOYMENT
 
 ACS_UNEMPLOYMENT_FEATURES_CAUSAL = FeatureList(features=[
@@ -1554,3 +1576,41 @@ ACS_FOODSTAMPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER = len(ACS_FOODSTAMPS_FEA
 
 ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS = get_random_subset(ACS_FOODSTAMPS_FEATURES.features + ACS_SHARED_FEATURES.features, target, domain, k=500)
 ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS_NUMBER = len(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS)
+
+ACS_FOODSTAMPS_FEATURES_PC = FeatureList(features=[
+    Feature('FS', int, """Yearly food stamp/Supplemental Nutrition Assistance
+    Program (SNAP) recipiency (household) b .N/A (vacant) 5 1 .Yes 2 .No""",
+            is_target=True),
+    Feature('DIVISION', cat_dtype,
+            "Division code based on 2010 Census definitions.",
+            name_extended='geographic region',
+            value_mapping={
+                0: 'Puerto Rico',
+                1: 'New England (Northeast region)',
+                2: 'Middle Atlantic (Northeast region)',
+                3: 'East North Central (Midwest region)',
+                4: 'West North Central (Midwest region)',
+                5: 'South Atlantic (South region)',
+                6: 'East South Central (South region)',
+                7: 'West South Central (South Region)',
+                8: 'Mountain (West region)',
+                9: 'Pacific (West region)',
+            }),
+    Feature('HUPAC', int, "Household presence and age of children",
+            name_extended="Household presence and age of children",
+            value_mapping={
+                '00': 'N/A (GQ/vacant)',
+                '01': 'With children under 6 years only',
+                '02': 'With children 6 to 17 years only',
+                '03': 'With children under 6 years and 6 to 17 years',
+                '04': 'No children'
+            }),
+    
+    Feature('PUBCOV', cat_dtype, "Public health coverage recode",
+            value_mapping={
+                '00': 'Without public health coverage',
+                '01': 'With public health coverage'})
+],
+    documentation="https://www2.census.gov/programs-surveys/acs/tech_docs"
+                  "/pums/data_dict/PUMS_Data_Dictionary_2019.pdf"
+)

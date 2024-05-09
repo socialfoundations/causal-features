@@ -465,6 +465,8 @@ _TASK_REGISTRY["acsunemployment_icp"] = TaskConfig(ACSDataSource, ACS_UNEMPLOYME
 ################################################################################
 _TASK_REGISTRY["brfss_diabetes_pc"] = TaskConfig(BRFSSDataSource, BRFSS_DIABETES_FEATURES_PC)
 _TASK_REGISTRY["acsunemployment_pc"] = TaskConfig(ACSDataSource, ACS_UNEMPLOYMENT_FEATURES_PC)
+_TASK_REGISTRY["acsfoodstamps_pc"] = TaskConfig(ACSDataSource, ACS_FOODSTAMPS_FEATURES_PC)
+_TASK_REGISTRY["acspubcov_fci"] = TaskConfig(ACSDataSource, ACS_PUBCOV_FEATURES_FCI)
 
 def get_task_config(name: str) -> TaskConfig:
     if name in _TASK_REGISTRY:
