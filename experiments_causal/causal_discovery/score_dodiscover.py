@@ -22,7 +22,7 @@ parser.add_argument(
         help="Experiment to run. Overridden when debug=True.",
     )
 args = parser.parse_args()
-experiment_name = args[0]
+experiment_name = args
 
 # assume additive gaussian noise model
 data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
