@@ -28,14 +28,14 @@ from experiments_causal.plot_config_colors import *
 from experiments_causal.plot_config_tasks import dic_title
 
 experiments = [
-    "acsfoodstamps",
+    # "acsfoodstamps", #pc
     # "acsincome",
     # "acspubcov",
-    "acsunemployment",
+    # "acsunemployment", #pc
     # "anes",
     # "assistments",
     # "brfss_blood_pressure",
-    "brfss_diabetes",
+    "brfss_diabetes", #pc, fci
     # "college_scorecard",
     # "diabetes_readmission",
     # "mimic_extract_mort_hosp",
@@ -46,8 +46,7 @@ experiments = [
     # "sipp",
 ]
 
-discovery = "pc"
-
+discovery = "fci"
 
 # Set plot configurations
 sns.set_context("paper")
@@ -61,7 +60,7 @@ list_mak = [
     mmark.MarkerStyle("X"),
     mmark.MarkerStyle("*"),
 ]
-list_lab = ["All", "Arguably causal", "Causal", "Constant","PC"]
+list_lab = ["All", "Arguably causal", "Causal", "Constant","FCI"]
 list_color = [color_all, color_arguablycausal, color_causal, color_constant, plt.cm.Paired(1)]
 
 list_mak_results = list_mak.copy()
@@ -204,34 +203,10 @@ for experiment_name in experiments:
     ax = fig.subplots(
                 1,
                 1,
-                gridspec_kw={"top":0.85, "bottom":0.15}
+                gridspec_kw={"top":0.85, "bottom":0.25}
             )  # create 1x1 subplots on fig
 
     ax.set_title(dic_title[experiment_name], fontsize=9)  # set suptitle for subfig1
-    #############################################################################
-    # plot errorbars for random features
-    #############################################################################
-    eval_all_random = get_results_pc_subsets(experiment_name)
-
-    for set in eval_all_random["features"].unique():
-        eval_plot = eval_all_random[eval_all_random["features"] == set]
-        eval_plot.sort_values("id_test", inplace=True)
-        # Calculate the pareto set
-        points = eval_plot[["id_test", "ood_test"]]
-        mask = paretoset(points, sense=["max", "max"])
-        markers = eval_plot[mask]
-        errors = ax.errorbar(
-            x=markers["id_test"],
-            y=markers["ood_test"],
-            xerr=markers["id_test_ub"] - markers["id_test"],
-            yerr=markers["ood_test_ub"] - markers["ood_test"],
-            fmt="*",
-            color=plt.cm.Paired(1),
-            ecolor="#78add2",
-            markersize=markersize,
-            capsize=capsize,
-        )
-
     eval_all = get_results(experiment_name)
 
     eval_constant = eval_all[eval_all["features"] == "constant"]
@@ -496,6 +471,31 @@ for experiment_name in experiments:
     ax.fill(
         points[hull.vertices, 0], points[hull.vertices, 1], color=color_all, alpha=0.05
     )
+
+    #############################################################################
+    # plot errorbars for causal discovery features
+    #############################################################################
+    eval_all_causal_discovery = get_results_pc_subsets(experiment_name)
+
+    for set in eval_all_causal_discovery["features"].unique():
+        eval_plot = eval_all_causal_discovery[eval_all_causal_discovery["features"] == set]
+        eval_plot.sort_values("id_test", inplace=True)
+        # Calculate the pareto set
+        points = eval_plot[["id_test", "ood_test"]]
+        mask = paretoset(points, sense=["max", "max"])
+        markers = eval_plot[mask]
+        errors = ax.errorbar(
+            x=markers["id_test"],
+            y=markers["ood_test"],
+            xerr=markers["id_test_ub"] - markers["id_test"],
+            yerr=markers["ood_test_ub"] - markers["ood_test"],
+            fmt="*",
+            color=plt.cm.Paired(1),
+            ecolor="#78add2",
+            markersize=markersize,
+            capsize=capsize,
+        )
+
 
     #############################################################################
     # Add legend & diagonal, save plot
