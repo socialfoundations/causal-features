@@ -23,7 +23,7 @@ N_TRIALS    = 10
 # N_TRIALS    = 100
 
 # Cluster settings
-JOB_MIN_BID = 50  # htcondor bid (min. is 15 apparently...)
+JOB_MIN_BID = 51  # htcondor bid (min. is 15 apparently...)
 JOB_CPUS = 1  # number of CPUs per experiment (per cluster job)
 JOB_MEMORY_GB = int(2*128)  # GBs of memory
 
