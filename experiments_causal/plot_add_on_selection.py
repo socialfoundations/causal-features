@@ -552,11 +552,11 @@ def get_results(experiment_name: str) -> pd.DataFrame:
 def plot_results_simple(experiments: list, get_function, step: int):
     sns.set_style("white")
 
-    fig = plt.figure(figsize=(6.75, 1.75))
+    fig = plt.figure(figsize=(5.5, 1.75))
     axes = fig.subplots(
                 1,
                 3,
-                gridspec_kw={"width_ratios": [0.3, 0.3, 0.3], "wspace": 0.6, "top": 0.8},
+                gridspec_kw={"width_ratios": [0.3, 0.3, 0.3], "wspace": 0.8, "top": 0.8, "bottom":0.25},
             )  # create 3x2 subplots on fig
     for index, ax in enumerate(axes):
         experiment_name = experiments[index]
@@ -683,24 +683,24 @@ def plot_results_simple(experiments: list, get_function, step: int):
         list_lab_results,
         handler_map={tuple: MarkerHandler()},
         loc="upper center",
-        bbox_to_anchor=(0.5, -0.15),
+        bbox_to_anchor=(0.5, 0),
         fancybox=True,
         ncol=5,
     )
 
     fig.savefig(
-        str(Path(__file__).parents[0] / f"plots_rebuttal/plot_selection_step_{step}.pdf"),
+        str(Path(__file__).parents[0] / f"plots_add_on/plot_selection_step_{step}.pdf"),
         bbox_inches="tight",
     )
 
 def plot_results_pareto(experiment_name:list):
     sns.set_style("white")
 
-    fig = plt.figure(figsize=(6.75, 1.75))
+    fig = plt.figure(figsize=(5.5, 1.75))
     axes = fig.subplots(
                 1,
                 3,
-                gridspec_kw={"width_ratios": [0.3, 0.3, 0.3], "wspace": 0.6, "top": 0.8},
+                gridspec_kw={"width_ratios": [0.3, 0.3, 0.3], "wspace": 0.8, "top": 0.8, "bottom":0.25},
             )  # create 3x2 subplots on fig
     for index, ax in enumerate(axes):
         experiment_name = experiments[index]
@@ -846,24 +846,24 @@ def plot_results_pareto(experiment_name:list):
             list_lab_results,
             handler_map={tuple: MarkerHandler()},
             loc="upper center",
-            bbox_to_anchor=(0.5, -0.15),
+            bbox_to_anchor=(0.5, 0),
             fancybox=True,
             ncol=5,
         )
 
         fig.savefig(
-            str(Path(__file__).parents[0] / f"plots_rebuttal/plot_selection_step_3.pdf"),
+            str(Path(__file__).parents[0] / f"plots_add_on/plot_selection_step_3.pdf"),
             bbox_inches="tight",
         )
 
 def plot_results(experiments:list):
     sns.set_style("white")
 
-    fig = plt.figure(figsize=(6.75, 1.75))
+    fig = plt.figure(figsize=(5.5, 1.75))
     axes = fig.subplots(
                 1,
                 3,
-                gridspec_kw={"width_ratios": [0.3, 0.3, 0.3], "wspace": 0.6, "top": 0.8},
+                gridspec_kw={"width_ratios": [0.3, 0.3, 0.3], "wspace": 0.8, "top": 0.8, "bottom":0.25},
             )  # create 3x2 subplots on fig
     for index, ax in enumerate(axes):
         experiment_name = experiments[index]
@@ -1146,13 +1146,13 @@ def plot_results(experiments:list):
             list_lab_results,
             handler_map={tuple: MarkerHandler()},
             loc="upper center",
-            bbox_to_anchor=(0.5, -0.15),
+            bbox_to_anchor=(0.5, 0),
             fancybox=True,
             ncol=5,
         )
 
         fig.savefig(
-            str(Path(__file__).parents[0] / f"plots_rebuttal/plot_selection_step_4.pdf"),
+            str(Path(__file__).parents[0] / f"plots_add_on/plot_selection_step_4.pdf"),
             bbox_inches="tight",
         )
 

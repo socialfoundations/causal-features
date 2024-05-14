@@ -77,7 +77,7 @@ for index, experiment_name in enumerate(experiments):
 
         if ax_index == 0:
             sns.set_style("white")
-            subfig1 = plt.figure(figsize=[6.75, 1.75])
+            subfig1 = plt.figure(figsize=[5.5, 1.75])
             ax = subfig1.subplots(
                 1,
                 3,
@@ -109,7 +109,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
                 fmt="D",
                 color=color_constant,
-                ecolor=color_constant,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="constant",
@@ -143,7 +143,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="o",
                 color=color_causal,
-                ecolor=color_causal,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="causal",
@@ -184,7 +184,7 @@ for index, experiment_name in enumerate(experiments):
                     yerr=markers["ood_test_ub"] - markers["ood_test"],
                     fmt="^",
                     color=color_arguablycausal,
-                    ecolor=color_arguablycausal,
+                    ecolor=color_error,
                     markersize=markersize,
                     capsize=capsize,
                     label="arguably\ncausal",
@@ -225,7 +225,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="s",
                 color=color_all,
-                ecolor=color_all,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="all",
@@ -511,7 +511,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
                 fmt="D",
                 color=color_constant,
-                ecolor=color_constant,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="constant",
@@ -540,7 +540,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="o",
                 color=color_causal,
-                ecolor=color_causal,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="causal",
@@ -577,7 +577,7 @@ for index, experiment_name in enumerate(experiments):
                     yerr=markers["ood_test_ub"] - markers["ood_test"],
                     fmt="^",
                     color=color_arguablycausal,
-                    ecolor=color_arguablycausal,
+                    ecolor=color_error,
                     markersize=markersize,
                     capsize=capsize,
                     label="arguably causal",
@@ -613,7 +613,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="s",
                 color=color_all,
-                ecolor=color_all,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="all",
@@ -821,7 +821,7 @@ for index, experiment_name in enumerate(experiments):
             )
         else:
             sns.set_style("white")
-            subfig2 = plt.figure(figsize=[6.75, 3])
+            subfig2 = plt.figure(figsize=[5.5, 3])
             ax = subfig2.subplots(
                 2,
                 2,
@@ -1109,7 +1109,7 @@ for index, experiment_name in enumerate(experiments):
     for ax_index in range(2):
         if ax_index == 0:
             sns.set_style("white")
-            subfig1 = plt.figure(figsize=[6.75, 1.75])
+            subfig1 = plt.figure(figsize=[5.5, 1.75])
             ax = subfig1.subplots(
                 1,
                 3,
@@ -1141,7 +1141,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
                 fmt="D",
                 color=color_constant,
-                ecolor=color_constant,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="constant",
@@ -1175,7 +1175,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="o",
                 color=color_causal,
-                ecolor=color_causal,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="causal",
@@ -1217,7 +1217,7 @@ for index, experiment_name in enumerate(experiments):
                     yerr=markers["ood_test_ub"] - markers["ood_test"],
                     fmt="^",
                     color=color_arguablycausal,
-                    ecolor=color_arguablycausal,
+                    ecolor=color_error,
                     markersize=markersize,
                     capsize=capsize,
                     label="arguably\ncausal",
@@ -1258,7 +1258,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="s",
                 color=color_all,
-                ecolor=color_all,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="all",
@@ -1544,7 +1544,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
                 fmt="D",
                 color=color_constant,
-                ecolor=color_constant,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="constant",
@@ -1573,7 +1573,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="o",
                 color=color_causal,
-                ecolor=color_causal,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="causal",
@@ -1610,7 +1610,7 @@ for index, experiment_name in enumerate(experiments):
                     yerr=markers["ood_test_ub"] - markers["ood_test"],
                     fmt="^",
                     color=color_arguablycausal,
-                    ecolor=color_arguablycausal,
+                    ecolor=color_error,
                     markersize=markersize,
                     capsize=capsize,
                     label="arguably causal",
@@ -1646,7 +1646,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="s",
                 color=color_all,
-                ecolor=color_all,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="all",
@@ -1855,7 +1855,7 @@ for index, experiment_name in enumerate(experiments):
 
         else:
             sns.set_style("white")
-            subfig2 = plt.figure(figsize=[6.75, 1])
+            subfig2 = plt.figure(figsize=[5.5, 1])
             ax = subfig2.subplots(
                 1,
                 2,

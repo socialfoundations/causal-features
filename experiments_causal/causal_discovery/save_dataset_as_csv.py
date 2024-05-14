@@ -1,3 +1,4 @@
+#%%
 """Python script to run experiment and record the performance."""
 import argparse
 from pathlib import Path
@@ -39,13 +40,13 @@ cache_dir = Path(cache_dir)
 # experiment_name = "pubcov"
 # feature_list = ACS_PUBCOV_FEATURES
 
-experiment = "assistments"
-experiment_name = "assistments"
-feature_list = ASSISTMENTS_FEATURES
+# experiment = "assistments"
+# experiment_name = "assistments"
+# feature_list = ASSISTMENTS_FEATURES
 
-# experiment = "nhanes_lead"
-# experiment_name = "lead"
-# feature_list = NHANES_LEAD_FEATURES
+experiment = "nhanes_lead"
+experiment_name = "lead"
+feature_list = NHANES_LEAD_FEATURES
 
 # experiment = "physionet"
 # experiment_name = "sepsis"
@@ -75,6 +76,7 @@ if experiment_name == "poverty":
     discovery_data.rename(columns={"UNEMPLOYMENT_COMP_AMOUNT":"AMOUNT_UNEMPLOYMENT_COMP"},inplace=True)
 feature_list.to_jsonl(f"/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed/{experiment_name}_variables.json")
 
+#%%
 # Get categorical variables
 tmp = list()
 data_tmp = list()
@@ -94,6 +96,7 @@ for feature in feature_list:
 if experiment_name == "poverty":
     discovery_data.rename(columns={"AMOUNT_UNEMPLOYMENT_COMP":"UNEMPLOYMENT_COMP_AMOUNT"},inplace=True)
 
+#%%
 # Get dataset with categorical variables
 discovery_data_categories = pd.DataFrame()
 for feature in feature_list:

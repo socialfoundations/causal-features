@@ -11,7 +11,6 @@ import torch.utils.data as data_utils
 from tqdm import tqdm
 
 from tableshift import get_dataset
-from otdd.pytorch.distance import DatasetDistance
 
 import seaborn as sns
 from paretoset import paretoset
@@ -38,9 +37,10 @@ list_mak = [
     mmark.MarkerStyle("D"),
     mmark.MarkerStyle("o"),
     mmark.MarkerStyle("X"),
+    mmark.MarkerStyle("*"),
 ]
-list_lab = ["All", "Arguably causal", "Causal", "Constant"]
-list_color = [color_all, color_arguablycausal, color_causal, color_constant]
+list_lab = ["All", "Arguably causal", "Causal", "Constant","Random"]
+list_color = [color_all, color_arguablycausal, color_causal, color_constant, plt.cm.Paired(1)]
 
 list_mak_results = list_mak.copy()
 list_mak_results.append("_")
@@ -126,7 +126,7 @@ def get_results_random_subsets(experiment_name: str) -> pd.DataFrame:
         file_info = []
         try:
             RESULTS_DIR = Path(__file__).parents[0] / "add_on_results" / "random_subset" / experiment
-            for filename in tqdm(os.listdir(RESULTS_DIR)):
+            for filename in os.listdir(RESULTS_DIR):
                 if filename == ".DS_Store":
                     pass
                 else:
@@ -194,15 +194,16 @@ experiments = [
     # "meps",
     # "sipp",
 ]
-experiment_name = "acsunemployment"
+
 for experiment_name in experiments:
     sns.set_style("white")
 
-    fig = plt.figure(figsize=(6.75, 3))
+    fig = plt.figure(figsize=(5.5, 2))
     ax = fig.subplots(
                 1,
                 1,
-            )  # create 3x2 subplots on fig
+                gridspec_kw={"top":0.85, "bottom":0.15}
+            )  # create 1x1 subplots on fig
 
     ax.set_title(dic_title[experiment_name], fontsize=9)  # set suptitle for subfig1
     #############################################################################
@@ -223,11 +224,10 @@ for experiment_name in experiments:
             xerr=markers["id_test_ub"] - markers["id_test"],
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt="*",
-            color=color_irm,
-            ecolor="#e6e6e6",
+            color=plt.cm.Paired(1),
+            ecolor="#78add2",
             markersize=markersize,
             capsize=capsize,
-            errorevery = 100
         )
 
     eval_all = get_results(experiment_name)
@@ -509,9 +509,9 @@ for experiment_name in experiments:
         list_lab_results,
         handler_map={tuple: MarkerHandler()},
         loc="upper center",
-        bbox_to_anchor=(0.5, -0.15),
+        bbox_to_anchor=(0.5, 0),
         fancybox=True,
-        ncol=5,
+        ncol=6,
     )
 
     fig.savefig(

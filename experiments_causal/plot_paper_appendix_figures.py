@@ -79,11 +79,11 @@ for index, experiment_name in enumerate(experiments):
 
         if ax_index == 0:
             sns.set_style("white")
-            subfig1 = plt.figure(figsize=[6.75, 1.75])
+            subfig1 = plt.figure(figsize=[5.5, 1.75])
             ax = subfig1.subplots(
                 1,
                 3,
-                gridspec_kw={"width_ratios": [0.3, 0.3, 0.3], "wspace": 0.6, "top": 0.8},
+                gridspec_kw={"width_ratios": [0.3, 0.3, 0.3], "wspace": 0.6,"top": 0.8, "bottom":0.25},
             )  # create 3x2 subplots on fig
 
             eval_all = get_results(experiment_name)
@@ -98,8 +98,8 @@ for index, experiment_name in enumerate(experiments):
             ax[2].xaxis.set_major_formatter(FormatStrFormatter("%.3f"))
             ax[2].yaxis.set_major_formatter(FormatStrFormatter("%.3f"))
 
-            ax[0].set_xlabel(f"Id accuracy")
-            ax[0].set_ylabel(f"Ood accuracy")
+            ax[0].set_xlabel(f"In-domain accuracy")
+            ax[0].set_ylabel(f"Out-of-domain\naccuracy")
 
             #############################################################################
             # plot errorbars and shift gap for constant
@@ -111,7 +111,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
                 fmt="D",
                 color=color_constant,
-                ecolor=color_constant,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="constant",
@@ -145,7 +145,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="o",
                 color=color_causal,
-                ecolor=color_causal,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="causal",
@@ -186,7 +186,7 @@ for index, experiment_name in enumerate(experiments):
                     yerr=markers["ood_test_ub"] - markers["ood_test"],
                     fmt="^",
                     color=color_arguablycausal,
-                    ecolor=color_arguablycausal,
+                    ecolor=color_error,
                     markersize=markersize,
                     capsize=capsize,
                     label="arguably\ncausal",
@@ -227,7 +227,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="s",
                 color=color_all,
-                ecolor=color_all,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="all",
@@ -419,7 +419,7 @@ for index, experiment_name in enumerate(experiments):
             #############################################################################
             if (eval_all["features"] == "arguablycausal").any():
                 ax[1].set_xlabel("Shift gap")
-                ax[1].set_ylabel("Ood accuracy")
+                # ax[1].set_ylabel("Ood accuracy")
                 shift_acc = pd.concat(dic_shift_acc.values(), ignore_index=True)
                 markers = {
                     "constant": "X",
@@ -500,8 +500,8 @@ for index, experiment_name in enumerate(experiments):
             eval_constant = eval_all[eval_all["features"] == "constant"]
             dic_shift = {}
 
-            ax[2].set_xlabel(f"Balanced id accuracy")
-            ax[2].set_ylabel(f"Balanced\nood accuracy")
+            ax[2].set_xlabel(f"Balanced accuracy")
+            ax[2].set_ylabel(f"Balanced out-of-domain\n accuracy")
 
             #############################################################################
             # plot errorbars and shift gap for constant
@@ -513,7 +513,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
                 fmt="D",
                 color=color_constant,
-                ecolor=color_constant,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="constant",
@@ -542,7 +542,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="o",
                 color=color_causal,
-                ecolor=color_causal,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="causal",
@@ -579,7 +579,7 @@ for index, experiment_name in enumerate(experiments):
                     yerr=markers["ood_test_ub"] - markers["ood_test"],
                     fmt="^",
                     color=color_arguablycausal,
-                    ecolor=color_arguablycausal,
+                    ecolor=color_error,
                     markersize=markersize,
                     capsize=capsize,
                     label="arguably causal",
@@ -615,7 +615,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="s",
                 color=color_all,
-                ecolor=color_all,
+                ecolor=color_error,
                 markersize=markersize,
                 capsize=capsize,
                 label="all",
@@ -824,7 +824,7 @@ for index, experiment_name in enumerate(experiments):
 
         else:
             sns.set_style("white")
-            subfig2 = plt.figure(figsize=[6.75, 3])
+            subfig2 = plt.figure(figsize=[5.5, 3])
             ax = subfig2.subplots(
                 2,
                 2,
@@ -1093,7 +1093,7 @@ experiment_groups = {
     ],
 }
 for experiment_group, experiments in experiment_groups.items():
-    fig = plt.figure(figsize=(6.75, 1.75 * len(experiments)))
+    fig = plt.figure(figsize=(5.5, 1.75 * len(experiments)))
     subfigs = fig.subfigures(len(experiments), 1, hspace=0.2)  # create 4x1 subfigures
 
     for index, experiment_name in enumerate(experiments):
@@ -1104,7 +1104,7 @@ for experiment_group, experiments in experiment_groups.items():
         subfig.suptitle(
             dic_title[experiment_name], fontsize=11
         )  # set suptitle for subfig1
-        eval_all, causal_features = get_results_causalml(experiment_name)
+        eval_all = get_results_causalml(experiment_name)
         eval_constant = eval_all[eval_all["features"] == "constant"]
         dic_shift = {}
 
@@ -1608,7 +1608,7 @@ for experiment_group, experiments in experiment_groups.items():
         list_lab_causalml,
         handler_map={tuple: MarkerHandler()},
         loc="upper center",
-        bbox_to_anchor=(0.5, -0.05),
+        bbox_to_anchor=(0.5, 0),
         fancybox=True,
         ncol=6,
     )
@@ -1634,13 +1634,14 @@ experiment_groups = {
     ],
 }
 for experiment_group, experiments in experiment_groups.items():
-    fig = plt.figure(figsize=(6.75, 1.75 * len(experiments)))
+    fig = plt.figure(figsize=(5.5, 2 * len(experiments)))
     subfigs = fig.subfigures(len(experiments), 1, hspace=0.2)  # create 4x1 subfigures
 
     for index, experiment_name in enumerate(experiments):
         subfig = subfigs[index]
         subfig.subplots_adjust(wspace=0.3)
         subfig.subplots_adjust(top=0.85)
+        subfig.subplots_adjust(bottom=0.25)
         ax = subfig.subplots(1, 2, gridspec_kw={"width_ratios": [0.5, 0.5]})
         subfig.suptitle(
             dic_title[experiment_name], fontsize=11
@@ -2146,7 +2147,7 @@ for experiment_group, experiments in experiment_groups.items():
             list_lab_anticausal,
             handler_map={tuple: MarkerHandler()},
             loc="upper center",
-            bbox_to_anchor=(0.5, -0.05),
+            bbox_to_anchor=(0.5, 0),
             fancybox=True,
             ncol=5,
         )
@@ -2156,7 +2157,7 @@ for experiment_group, experiments in experiment_groups.items():
             list_lab_anticausal,
             handler_map={tuple: MarkerHandler()},
             loc="upper center",
-            bbox_to_anchor=(0.5, -0.1),
+            bbox_to_anchor=(0.5, 0),
             fancybox=True,
             ncol=5,
         )
@@ -2168,3 +2169,4 @@ for experiment_group, experiments in experiment_groups.items():
         ),
         bbox_inches="tight",
     )
+

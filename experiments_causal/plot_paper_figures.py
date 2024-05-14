@@ -59,7 +59,7 @@ class MarkerHandler(HandlerBase):
             )
         ]
 
-
+#%%
 # Define list of experiments to plot
 experiments = [
     "brfss_diabetes",
@@ -495,23 +495,32 @@ fig.savefig(
 # Next figure
 #############################################################################
 
-fig = plt.figure(figsize=[5.5, 1.5 * 2])
-
-experiments = ["acsincome", "anes"]
-subfig1, subfig2 = fig.subfigures(2, 1)  # create 4x1 subfigures
-
-subfigs = (subfig1, subfig2)
-ax1 = subfig1.subplots(
-    1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "top":0.85, "bottom":0.25}
+fig = plt.figure(figsize=(5.5, 1.5))
+ax = fig.subplots(
+    1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "wspace": 0.3, "top":0.85, "bottom":0.25}
 )  # create 1x4 subplots on subfig1
-ax2 = subfig2.subplots(1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "top":0.85, "bottom":0.25})
-axes = (ax1, ax2)
+
+
+experiments = ["acsunemployment"]
+
+plt.suptitle(dic_title[experiment_name], fontsize=9) 
+
+
+# fig = plt.figure(figsize=[5.5, 1.5 * 2])
+# subfig1, subfig2 = fig.subfigures(2, 1)  # create 4x1 subfigures
+
+# subfigs = (subfig1, subfig2)
+# ax1 = subfig1.subplots(
+#     1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "top":0.85, "bottom":0.25}
+# )  # create 1x4 subplots on subfig1
+# ax2 = subfig2.subplots(1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "top":0.85, "bottom":0.25})
+# subfigs = (fig,)
+# axes = (ax1,)
 
 for index, experiment_name in enumerate(experiments):
-    subfig = subfigs[index]
-    subfig.subplots_adjust(wspace=0.3)
-    ax = axes[index]
-    subfig.suptitle(dic_title[experiment_name], fontsize=9)  # set suptitle for subfig1
+    # subfig = subfigs[index]
+    # subfig.subplots_adjust(wspace=0.3)
+    # ax = axes[index] # set suptitle for subfig1
 
     eval_all = get_results_causalml(experiment_name)
     eval_constant = eval_all[eval_all["features"] == "constant"]
@@ -1110,7 +1119,7 @@ for index, experiment_name in enumerate(experiments):
         list_lab_causalml,
         handler_map={tuple: MarkerHandler()},
         loc="upper center",
-        bbox_to_anchor=(0.5, -0.01),
+        bbox_to_anchor=(0.5, 0),
         fancybox=True,
         ncol=5,
     )
@@ -1119,3 +1128,48 @@ for index, experiment_name in enumerate(experiments):
 fig.savefig(
     str(Path(__file__).parents[0] / f"plots_paper/plot_main_causalml.pdf"), bbox_inches="tight",
 )
+
+#%%
+
+import numpy as np
+
+sns.set_style("white")
+fig, ax = plt.subplots(figsize=[4, 1])
+
+# make some arrays
+# scoregroup = [0,4,0,
+#          0,5,0,
+#          2,3,0,
+#          1,3,2,
+#          0,2,3
+#          ]
+
+values1 = [0,0,2,1,0,]
+values2 = [3,4,2,3,2,]
+values3 = [5,4,4,2,3,]
+values4 = [0,0,0,2,3,]
+
+groups = [
+    'IRM',
+    'REx',
+    'IB-IRM',
+    'Causal IRL',
+    'AND-Mask'
+    ]
+
+p1 = ax.bar(groups, values1, color =plt.cm.Paired(1), label = '< causal features')
+p2 = ax.bar(groups, values2, bottom = values1, color =color_causal, label = '= causal features')
+p3= ax.bar(groups, values3, bottom = np.add(values1, values2), color = plt.cm.Paired(2), label = '> causal features and \n< arguably causal features')
+p4 = ax.bar(groups, values4, bottom = np.add(np.add(values1, values2),values3), color =color_arguablycausal,  label = '= arguably causal features')
+for i in range(8):
+    ax.axhline(y=i,color="white")
+ax.legend(loc="upper left",
+        bbox_to_anchor=(1, 1),
+        fancybox=True)
+ax.set_yticks([0,2,4,6,8,])
+
+fig.savefig(
+    str(Path(__file__).parents[0] / f"plots_paper/plot_main_causalml_bar.pdf"), bbox_inches="tight",
+)
+
+# %%

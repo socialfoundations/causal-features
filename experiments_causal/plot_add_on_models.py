@@ -10,7 +10,6 @@ import torch
 import torch.utils.data as data_utils
 
 from tableshift import get_dataset
-from otdd.pytorch.distance import DatasetDistance
 
 import seaborn as sns
 from paretoset import paretoset
@@ -18,7 +17,7 @@ from scipy.spatial import ConvexHull
 import matplotlib.pyplot as plt
 from matplotlib.legend_handler import HandlerBase
 from matplotlib.ticker import FormatStrFormatter
-import matplotlib.markers as mmark
+import matplotlib.markers as mmark 
 
 from experiments_causal.plot_config_colors import *
 from experiments_causal.plot_experiment import get_results
@@ -65,44 +64,44 @@ class MarkerHandler(HandlerBase):
 
 
 # Define list of experiments to plot
-experiments = [
-    "acsfoodstamps",
-    "acsincome",
-    "acspubcov",
-    "acsunemployment",
-    "anes",
-    "assistments",
-    "brfss_blood_pressure",
-    "brfss_diabetes",
-    "college_scorecard",
-    "diabetes_readmission",
-    "mimic_extract_mort_hosp",
-    "mimic_extract_los_3",
-    "nhanes_lead",
-    "physionet",
-    "meps",
-    "sipp",
-]
+# experiments = [
+    #     "acsfoodstamps",
+    #     "acsincome",
+    #     "acspubcov",
+    #     "acsunemployment",
+    #     "anes",
+    #     "assistments",
+    #     "brfss_blood_pressure",
+    #     "brfss_diabetes",
+    #     "college_scorecard",
+    #     "diabetes_readmission",
+    #     "mimic_extract_mort_hosp",
+    #     "mimic_extract_los_3",
+    #     "nhanes_lead",
+    #     "physionet",
+    #     "meps",
+    #     "sipp",
+    # ]
 
 encode_tableshift = {'tableshift:adv. label dro': 'aldro',
- 'tableshift:catboost':'catboost',
- 'tableshift:dro':'dro',
- 'tableshift:ft-transformer':'ft',
- 'tableshift:label group dro':'label',
- 'tableshift:lightgbm':'lightgbm',
- 'tableshift:mlp':'mlp',
- 'tableshift:node':'node',
- 'tableshift:resnet':'resnet',
- 'tableshift:saint':'saint',
- 'tableshift:tabtransformer':'tabtransformer',
- 'tableshift:xgboost':'xgb',
- 'tableshift:coral':'deepcoral',
- 'tableshift:dann':'dann',
- 'tableshift:group dro':'group',
- 'tableshift:irm':'irm',
- 'tableshift:mmd':'mmd',
- 'tableshift:mixup':'mixup',
- 'tableshift:vrex':'vrex',}
+    'tableshift:catboost':'catboost',
+    'tableshift:dro':'dro',
+    'tableshift:ft-transformer':'ft',
+    'tableshift:label group dro':'label',
+    'tableshift:lightgbm':'lightgbm',
+    'tableshift:mlp':'mlp',
+    'tableshift:node':'node',
+    'tableshift:resnet':'resnet',
+    'tableshift:saint':'saint',
+    'tableshift:tabtransformer':'tabtransformer',
+    'tableshift:xgboost':'xgb',
+    'tableshift:coral':'deepcoral',
+    'tableshift:dann':'dann',
+    'tableshift:group dro':'group',
+    'tableshift:irm':'irm',
+    'tableshift:mmd':'mmd',
+    'tableshift:mixup':'mixup',
+    'tableshift:vrex':'vrex',}
 
 encode_model = {
     'aldro': "Adv. DRO",
@@ -160,107 +159,6 @@ list_models.sort()
 
 #%%
 #############################################################################
-# plot performance across experiments for each models
-#############################################################################
-for model in list_models:
-    eval_experiments_model = eval_experiments[eval_experiments["model"] == model]
-
-    fig = plt.figure(figsize=(6.75, 1.5))
-    ax = fig.subplots(
-        1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "wspace": 0.3}
-    )  # create 1x4 subplots on subfig1
-
-    ax[0].set_xlabel(f"Tasks")
-    ax[0].set_ylabel(f"Out-of-domain accuracy")
-
-    #############################################################################
-    # plot ood accuracy
-    #############################################################################
-    markers = {"constant": "X", "all": "s", "causal": "o", "arguablycausal": "D"}
-
-    sets = list(eval_experiments_model["features"].unique())
-    sets.sort()
-
-    for index, set in enumerate(sets):
-        eval_plot_features = eval_experiments_model[eval_experiments_model["features"] == set]
-        eval_plot_features = eval_plot_features.sort_values("ood_test")
-        ax[0].errorbar(
-            x=eval_plot_features["task"],
-            y=eval_plot_features["ood_test"],
-            yerr=eval_plot_features["ood_test_ub"] - eval_plot_features["ood_test"],
-            color=eval(f"color_{set}"),
-            ecolor=color_error,
-            fmt=markers[set],
-            markersize=markersize,
-            capsize=capsize,
-            label=set.capitalize() if set != "arguablycausal" else "Arguably causal",
-            zorder=len(sets) - index,
-        )
-        # get pareto set for shift vs accuracy
-        shift_acc = eval_plot_features
-        shift_acc["type"] = set
-        shift_acc["gap"] = shift_acc["ood_test"] - shift_acc["id_test"]
-        shift_acc["id_test_var"] = ((shift_acc["id_test_ub"] - shift_acc["id_test"])) ** 2
-        shift_acc["ood_test_var"] = ((shift_acc["ood_test_ub"] - shift_acc["ood_test"])) ** 2
-        shift_acc["gap_var"] = shift_acc["id_test_var"] + shift_acc["ood_test_var"]
-        dic_shift_acc[set] = shift_acc
-
-    ax[0].tick_params(axis="x", labelrotation=90)
-    ax[0].set_ylim(top=1.0)
-    ax[0].grid(axis="y")
-
-
-    ax[1].set_xlabel(f"Tasks")
-    ax[1].set_ylabel(f"Shift gap (higher is better)")
-    #############################################################################
-    # plot shift gap
-    #############################################################################
-    shift_acc = pd.concat(dic_shift_acc.values(), ignore_index=True)
-    sets = list(eval_experiments_model["features"].unique())
-    sets.sort()
-
-    for index, set in enumerate(sets):
-        shift_acc_plot = shift_acc[shift_acc["features"] == set]
-        shift_acc_plot = shift_acc_plot.sort_values("ood_test")
-        ax[1].errorbar(
-            x=shift_acc_plot["task"],
-            y=shift_acc_plot["gap"],
-            yerr=shift_acc_plot["gap_var"] ** 0.5,
-            color=eval(f"color_{set}"),
-            ecolor=color_error,
-            fmt=markers[set],
-            markersize=markersize,
-            capsize=capsize,
-            label=set.capitalize() if set != "arguablycausal" else "Arguably causal",
-            zorder=len(sets) - index,
-        )
-
-    ax[1].axhline(
-        y=0,
-        color="black",
-        linestyle="--",
-    )
-    ax[1].tick_params(axis="x", labelrotation=90)
-
-    ax[1].grid(axis="y")
-    # plt.tight_layout()
-    fig.legend(
-        list(zip(list_color, list_mak)),
-        list_lab,
-        handler_map={tuple: MarkerHandler()},
-        loc="lower center",
-        bbox_to_anchor=(0.5, -0.9),
-        fancybox=True,
-        ncol=5,
-    )
-
-    fig.savefig(
-        str(Path(__file__).parents[0] / f"plots_rebuttal/performance_across_experiments/plot_performance_{model}.pdf"),
-        bbox_inches="tight",
-    )
-
-#%%
-#############################################################################
 # plot performance across models for each experiment
 #############################################################################
 
@@ -287,7 +185,7 @@ experiments = [
 for index, experiment_name in enumerate(experiments):
     sns.set_style("white")
     if index % 4 == 0:
-        fig = plt.figure(figsize=[6.75, 1.5 * 4])
+        fig = plt.figure(figsize=[5.5, 7])
         (subfig1, subfig2, subfig3, subfig4) = fig.subfigures(4, 1, hspace=0.5)  # create 4x1 subfigures
 
         subfigs = (subfig1, subfig2, subfig3, subfig4)
@@ -706,104 +604,7 @@ for index, experiment_name in enumerate(experiments):
         )
 
         fig.savefig(
-            str(Path(__file__).parents[0] / f"plots_rebuttal/performance_across_models/plot_performance_{int(index/4)}.pdf"),
+            str(Path(__file__).parents[0] / f"plots_add_on/performance_across_models/plot_performance_{int(index/4)}.pdf"),
             bbox_inches="tight",
         )
         fig.show()
-
-# %%
-        
-
-experiments = [
-    "acsfoodstamps",
-    "acsincome",
-    "acspubcov",
-    "acsunemployment",
-    "anes",
-    "assistments",
-    "brfss_blood_pressure",
-    "brfss_diabetes",
-    "college_scorecard",
-    "diabetes_readmission",
-    "mimic_extract_mort_hosp",
-    "mimic_extract_los_3",
-    "nhanes_lead",
-    "physionet",
-    "meps",
-    "sipp",
-]
-
-for index, experiment_name in enumerate(experiments):
-    sns.set_style("white")
-    if index %3 == 0:
-        fig, axes = plt.subplots(3, 1,figsize=[6.75, 2 * 3])  # create 4x1 subfigures
-        fig.subplots_adjust(hspace=2.5)
-
-    axes[index %3].set_title(dic_title[experiment_name], fontsize=9)  # set suptitle for subfig1
-
-    eval_all = get_results(experiment_name)
-    eval_plot = pd.DataFrame()
-    for set in eval_all["features"].unique():
-        eval_feature = eval_all[eval_all["features"] == set]
-        for model in eval_feature["model"]:
-            eval_model = eval_feature[eval_feature["model"] == model]
-            if model.startswith("tableshift"):
-                eval_model["model"] = encode_tableshift[model]
-            if model != 'tableshift:catboost':
-                eval_plot = pd.concat([eval_plot, eval_model])
-    eval_all = eval_plot
-
-    eval_constant = eval_all[eval_all["features"] == "constant"]
-    dic_shift = {}
-    dic_shift_acc = {}
-
-    for model in list_models:
-        eval_model = eval_plot[eval_plot["model"] == model]
-        # get pareto set for shift vs accuracy
-        shift_acc = eval_model.drop_duplicates()
-        shift_acc["type"] = "causal"
-        shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
-        shift_acc["model"] = encode_model[model]
-        dic_shift_acc["causal_"+model] = shift_acc
-
-    if (eval_all["features"] == "arguablycausal").any():
-        eval_plot = eval_all[eval_all["features"] == "arguablycausal"]
-        eval_plot.sort_values("id_test", inplace=True)
-        eval_plot = eval_plot[eval_plot["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
-
-        for model in list_models:
-            eval_model = eval_plot[eval_plot["model"] == model]
-            # get pareto set for shift vs accuracy
-            shift_acc = eval_model.drop_duplicates()
-            shift_acc["type"] = "arguablycausal"
-            shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
-            shift_acc["model"] = encode_model[model]
-            dic_shift_acc["arguablycausal_"+model] = shift_acc
-
-    eval_plot = eval_all[eval_all["features"] == "all"]
-    eval_plot.sort_values("id_test", inplace=True)
-    eval_plot = eval_plot[eval_plot["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
-
-    for model in list_models:
-        eval_model = eval_plot[eval_plot["model"] == model]
-        # get pareto set for shift vs accuracy
-        shift_acc = eval_model.drop_duplicates()
-        shift_acc["type"] = "all"
-        shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
-        shift_acc["model"] = encode_model[model]
-        dic_shift_acc["all_"+model] = shift_acc
-
-    shift_acc = pd.concat(dic_shift_acc.values(), ignore_index=True)
-
-    sns.barplot(x="model", y="ood_test", hue="type", data=shift_acc, palette=[color_causal,color_arguablycausal,color_all], legend=False, ax=axes[index %3])
-    axes[index %3].tick_params(axis="x", labelrotation=90)
-    axes[index %3].set_xlabel("Model")
-    axes[index %3].set_ylabel("Out-of-domain\naccuracy")
-
-    if index %3 == 2:
-        fig.savefig(
-            str(Path(__file__).parents[0] / f"plots_rebuttal/performance_across_models/plot_oodaccuracy_{int(index/3)}.pdf"),
-            bbox_inches="tight",
-        )
-        fig.show()
-# %%

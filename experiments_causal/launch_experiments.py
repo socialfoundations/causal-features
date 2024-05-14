@@ -214,12 +214,14 @@ TASKS = [
 #     TASKS.append("sipp_random_test_" + f"{index}")
 
 
-for index in range(DIABETES_READMISSION_FEATURES_RANDOM_SUBSETS_NUMBER):
-    TASKS.append("diabetes_readmission_random_test_" + f"{index}")
+# for index in range(DIABETES_READMISSION_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     TASKS.append("diabetes_readmission_random_test_" + f"{index}")
 
 for index in range(MEPS_FEATURES_RANDOM_SUBSETS_NUMBER):
     TASKS.append("meps_random_test_" + f"{index}")
 
+for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
+    TASKS.append("assistments_random_test_" + f"{index}")
 
 for index in range(COLLEGE_SCORECARD_FEATURES_RANDOM_SUBSETS_NUMBER):
     TASKS.append("college_scorecard_random_test_" + f"{index}")
@@ -230,8 +232,7 @@ for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
 for index in range(PHYSIONET_FEATURES_RANDOM_SUBSETS_NUMBER):
     TASKS.append("physionet_random_test_" + f"{index}")
 
-for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
-    TASKS.append("assistments_random_test_" + f"{index}")
+
 
 
 

@@ -78,13 +78,14 @@ markers_causalml = {
                 "causirl_coral": "<",}
 
 for experiment_group, experiments in experiment_groups.items():
-    fig = plt.figure(figsize=(6.75, 1.75 * len(experiments)))
-    subfigs = fig.subfigures(len(experiments), 1, hspace=0.2)  # create 4x1 subfigures
+    fig = plt.figure(figsize=(5.5, 7))
+    subfigs = fig.subfigures(len(experiments), 1)  # create 4x1 subfigures
 
     for index, experiment_name in enumerate(experiments):
         subfig = subfigs[index]
         subfig.subplots_adjust(wspace=0.3)
         subfig.subplots_adjust(top=0.85)
+        subfig.subplots_adjust(bottom=0.25)
         ax = subfig.subplots(1, 2, gridspec_kw={"width_ratios": [0.5, 0.5]})
         subfig.suptitle(
             dic_title[experiment_name], fontsize=11
@@ -684,7 +685,7 @@ for experiment_group, experiments in experiment_groups.items():
         list_lab_causalml,
         handler_map={tuple: MarkerHandler()},
         loc="upper center",
-        bbox_to_anchor=(0.5, -0.05),
+        bbox_to_anchor=(0.5, 0),
         fancybox=True,
         ncol=5,
     )

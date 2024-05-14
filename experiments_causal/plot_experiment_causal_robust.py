@@ -136,11 +136,14 @@ def get_results(experiment_name) -> pd.DataFrame:
     for experiment in experiments:
         file_info = []
         RESULTS_DIR = Path(__file__).parents[0] / "results" / experiment
-        for filename in os.listdir(RESULTS_DIR):
-            if filename == ".DS_Store":
-                pass
-            else:
-                file_info.append(filename)
+        try:
+            for filename in os.listdir(RESULTS_DIR):
+                if filename == ".DS_Store":
+                    pass
+                else:
+                    file_info.append(filename)
+        except:
+            print(RESULTS_DIR)
 
         def get_feature_selection(experiment):
             if experiment.endswith("_causal"):
