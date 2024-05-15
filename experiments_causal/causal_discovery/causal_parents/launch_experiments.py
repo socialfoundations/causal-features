@@ -25,7 +25,7 @@ N_TRIALS    = 10
 # Cluster settings
 JOB_MIN_BID = 51  # htcondor bid (min. is 15 apparently...)
 JOB_CPUS = 1  # number of CPUs per experiment (per cluster job)
-JOB_MEMORY_GB = int(3*128)  # GBs of memory
+JOB_MEMORY_GB = int(128)  # GBs of memory
 
 VERBOSE = True
 
@@ -225,7 +225,8 @@ TASKS = [
 # TASKS.append("brfss_diabetes_pc")
 # TASKS.append("acsunemployment_pc")
 # TASKS.append("acsfoodstamps_pc")
-TASKS.append("acspubcov_fci")
+# TASKS.append("acspubcov_fci")
+TASKS.append("acsincome_pc")
 
 # Useful directories
 if __name__ == "__main__":

@@ -833,6 +833,37 @@ ACS_INCOME_FEATURES_ANTICAUSAL = FeatureList([
 ACS_INCOME_FEATURES_RANDOM_SUBSETS = get_random_subset(ACS_INCOME_FEATURES.features + ACS_SHARED_FEATURES.features, target, domain, k=500)
 ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER = len(ACS_INCOME_FEATURES_RANDOM_SUBSETS)
 
+ACS_INCOME_FEATURES_PC = FeatureList([
+    Feature('PINCP', float, """Total person's income >= threshold.""",
+            is_target=True),
+    Feature('DIVISION', cat_dtype,
+            "Division code based on 2010 Census definitions.",
+            name_extended='geographic region',
+            value_mapping={
+                0: 'Puerto Rico',
+                1: 'New England (Northeast region)',
+                2: 'Middle Atlantic (Northeast region)',
+                3: 'East North Central (Midwest region)',
+                4: 'West North Central (Midwest region)',
+                5: 'South Atlantic (South region)',
+                6: 'East South Central (South region)',
+                7: 'West South Central (South Region)',
+                8: 'Mountain (West region)',
+                9: 'Pacific (West region)',
+            }),
+    # Causal features
+    Feature('AGEP', int, "Age", name_extended='age in years'),
+    OCCP_FEATURE,
+    WKHP_FEATURE,
+    Feature('HINS1', cat_dtype,
+            "Insurance through a current or former employer or union",
+            name_extended="Has health insurance through a current or former "
+                          "employer or union",
+            value_mapping={'01': 'Yes', '02': 'No'}),
+],
+    documentation="https://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMS_Data_Dictionary_2014-2018.pdf")
+
+
 # PUBLIC COVERAGE
 ACS_PUBCOV_FEATURES_CAUSAL = FeatureList(features=[
     Feature('AGEP', int, "Age", name_extended='age in years'),
