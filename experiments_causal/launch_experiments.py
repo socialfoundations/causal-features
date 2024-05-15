@@ -392,7 +392,7 @@ if __name__ == "__main__":
             try:
                 launch_task_jobs(task=task, exp_obj=exp_obj)
                 success = True
-                sleep(60)
+                sleep(120)
             except:
                 sleep(3600)
 
