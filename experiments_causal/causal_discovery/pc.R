@@ -15,9 +15,9 @@ setwd("/home/vnastl/causal-features/tmp_preprocessed") # cluster
 ###############################################################################
 
 args = commandArgs(trailingOnly=TRUE)
-task = "lead" #args[1] # "diabetes"
+task = args[1] # "diabetes"
 disc_task = paste(task,"discrete","5",sep="_")
-alpha = 0.01 #args[2] # 0.0001
+alpha = args[2] # 0.0001
 
 ###############################################################################
 # use preprocessed data
