@@ -1,17 +1,33 @@
  15378595.0 
 
  executable = /usr/lib/R/bin/Rscript
-arguments =  --save /home/vnastl/causal-features/experiments_causal/causal_discovery/pc.R pubcov 0.01
-error = /home/fast/vnastl/pc_r_experiment_pubcov_0.01.err
-output = /home/fast/vnastl/pc_r_experiment_pubcov_0.01.out
-log = /home/fast/vnastl/pc_r_experiment_pubcov_0.01.log
-request_memory = 384GB
+arguments =  --save /home/vnastl/causal-features/experiments_causal/causal_discovery/pc.R lead 0.01
+error = /home/fast/vnastl/pc_r_experiment_lead_0.01.err
+output = /home/fast/vnastl/pc_r_experiment_lead_0.01.out
+log = /home/fast/vnastl/pc_r_experiment_lead_0.01.log
+request_memory = 256GB
 queue
 
 executable = /usr/lib/R/bin/Rscript
-arguments = --save /home/vnastl/causal-features/experiments_causal/causal_discovery/fci.R pubcov 0.01
-error = /home/fast/vnastl/fci_r_experiment_pubcov_0.01.err
-output = /home/fast/vnastl/fci_r_experiment_pubcov_0.01.out
-log = /home/fast/vnastl/fci_r_experiment_pubcov_0.01.log
-request_memory = 384GB
+arguments =  --save /home/vnastl/causal-features/experiments_causal/causal_discovery/pc.R income 0.01
+error = /home/fast/vnastl/pc_r_experiment_income_0.01.err
+output = /home/fast/vnastl/pc_r_experiment_income_0.01.out
+log = /home/fast/vnastl/pc_r_experiment_income_0.01.log
+request_memory = 256GB
+queue
+
+executable = /usr/lib/R/bin/Rscript
+arguments =  --save /home/vnastl/causal-features/experiments_causal/causal_discovery/pc.R unemployment 0.01
+error = /home/fast/vnastl/pc_r_experiment_unemployment_0.01.err
+output = /home/fast/vnastl/pc_r_experiment_unemployment_0.01.out
+log = /home/fast/vnastl/pc_r_experiment_unemployment_0.01.log
+request_memory = 256GB
+queue
+
+executable = /usr/lib/R/bin/Rscript
+arguments =  --save /home/vnastl/causal-features/experiments_causal/causal_discovery/pc.R foodstamps 0.01
+error = /home/fast/vnastl/pc_r_experiment_foodstamps_0.01.err
+output = /home/fast/vnastl/pc_r_experiment_foodstamps_0.01.out
+log = /home/fast/vnastl/pc_r_experiment_foodstamps_0.01.log
+request_memory = 256GB
 queue
