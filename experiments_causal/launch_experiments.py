@@ -217,10 +217,10 @@ TASKS = [
 # for index in range(DIABETES_READMISSION_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("diabetes_readmission_random_test_" + f"{index}")
 
-for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
-    TASKS.append("nhanes_lead_random_test_" + f"{index}")
+# for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     TASKS.append("nhanes_lead_random_test_" + f"{index}")
 
-for index in range(PHYSIONET_FEATURES_RANDOM_SUBSETS_NUMBER):
+for index in range(11,PHYSIONET_FEATURES_RANDOM_SUBSETS_NUMBER):
     TASKS.append("physionet_random_test_" + f"{index}")
 
 for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
@@ -392,7 +392,7 @@ if __name__ == "__main__":
             try:
                 launch_task_jobs(task=task, exp_obj=exp_obj)
                 success = True
-                sleep(600)
+                sleep(60)
             except:
                 sleep(3600)
 
