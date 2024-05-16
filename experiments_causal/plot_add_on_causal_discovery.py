@@ -29,13 +29,13 @@ from experiments_causal.plot_config_tasks import dic_title
 
 experiments = [
     # "acsfoodstamps", #pc
-    # "acsincome",
-    # "acspubcov",
+    # "acsincome", #pc
+    "acspubcov", #fci
     # "acsunemployment", #pc
     # "anes",
     # "assistments",
     # "brfss_blood_pressure",
-    "brfss_diabetes", #pc, fci
+    # "brfss_diabetes", #pc, fci
     # "college_scorecard",
     # "diabetes_readmission",
     # "mimic_extract_mort_hosp",
