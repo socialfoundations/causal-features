@@ -28,9 +28,9 @@ from experiments_causal.plot_config_colors import *
 from experiments_causal.plot_config_tasks import dic_title
 
 experiments = [
-    # "acsfoodstamps", #pc
+    "acsfoodstamps", #pc
     # "acsincome", #pc
-    "acspubcov", #fci
+    # "acspubcov", #old fci
     # "acsunemployment", #pc
     # "anes",
     # "assistments",
@@ -46,7 +46,7 @@ experiments = [
     # "sipp",
 ]
 
-discovery = "fci"
+discovery = "pc"
 
 # Set plot configurations
 sns.set_context("paper")
@@ -60,7 +60,7 @@ list_mak = [
     mmark.MarkerStyle("X"),
     mmark.MarkerStyle("*"),
 ]
-list_lab = ["All", "Arguably causal", "Causal", "Constant","FCI"]
+list_lab = ["All", "Arguably causal", "Causal", "Constant","PC"]
 list_color = [color_all, color_arguablycausal, color_causal, color_constant, plt.cm.Paired(1)]
 
 list_mak_results = list_mak.copy()

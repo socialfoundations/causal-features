@@ -18,12 +18,12 @@ if __name__ == "__main__":
     import classad
 
 # Number of task to run per algorithm, per dataset
-N_TRIALS    = 10
+N_TRIALS    = 50
 # N_TRIALS = 50
 # N_TRIALS    = 100
 
 # Cluster settings
-JOB_MIN_BID = 51  # htcondor bid (min. is 15 apparently...)
+JOB_MIN_BID = 50  # htcondor bid (min. is 15 apparently...)
 JOB_CPUS = 1  # number of CPUs per experiment (per cluster job)
 JOB_MEMORY_GB = int(128)  # GBs of memory
 
@@ -222,10 +222,10 @@ TASKS = [
 ################################################################################
 # Task for pc/fci causal discovery
 ################################################################################
-# TASKS.append("brfss_diabetes_pc")
-# TASKS.append("acsunemployment_pc")
-# TASKS.append("acsfoodstamps_pc")
-# TASKS.append("acspubcov_fci")
+TASKS.append("brfss_diabetes_pc")
+TASKS.append("acsunemployment_pc")
+TASKS.append("acsunemployment_icp")
+TASKS.append("acsfoodstamps_pc")
 TASKS.append("acsincome_pc")
 
 # Useful directories
