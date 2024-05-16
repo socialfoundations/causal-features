@@ -223,7 +223,7 @@ TASKS = [
 # for index in range(137,PHYSIONET_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("physionet_random_test_" + f"{index}")
 
-for index in range(121,ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
+for index in range(222,ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
     TASKS.append("assistments_random_test_" + f"{index}")
 
 for index in range(MEPS_FEATURES_RANDOM_SUBSETS_NUMBER):
