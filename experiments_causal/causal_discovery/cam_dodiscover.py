@@ -14,9 +14,15 @@ import pandas as pd
 # from scipy import stats
 from dodiscover.toporder import CAM, SCORE, DAS, NoGAM
 
-
-experiment = "acsunemployment"
-experiment_name = "unemployment"
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument(
+        "--experiment",
+        default="diabetes_readmission",
+        help="Experiment to run. Overridden when debug=True.",
+    )
+args = parser.parse_args()
+experiment_name = args
 
 # assume additive gaussian noise model
 data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
