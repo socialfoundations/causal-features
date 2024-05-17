@@ -233,13 +233,6 @@ for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
 # for index in range(COLLEGE_SCORECARD_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("college_scorecard_random_test_" + f"{index}")
 
-
-8, 48, 56, 62, 83, 87, 97, 98, 120, 121, 128, 149, 151, 172, 179, 185, 191, 192, 196, 201, 218, 219, 221, 223, 232, 241, 247, 255, 256, 271, 290, 292, 298, 331, 336, 371, 392, 397, 408, 416, 418, 425, 431, 439, 443, 448, 450, 455, 461, 464, 497, 499
-
-
-
-
-
 ################################################################################
 # Task for invariant causal prediction
 ################################################################################
