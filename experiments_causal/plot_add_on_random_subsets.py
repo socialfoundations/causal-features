@@ -176,7 +176,7 @@ def get_results_random_subsets(experiment_name: str) -> pd.DataFrame:
 # def plot_results(experiment_name: str):
     
 experiments = [
-    # "acsfoodstamps",
+    "acsfoodstamps",
     "acsincome",
     "acspubcov",
     "acsunemployment",
@@ -194,11 +194,10 @@ experiments = [
     "sipp",
 ]
 
-m = 2
 
 for index, experiment_name in enumerate(experiments):
     sns.set_style("white")
-    if index % m == 0:
+    if index % 4 == 0:
         fig = plt.figure(figsize=[5.5, 7])
         (subfig1, subfig2, subfig3, subfig4) = fig.subfigures(4, 1, hspace=0.5)  # create 4x1 subfigures
 
@@ -218,229 +217,268 @@ for index, experiment_name in enumerate(experiments):
         )  # create 1x4 subplots on subfig2
         axes = (ax1, ax2, ax3, ax4)
 
-    subfig = subfigs[index % m]
-    subfig.subplots_adjust(wspace=0.4, bottom=0.3)
-    ax = axes[index % m]
-    subfig.suptitle(dic_title[experiment_name], fontsize=9)  # set suptitle for subfig1
-    # ax.set_title(dic_title[experiment_name], fontsize=9)  # set suptitle for subfig1
-    #############################################################################
-    # plot errorbars for random features
-    #############################################################################
-    eval_all_random = get_results_random_subsets(experiment_name)
+        subfig = subfigs[index % 4]
+        subfig.subplots_adjust(wspace=0.4, bottom=0.3)
+        ax = axes[index % 4]
+        subfig.suptitle(dic_title[experiment_name], fontsize=9)  # set suptitle for subfig1
+        ax.set_title(dic_title[experiment_name], fontsize=9)  # set suptitle for subfig1
+        #############################################################################
+        # plot errorbars for random features
+        #############################################################################
+        eval_all_random = get_results_random_subsets(experiment_name)
 
-    for set in eval_all_random["features"].unique():
-        eval_plot = eval_all_random[eval_all_random["features"] == set]
-        eval_plot.sort_values("id_test", inplace=True)
-        # Calculate the pareto set
-        points = eval_plot[["id_test", "ood_test"]]
-        mask = paretoset(points, sense=["max", "max"])
-        markers = eval_plot[mask]
+        for set in eval_all_random["features"].unique():
+            eval_plot = eval_all_random[eval_all_random["features"] == set]
+            eval_plot.sort_values("id_test", inplace=True)
+            # Calculate the pareto set
+            points = eval_plot[["id_test", "ood_test"]]
+            mask = paretoset(points, sense=["max", "max"])
+            markers = eval_plot[mask]
+            errors = ax.errorbar(
+                x=markers["id_test"],
+                y=markers["ood_test"],
+                xerr=markers["id_test_ub"] - markers["id_test"],
+                yerr=markers["ood_test_ub"] - markers["ood_test"],
+                fmt="*",
+                color=plt.cm.Paired(1),
+                ecolor="#78add2",
+                markersize=markersize,
+                capsize=capsize,
+            )
+
+        eval_all = get_results(experiment_name)
+
+        eval_constant = eval_all[eval_all["features"] == "constant"]
+        dic_shift_acc = {}
+
+        ax.xaxis.set_major_formatter(FormatStrFormatter("%.3f"))
+        ax.yaxis.set_major_formatter(FormatStrFormatter("%.3f"))
+
+        ax.set_xlabel(f"In-domain accuracy")
+        ax.set_ylabel(f"Out-of-domain\naccuracy")
+
+        #############################################################################
+        # plot errorbars for constant
+        #############################################################################
         errors = ax.errorbar(
-            x=markers["id_test"],
-            y=markers["ood_test"],
-            xerr=markers["id_test_ub"] - markers["id_test"],
-            yerr=markers["ood_test_ub"] - markers["ood_test"],
-            fmt="*",
-            color=plt.cm.Paired(1),
-            ecolor="#78add2",
-            markersize=markersize,
-            capsize=capsize,
-        )
-
-    eval_all = get_results(experiment_name)
-
-    eval_constant = eval_all[eval_all["features"] == "constant"]
-    dic_shift_acc = {}
-
-    ax.xaxis.set_major_formatter(FormatStrFormatter("%.3f"))
-    ax.yaxis.set_major_formatter(FormatStrFormatter("%.3f"))
-
-    ax.set_xlabel(f"In-domain accuracy")
-    ax.set_ylabel(f"Out-of-domain\naccuracy")
-
-    #############################################################################
-    # plot errorbars for constant
-    #############################################################################
-    errors = ax.errorbar(
-        x=eval_constant["id_test"],
-        y=eval_constant["ood_test"],
-        xerr=eval_constant["id_test_ub"] - eval_constant["id_test"],
-        yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
-        fmt="X",
-        color=color_constant,
-        ecolor=color_error,
-        markersize=markersize,
-        capsize=capsize,
-        label="constant",
-    )
-    # get pareto set for shift vs accuracy
-    shift_acc = eval_constant
-    shift_acc["type"] = "constant"
-    shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
-    dic_shift_acc["constant"] = shift_acc
-
-    #############################################################################
-    # plot errorbars for causal features
-    #############################################################################
-    eval_plot = eval_all[eval_all["features"] == "causal"]
-    eval_plot.sort_values("id_test", inplace=True)
-    # Calculate the pareto set
-    points = eval_plot[["id_test", "ood_test"]]
-    mask = paretoset(points, sense=["max", "max"])
-    markers = eval_plot[mask]
-    markers = markers[markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
-    errors = ax.errorbar(
-        x=markers["id_test"],
-        y=markers["ood_test"],
-        xerr=markers["id_test_ub"] - markers["id_test"],
-        yerr=markers["ood_test_ub"] - markers["ood_test"],
-        fmt="o",
-        color=color_causal,
-        ecolor=color_error,
-        markersize=markersize,
-        capsize=capsize,
-        label="causal",
-    )
-    # get pareto set for shift vs accuracy
-    shift_acc = eval_plot[
-        eval_plot["ood_test"] == eval_plot["ood_test"].max()
-    ].drop_duplicates()
-    shift_acc["type"] = "causal"
-    shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
-    dic_shift_acc["causal"] = shift_acc
-    #############################################################################
-    # plot errorbars for arguablycausal features
-    #############################################################################
-    if (eval_all["features"] == "arguablycausal").any():
-        eval_plot = eval_all[eval_all["features"] == "arguablycausal"]
-        eval_plot.sort_values("id_test", inplace=True)
-        # Calculate the pareto set
-        points = eval_plot[["id_test", "ood_test"]]
-        mask = paretoset(points, sense=["max", "max"])
-        markers = eval_plot[mask]
-        markers = markers[
-            markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
-        ]
-        errors = ax.errorbar(
-            x=markers["id_test"],
-            y=markers["ood_test"],
-            xerr=markers["id_test_ub"] - markers["id_test"],
-            yerr=markers["ood_test_ub"] - markers["ood_test"],
-            fmt="D",
-            color=color_arguablycausal,
+            x=eval_constant["id_test"],
+            y=eval_constant["ood_test"],
+            xerr=eval_constant["id_test_ub"] - eval_constant["id_test"],
+            yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
+            fmt="X",
+            color=color_constant,
             ecolor=color_error,
             markersize=markersize,
             capsize=capsize,
-            label="arguably\ncausal",
+            label="constant",
+        )
+        # get pareto set for shift vs accuracy
+        shift_acc = eval_constant
+        shift_acc["type"] = "constant"
+        shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
+        dic_shift_acc["constant"] = shift_acc
+
+        #############################################################################
+        # plot errorbars for causal features
+        #############################################################################
+        eval_plot = eval_all[eval_all["features"] == "causal"]
+        eval_plot.sort_values("id_test", inplace=True)
+        # Calculate the pareto set
+        points = eval_plot[["id_test", "ood_test"]]
+        mask = paretoset(points, sense=["max", "max"])
+        markers = eval_plot[mask]
+        markers = markers[markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
+        errors = ax.errorbar(
+            x=markers["id_test"],
+            y=markers["ood_test"],
+            xerr=markers["id_test_ub"] - markers["id_test"],
+            yerr=markers["ood_test_ub"] - markers["ood_test"],
+            fmt="o",
+            color=color_causal,
+            ecolor=color_error,
+            markersize=markersize,
+            capsize=capsize,
+            label="causal",
         )
         # get pareto set for shift vs accuracy
         shift_acc = eval_plot[
             eval_plot["ood_test"] == eval_plot["ood_test"].max()
         ].drop_duplicates()
-        shift_acc["type"] = "arguablycausal"
+        shift_acc["type"] = "causal"
         shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
-        dic_shift_acc["arguablycausal"] = shift_acc
+        dic_shift_acc["causal"] = shift_acc
+        #############################################################################
+        # plot errorbars for arguablycausal features
+        #############################################################################
+        if (eval_all["features"] == "arguablycausal").any():
+            eval_plot = eval_all[eval_all["features"] == "arguablycausal"]
+            eval_plot.sort_values("id_test", inplace=True)
+            # Calculate the pareto set
+            points = eval_plot[["id_test", "ood_test"]]
+            mask = paretoset(points, sense=["max", "max"])
+            markers = eval_plot[mask]
+            markers = markers[
+                markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
+            ]
+            errors = ax.errorbar(
+                x=markers["id_test"],
+                y=markers["ood_test"],
+                xerr=markers["id_test_ub"] - markers["id_test"],
+                yerr=markers["ood_test_ub"] - markers["ood_test"],
+                fmt="D",
+                color=color_arguablycausal,
+                ecolor=color_error,
+                markersize=markersize,
+                capsize=capsize,
+                label="arguably\ncausal",
+            )
+            # get pareto set for shift vs accuracy
+            shift_acc = eval_plot[
+                eval_plot["ood_test"] == eval_plot["ood_test"].max()
+            ].drop_duplicates()
+            shift_acc["type"] = "arguablycausal"
+            shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
+            dic_shift_acc["arguablycausal"] = shift_acc
 
-    #############################################################################
-    # plot errorbars for all features
-    #############################################################################
-    eval_plot = eval_all[eval_all["features"] == "all"]
-    eval_plot.sort_values("id_test", inplace=True)
-    # Calculate the pareto set
-    points = eval_plot[["id_test", "ood_test"]]
-    mask = paretoset(points, sense=["max", "max"])
-    markers = eval_plot[mask]
-    markers = markers[markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
-    errors = ax.errorbar(
-        x=markers["id_test"],
-        y=markers["ood_test"],
-        xerr=markers["id_test_ub"] - markers["id_test"],
-        yerr=markers["ood_test_ub"] - markers["ood_test"],
-        fmt="s",
-        color=color_all,
-        ecolor=color_error,
-        markersize=markersize,
-        capsize=capsize,
-        label="all",
-    )
-    # get pareto set for shift vs accuracy
-    shift_acc = eval_plot[
-        eval_plot["ood_test"] == eval_plot["ood_test"].max()
-    ].drop_duplicates()
-    shift_acc["type"] = "all"
-    shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
-    dic_shift_acc["all"] = shift_acc
+        #############################################################################
+        # plot errorbars for all features
+        #############################################################################
+        eval_plot = eval_all[eval_all["features"] == "all"]
+        eval_plot.sort_values("id_test", inplace=True)
+        # Calculate the pareto set
+        points = eval_plot[["id_test", "ood_test"]]
+        mask = paretoset(points, sense=["max", "max"])
+        markers = eval_plot[mask]
+        markers = markers[markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
+        errors = ax.errorbar(
+            x=markers["id_test"],
+            y=markers["ood_test"],
+            xerr=markers["id_test_ub"] - markers["id_test"],
+            yerr=markers["ood_test_ub"] - markers["ood_test"],
+            fmt="s",
+            color=color_all,
+            ecolor=color_error,
+            markersize=markersize,
+            capsize=capsize,
+            label="all",
+        )
+        # get pareto set for shift vs accuracy
+        shift_acc = eval_plot[
+            eval_plot["ood_test"] == eval_plot["ood_test"].max()
+        ].drop_duplicates()
+        shift_acc["type"] = "all"
+        shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
+        dic_shift_acc["all"] = shift_acc
 
-    #############################################################################
-    # plot pareto dominated area for constant
-    #############################################################################
-    xmin, xmax = ax.set_xlim()
-    ymin, ymax = ax.set_ylim()
-    ax.plot(
-        [xmin, eval_constant["id_test"].values[0]],
-        [eval_constant["ood_test"].values[0], eval_constant["ood_test"].values[0]],
-        color=color_constant,
-        linestyle=(0, (1, 1)),
-        linewidth=linewidth_bound,
-    )
-    ax.plot(
-        [eval_constant["id_test"].values[0], eval_constant["id_test"].values[0]],
-        [ymin, eval_constant["ood_test"].values[0]],
-        color=color_constant,
-        linestyle=(0, (1, 1)),
-        linewidth=linewidth_bound,
-    )
-    ax.fill_between(
-        [xmin, eval_constant["id_test"].values[0]],
-        [ymin, ymin],
-        [eval_constant["ood_test"].values[0], eval_constant["ood_test"].values[0]],
-        color=color_constant,
-        alpha=0.05,
-    )
+        #############################################################################
+        # plot pareto dominated area for constant
+        #############################################################################
+        xmin, xmax = ax.set_xlim()
+        ymin, ymax = ax.set_ylim()
+        ax.plot(
+            [xmin, eval_constant["id_test"].values[0]],
+            [eval_constant["ood_test"].values[0], eval_constant["ood_test"].values[0]],
+            color=color_constant,
+            linestyle=(0, (1, 1)),
+            linewidth=linewidth_bound,
+        )
+        ax.plot(
+            [eval_constant["id_test"].values[0], eval_constant["id_test"].values[0]],
+            [ymin, eval_constant["ood_test"].values[0]],
+            color=color_constant,
+            linestyle=(0, (1, 1)),
+            linewidth=linewidth_bound,
+        )
+        ax.fill_between(
+            [xmin, eval_constant["id_test"].values[0]],
+            [ymin, ymin],
+            [eval_constant["ood_test"].values[0], eval_constant["ood_test"].values[0]],
+            color=color_constant,
+            alpha=0.05,
+        )
 
-    #############################################################################
-    # plot pareto dominated area for causal features
-    #############################################################################
-    eval_plot = eval_all[eval_all["features"] == "causal"]
-    eval_plot.sort_values("id_test", inplace=True)
-    # Calculate the pareto set
-    points = eval_plot[["id_test", "ood_test"]]
-    mask = paretoset(points, sense=["max", "max"])
-    points = points[mask]
-    points = points[points["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
-    markers = eval_plot[mask]
-    markers = markers[markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
-    # get extra points for the plot
-    new_row = pd.DataFrame(
-        {
-            "id_test": [xmin, max(points["id_test"])],
-            "ood_test": [max(points["ood_test"]), ymin],
-        },
-    )
-    points = pd.concat([points, new_row], ignore_index=True)
-    points.sort_values("id_test", inplace=True)
-    ax.plot(
-        points["id_test"],
-        points["ood_test"],
-        color=color_causal,
-        linestyle=(0, (1, 1)),
-        linewidth=linewidth_bound,
-    )
-    new_row = pd.DataFrame(
-        {"id_test": [xmin], "ood_test": [ymin]},
-    )
-    points = pd.concat([points, new_row], ignore_index=True)
-    points = points.to_numpy()
-    hull = ConvexHull(points)
-    ax.fill(
-        points[hull.vertices, 0], points[hull.vertices, 1], color=color_causal, alpha=0.05
-    )
+        #############################################################################
+        # plot pareto dominated area for causal features
+        #############################################################################
+        eval_plot = eval_all[eval_all["features"] == "causal"]
+        eval_plot.sort_values("id_test", inplace=True)
+        # Calculate the pareto set
+        points = eval_plot[["id_test", "ood_test"]]
+        mask = paretoset(points, sense=["max", "max"])
+        points = points[mask]
+        points = points[points["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
+        markers = eval_plot[mask]
+        markers = markers[markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
+        # get extra points for the plot
+        new_row = pd.DataFrame(
+            {
+                "id_test": [xmin, max(points["id_test"])],
+                "ood_test": [max(points["ood_test"]), ymin],
+            },
+        )
+        points = pd.concat([points, new_row], ignore_index=True)
+        points.sort_values("id_test", inplace=True)
+        ax.plot(
+            points["id_test"],
+            points["ood_test"],
+            color=color_causal,
+            linestyle=(0, (1, 1)),
+            linewidth=linewidth_bound,
+        )
+        new_row = pd.DataFrame(
+            {"id_test": [xmin], "ood_test": [ymin]},
+        )
+        points = pd.concat([points, new_row], ignore_index=True)
+        points = points.to_numpy()
+        hull = ConvexHull(points)
+        ax.fill(
+            points[hull.vertices, 0], points[hull.vertices, 1], color=color_causal, alpha=0.05
+        )
 
-    #############################################################################
-    # plot pareto dominated area for arguablycausal features
-    #############################################################################
-    if (eval_all["features"] == "arguablycausal").any():
-        eval_plot = eval_all[eval_all["features"] == "arguablycausal"]
+        #############################################################################
+        # plot pareto dominated area for arguablycausal features
+        #############################################################################
+        if (eval_all["features"] == "arguablycausal").any():
+            eval_plot = eval_all[eval_all["features"] == "arguablycausal"]
+            eval_plot.sort_values("id_test", inplace=True)
+            # Calculate the pareto set
+            points = eval_plot[["id_test", "ood_test"]]
+            mask = paretoset(points, sense=["max", "max"])
+            points = points[mask]
+            points = points[points["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
+            # get extra points for the plot
+            new_row = pd.DataFrame(
+                {
+                    "id_test": [xmin, max(points["id_test"])],
+                    "ood_test": [max(points["ood_test"]), ymin],
+                },
+            )
+            points = pd.concat([points, new_row], ignore_index=True)
+            points.sort_values("id_test", inplace=True)
+            ax.plot(
+                points["id_test"],
+                points["ood_test"],
+                color=color_arguablycausal,
+                linestyle=(0, (1, 1)),
+                linewidth=linewidth_bound,
+            )
+            new_row = pd.DataFrame(
+                {"id_test": [xmin], "ood_test": [ymin]},
+            )
+            points = pd.concat([points, new_row], ignore_index=True)
+            points = points.to_numpy()
+            hull = ConvexHull(points)
+            ax.fill(
+                points[hull.vertices, 0],
+                points[hull.vertices, 1],
+                color=color_arguablycausal,
+                alpha=0.05,
+            )
+
+        #############################################################################
+        # plot pareto dominated area for all features
+        #############################################################################
+        eval_plot = eval_all[eval_all["features"] == "all"]
         eval_plot.sort_values("id_test", inplace=True)
         # Calculate the pareto set
         points = eval_plot[["id_test", "ood_test"]]
@@ -459,7 +497,7 @@ for index, experiment_name in enumerate(experiments):
         ax.plot(
             points["id_test"],
             points["ood_test"],
-            color=color_arguablycausal,
+            color=color_all,
             linestyle=(0, (1, 1)),
             linewidth=linewidth_bound,
         )
@@ -470,72 +508,47 @@ for index, experiment_name in enumerate(experiments):
         points = points.to_numpy()
         hull = ConvexHull(points)
         ax.fill(
-            points[hull.vertices, 0],
-            points[hull.vertices, 1],
-            color=color_arguablycausal,
-            alpha=0.05,
+            points[hull.vertices, 0], points[hull.vertices, 1], color=color_all, alpha=0.05
         )
 
-    #############################################################################
-    # plot pareto dominated area for all features
-    #############################################################################
-    eval_plot = eval_all[eval_all["features"] == "all"]
-    eval_plot.sort_values("id_test", inplace=True)
-    # Calculate the pareto set
-    points = eval_plot[["id_test", "ood_test"]]
-    mask = paretoset(points, sense=["max", "max"])
-    points = points[mask]
-    points = points[points["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)]
-    # get extra points for the plot
-    new_row = pd.DataFrame(
-        {
-            "id_test": [xmin, max(points["id_test"])],
-            "ood_test": [max(points["ood_test"]), ymin],
-        },
-    )
-    points = pd.concat([points, new_row], ignore_index=True)
-    points.sort_values("id_test", inplace=True)
-    ax.plot(
-        points["id_test"],
-        points["ood_test"],
-        color=color_all,
-        linestyle=(0, (1, 1)),
-        linewidth=linewidth_bound,
-    )
-    new_row = pd.DataFrame(
-        {"id_test": [xmin], "ood_test": [ymin]},
-    )
-    points = pd.concat([points, new_row], ignore_index=True)
-    points = points.to_numpy()
-    hull = ConvexHull(points)
-    ax.fill(
-        points[hull.vertices, 0], points[hull.vertices, 1], color=color_all, alpha=0.05
-    )
+        #############################################################################
+        # Add legend & diagonal, save plot
+        #############################################################################
+        # Plot the diagonal line
+        start_lim = max(xmin, ymin)
+        end_lim = min(xmax, ymax)
+        ax.plot([start_lim, end_lim], [start_lim, end_lim], color=color_error)
 
-    #############################################################################
-    # Add legend & diagonal, save plot
-    #############################################################################
-    # Plot the diagonal line
-    start_lim = max(xmin, ymin)
-    end_lim = min(xmax, ymax)
-    ax.plot([start_lim, end_lim], [start_lim, end_lim], color=color_error)
 
-    if index % m == (m-1):
         fig.legend(
-        list(zip(list_color_results, list_mak_results)),
-        list_lab_results,
-        handler_map={tuple: MarkerHandler()},
-        loc="upper center",
-        bbox_to_anchor=(0.5, 0),
-        fancybox=True,
-        ncol=6,
+            list(zip(list_color_results, list_mak_results)),
+            list_lab_results,
+            handler_map={tuple: MarkerHandler()},
+            loc="upper center",
+            bbox_to_anchor=(0.5, 0),
+            fancybox=True,
+            ncol=6,
         )
 
         fig.savefig(
-            str(Path(__file__).parents[0] / f"plots_add_on/plot_random_subsets_{int(index/4)}.pdf"),
+            str(Path(__file__).parents[0] / f"plots_add_on/plot_random_subsets_{experiment_name}.pdf"),
             bbox_inches="tight",
         )
 
-        fig.show()
+        if index % 4 == 3:
+            fig.legend(
+            list(zip(list_color_results, list_mak_results)),
+            list_lab_results,
+            handler_map={tuple: MarkerHandler()},
+            loc="upper center",
+            bbox_to_anchor=(0.5, 0),
+            fancybox=True,
+            ncol=6,
+            )
 
-        m=4
+            fig.savefig(
+                str(Path(__file__).parents[0] / f"plots_add_on/plot_random_subsets_{int(index/4)}.pdf"),
+                bbox_inches="tight",
+            )
+
+            fig.show()

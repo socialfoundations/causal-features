@@ -26,6 +26,8 @@ experiment_name = args
 
 # assume additive gaussian noise model
 data = pd.read_csv(f"/home/vnastl/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
+# data = pd.read_csv(f"/Users/vnastl/Seafile/My Library/mpi project causal vs noncausal/causal-features/tmp_preprocessed/{experiment_name}.csv").astype("float32")
+
 data = data.sample(n=1000, random_state=0)
 data = data.loc[:,data.apply(pd.Series.nunique) != 1]
 data.drop_duplicates(inplace=True)
