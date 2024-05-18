@@ -18,7 +18,7 @@ if __name__ == "__main__":
     import classad
 
 # Number of task to run per algorithm, per dataset
-N_TRIALS    = 10
+N_TRIALS    = 50
 # N_TRIALS = 50
 # N_TRIALS    = 100
 
