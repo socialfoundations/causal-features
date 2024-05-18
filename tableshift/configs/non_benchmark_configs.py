@@ -1629,6 +1629,8 @@ for index in range(PHYSIONET_FEATURES_RANDOM_SUBSETS_NUMBER):
         tabular_dataset_kwargs={"name": "physionet_random_test_"+f"{index}"})
 
 for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
+    list_passthrough = [feature.name for feature in ASSISTMENTS_FEATURES_RANDOM_SUBSETS[index]
+                        if feature.name in ["skill_id", "bottom_hint", "first_action"]]
     NON_BENCHMARK_CONFIGS["assistments_random_test_"+f"{index}"] = ExperimentConfig(
         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
@@ -1647,8 +1649,7 @@ for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
                                                          7594.0]),
         grouper=None,
         preprocessor_config=PreprocessorConfig(
-            passthrough_columns=[
-                "skill_id", "bottom_hint", "first_action"],
+            passthrough_columns=list_passthrough,
         ),
         tabular_dataset_kwargs={},
     )
