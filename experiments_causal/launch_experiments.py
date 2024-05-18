@@ -198,8 +198,8 @@ TASKS = [
 # for index in range(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("acspubcov_random_test_" + f"{index}")
 
-for index in range(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS_NUMBER):
-    TASKS.append("acsfoodstamps_random_test_" + f"{index}")
+# for index in range(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     TASKS.append("acsfoodstamps_random_test_" + f"{index}")
 
 # for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("brfss_diabetes_random_test_" + f"{index}")
@@ -213,20 +213,18 @@ for index in range(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS_NUMBER):
 # for index in range(SIPP_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("sipp_random_test_" + f"{index}")
 
-
 # for index in range(DIABETES_READMISSION_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("diabetes_readmission_random_test_" + f"{index}")
 
 # for index in range(PHYSIONET_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("physionet_random_test_" + f"{index}")
 
-for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
-    if index not in [8, 48, 56, 62, 83, 87, 97, 98, 120, 121, 128, 149, 151, 172, 179, 185, 191, 192, 196, 201, 218, 219, 221, 223, 232, 241, 247, 255, 256, 271, 290, 292, 298, 331, 336, 371, 392, 397, 408, 416, 418, 425, 431, 439, 443, 448, 450, 455, 461, 464, 497, 499]:
-        TASKS.append("assistments_random_test_" + f"{index}")
+# for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     # if index not in [8, 48, 56, 62, 83, 87, 97, 98, 120, 121, 128, 149, 151, 172, 179, 185, 191, 192, 196, 201, 218, 219, 221, 223, 232, 241, 247, 255, 256, 271, 290, 292, 298, 331, 336, 371, 392, 397, 408, 416, 418, 425, 431, 439, 443, 448, 450, 455, 461, 464, 497, 499]:
+#     TASKS.append("assistments_random_test_" + f"{index}")
 
-
-for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
-    TASKS.append("nhanes_lead_random_test_" + f"{index}")
+# for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     TASKS.append("nhanes_lead_random_test_" + f"{index}")
 
 # for index in range(MEPS_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("meps_random_test_" + f"{index}")
@@ -235,15 +233,14 @@ for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("college_scorecard_random_test_" + f"{index}")
 
 ################################################################################
-# Task for invariant causal prediction
+# Task for causal + anticausal features
 ################################################################################
-# TASKS.append("acsunemployment_icp")
+TASKS.append("acsincome_causal_anticausal")
+TASKS.append("acsunemployment_causal_anticausal")
+TASKS.append("brfss_diabetes_causal_anticausal")
+TASKS.append("brfss_blood_pressure_causal_anticausal")
 
-################################################################################
-# Task for pc/fci causal discovery
-################################################################################
-# TASKS.append("brfss_diabetes_pc")
-# TASKS.append("acsunemployment_pc")
+
 
 # Useful directories
 if __name__ == "__main__":

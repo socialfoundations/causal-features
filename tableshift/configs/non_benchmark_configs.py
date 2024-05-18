@@ -484,6 +484,16 @@ CAUSAL_BENCHMARK_CONFIGS = {
         grouper=None,
         preprocessor_config=PreprocessorConfig(),
         tabular_dataset_kwargs={"acs_task": "acsincome"}),
+    "acsincome_causal_anticausal": ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname="DIVISION",
+                                domain_split_ood_values=['01']),
+        grouper=Grouper({"RAC1P": [1, ], "SEX": [1, ]}, drop=False),
+        preprocessor_config=PreprocessorConfig(),
+        tabular_dataset_kwargs={"acs_task": "acsincome"}),
 
     "acspubcov_causal": ExperimentConfig(
         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
@@ -548,6 +558,20 @@ CAUSAL_BENCHMARK_CONFIGS = {
                                                          '09', '10', '11', '12',
                                                          '13', '14', '15']),
         grouper=None,
+        preprocessor_config=PreprocessorConfig(),
+        tabular_dataset_kwargs={"acs_task": "acsunemployment"}),
+    "acsunemployment_causal_anticausal": ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname='SCHL',
+                                # No high school diploma vs. GED/diploma or higher.
+                                domain_split_ood_values=['01', '02', '03', '04',
+                                                         '05', '06', '07', '08',
+                                                         '09', '10', '11', '12',
+                                                         '13', '14', '15']),
+        grouper=Grouper({"RAC1P": [1, ], "SEX": [1, ]}, drop=False),
         preprocessor_config=PreprocessorConfig(),
         tabular_dataset_kwargs={"acs_task": "acsunemployment"}),
 
@@ -620,6 +644,20 @@ CAUSAL_BENCHMARK_CONFIGS = {
                                 "task": "blood_pressure",
                                 "years": BRFSS_YEARS},
     ),
+    "brfss_blood_pressure_causal_anticausal": ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname="BMI5CAT",
+                                # OOD values: [1 underweight, 2 normal weight], [3 overweight, 4 obese]
+                                domain_split_ood_values=['3.0', '4.0']),
+        grouper=Grouper({"PRACE1": [1, ], "SEX": [1, ]}, drop=False),
+        preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
+        tabular_dataset_kwargs={"name": "brfss_blood_pressure_arguablycausal",
+                                "task": "blood_pressure",
+                                "years": BRFSS_YEARS},
+    ),
 
     "brfss_diabetes_causal": ExperimentConfig(
         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
@@ -658,6 +696,19 @@ CAUSAL_BENCHMARK_CONFIGS = {
         grouper=None,
         preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
         tabular_dataset_kwargs={"name": "brfss_diabetes_anticausal",
+                                "task": "diabetes", "years": BRFSS_YEARS},
+    ),
+    "brfss_diabetes_causal_anticausal": ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname="PRACE1",
+                                domain_split_ood_values=[2, 3, 4, 5, 6],
+                                domain_split_id_values=[1, ]),
+        grouper=Grouper({"SEX": [1, ]}, drop=False),
+        preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
+        tabular_dataset_kwargs={"name": "brfss_diabetes_arguablycausal",
                                 "task": "diabetes", "years": BRFSS_YEARS},
     ),
 

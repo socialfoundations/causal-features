@@ -43,6 +43,9 @@ _TASK_REGISTRY: Dict[str, TaskConfig] = {
     "acsincome_anticausal":
         TaskConfig(ACSDataSource,
                    ACS_INCOME_FEATURES_ANTICAUSAL),
+    "acsincome_causal_anticausal":
+        TaskConfig(ACSDataSource,
+                   ACS_INCOME_FEATURES_CAUSAL_ANTICAUSAL),
     "acsfoodstamps":
         TaskConfig(ACSDataSource,
                    ACS_FOODSTAMPS_FEATURES + ACS_SHARED_FEATURES),
@@ -73,6 +76,9 @@ _TASK_REGISTRY: Dict[str, TaskConfig] = {
     "acsunemployment_anticausal":
         TaskConfig(ACSDataSource,
                    ACS_UNEMPLOYMENT_FEATURES_ANTICAUSAL),
+    "acsunemployment_causal_anticausal":
+        TaskConfig(ACSDataSource,
+                   ACS_UNEMPLOYMENT_FEATURES_CAUSAL_ANTICAUSAL),
     "adult":
         TaskConfig(AdultDataSource, ADULT_FEATURES),
     "anes":
@@ -95,6 +101,8 @@ _TASK_REGISTRY: Dict[str, TaskConfig] = {
         TaskConfig(BRFSSDataSource, BRFSS_DIABETES_FEATURES_ARGUABLYCAUSAL),
     "brfss_diabetes_anticausal":
         TaskConfig(BRFSSDataSource, BRFSS_DIABETES_FEATURES_ANTICAUSAL),
+    "brfss_diabetes_causal_anticausal":
+        TaskConfig(BRFSSDataSource, BRFSS_DIABETES_FEATURES_CAUSAL_ANTICAUSAL),
     "brfss_blood_pressure":
         TaskConfig(BRFSSDataSource, BRFSS_BLOOD_PRESSURE_FEATURES),
     "brfss_blood_pressure_causal":
@@ -103,6 +111,8 @@ _TASK_REGISTRY: Dict[str, TaskConfig] = {
         TaskConfig(BRFSSDataSource, BRFSS_BLOOD_PRESSURE_FEATURES_ARGUABLYCAUSAL),
     "brfss_blood_pressure_anticausal":
         TaskConfig(BRFSSDataSource, BRFSS_BLOOD_PRESSURE_FEATURES_ANTICAUSAL),
+    "brfss_blood_pressure_causal_anticausal":
+        TaskConfig(BRFSSDataSource, BRFSS_BLOOD_PRESSURE_FEATURES_CAUSAL_ANTICAUSAL),
     "communities_and_crime":
         TaskConfig(CommunitiesAndCrimeDataSource, CANDC_FEATURES),
     "compas":

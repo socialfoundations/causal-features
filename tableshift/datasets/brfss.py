@@ -1088,6 +1088,225 @@ BRFSS_DIABETES_FEATURES_ANTICAUSAL = FeatureList([
             }),
 ])
 
+
+BRFSS_DIABETES_FEATURES_CAUSAL_ANTICAUSAL = FeatureList([
+    ################ Target ################
+    Feature("DIABETES", float,
+            '(Ever told) you have diabetes',
+            name_extended='(Ever told) you have diabetes',
+            is_target=True,
+            na_values=(7, 9),
+            # value_mapping={
+            #     1: 'Yes',
+            #     2: 'Yes but female told only during pregnancy',
+            #     3: 'No',
+            #     4: 'No, prediabetes or borderline diabetes',
+            #     7: 'Don’t know / Not Sure',
+            #     9: 'Refused'
+            # }
+            ),
+    # Derived feature for year.
+    Feature("IYEAR", float, "Year of BRFSS dataset.",
+            name_extended="Survey year"),
+    # ################ Demographics/sensitive attributes. ################
+    Feature("MEDCOST", cat_dtype, """Was there a time in the past 12 months 
+    when you needed to see a doctor but could not because of cost?""",
+            name_extended="Answer to the question 'Was there a time in the "
+                          "past 12 months when you needed to see a doctor but "
+                          "could not because of cost?'",
+            na_values=(7, 9),
+            value_mapping={
+                1: "Yes", 2: "No", 7: "Don't know/not sure", 9: "Refused",
+            }),
+    # Preferred race category; note that ==1 is equivalent to
+    # "White non-Hispanic race group" variable _RACEG21
+    Feature("PRACE1", float, """Preferred race category.""",
+            name_extended="Preferred race category",
+            na_values=(7., 8., 77., 99.),
+            value_mapping={
+                1: 'White',
+                2: 'Black or African American',
+                3: 'American Indian or Alaskan Native',
+                4: 'Asian', 5: 'Native Hawaiian or other Pacific Islander',
+                6: 'Other race',
+                7: 'No preferred race',
+                8: 'Multiracial but preferred race not answered',
+                77: 'Don’t know/Not sure', 9: 'refused', }),
+    Feature("SEX", float, """Indicate sex of respondent.""",
+            name_extended="Sex of respondent",
+            value_mapping={1: "Male", 2: "Female"}),
+    # Below are a set of indicators for known risk factors for diabetes.
+    ################ General health ################
+    Feature("PHYSHLTH", float,
+            "For how many days during the past 30 days"
+            " was your physical health not good?",
+            name_extended="Number of days during the past 30 days where "
+                          "physical health was not good",
+            na_values=(77, 99),
+            note="""Values: 1 - 30 Number of 
+            days, 88 None, 77 Don’t know/Not sure, 99 Refused, BLANK Not 
+            asked or Missing"""),
+    ################ BMI/Obesity ################
+    # Calculated Body Mass Index (BMI)
+    Feature("BMI5", float, """Computed Body Mass Index (BMI)""",
+            name_extended='Body Mass Index (BMI)',
+            note="""Values: 1 - 9999 1 or greater - Notes: WTKG3/(HTM4*HTM4) 
+            (Has 2 implied decimal places); BLANK: Don’t 
+            know/Refused/Missing."""),
+    # Four-categories of Body Mass Index (BMI)
+    BMI5CAT_FEATURE,
+    ################ Smoking ################
+    *BRFSS_SMOKE_FEATURES,
+    ################ Diet ################
+    *BRFSS_DIET_FEATURES,
+    ################ Alcohol Consumption ################
+    *BRFSS_ALCOHOL_FEATURES,
+    ################ Exercise ################
+    PHYSICAL_ACTIVITY_FEATURE,
+    ################ Household income ################
+    Feature("INCOME", cat_dtype,
+            """Annual household income from all sources""",
+            name_extended="Annual household income from all sources",
+            na_values=(77, 99),
+            value_mapping={
+                1: 'Less than $10,000',
+                2: 'Less than $15,000 ($10,000 to less than $15,000)',
+                3: 'Less than $20,000 ($15,000 to less than $20,000)',
+                4: 'Less than $25,000 ($20,000 to less than $25,000)',
+                5: 'Less than $35,000 ($25,000 to less than $35,000)',
+                6: 'Less than $50,000 ($35,000 to less than $50,000)',
+                7: 'Less than $75, 000 ($50,000 to less than $75,000)',
+                8: '$75,000 or more (BRFSS 2015-2019) or less than $100,'
+                   '000 ($75,000 to < $100,000) (BRFSS 2021)',
+                9: 'Less than $150,000 ($100,000 to < $150,000)',
+                10: 'Less than $200,000 ($150,000 to < $200,000)',
+                11: '$200,000  or more',
+                77: 'Don’t know/Not sure', 99: 'Refused',
+            }),
+    ################ Marital status ################
+    Feature("MARITAL", cat_dtype,
+            "Marital status",
+            name_extended="Marital status",
+            na_values=(9,),
+            value_mapping={
+                1: 'Married', 2: 'Divorced',
+                3: 'Widowed', 4: 'Separated', 5: 'Never married',
+                6: 'A member of an unmarried couple', 9: 'Refused'
+            }),
+    # Time since last checkup
+    # About how long has it been since you last visited a
+    # doctor for a routine checkup?
+    Feature("CHECKUP1", cat_dtype,
+            """Time since last visit to the doctor for a checkup""",
+            name_extended="Time since last visit to the doctor for a checkup",
+            na_values=(7, 9),
+            value_mapping={
+                1: 'Within past year (anytime < 12 months ago)',
+                2: 'Within past 2 years (1 year but < 2 years ago)',
+                3: 'Within past 5 years (2 years but < 5 years ago)',
+                4: '5 or more years ago',
+                7: "Don’t know/Not sure", 8: 'Never', 9: 'Refuse'},
+            note="""Question: About how long has it been since you last 
+            visited a doctor for a routine checkup? [A routine checkup is a 
+            general physical exam, not an exam for a specific injury, 
+            illness, or condition.] """
+            ),
+    ################ Education ################
+    # highest grade or year of school completed
+    Feature("EDUCA", cat_dtype,
+            "Highest grade or year of school completed",
+            name_extended="Highest grade or year of school completed",
+            note="""Question: What is the highest grade or year of school you 
+            completed?""",
+            na_values=(9,),
+            value_mapping={
+                1: 'Never attended school or only kindergarten',
+                2: 'Grades 1 through 8 (Elementary)',
+                3: 'Grades 9 through 11 (Some high school)',
+                4: 'Grade 12 or GED (High school graduate)',
+                5: 'College 1 year to 3 years (Some college or technical school)',
+                6: 'College 4 years or more (College graduate)', 9: 'Refused'
+            }),
+    ################ Mental health ################
+    # for how many days during the past 30
+    # days was your mental health not good?
+    Feature("MENTHLTH", float,
+            """Now thinking about your mental health, which includes stress, 
+            depression, and problems with emotions, for how many days during 
+            the past 30 days was your mental health not good?""",
+            name_extended="Answer to the question 'for how many days during "
+                          "the past 30 days was your mental health not good?'",
+            na_values=(77, 99),
+            note="""Values: 1 - 30: Number of days, 88: None, 77: Don’t 
+            know/Not sure, 99: Refused."""),
+    # Below are a set of indicators for known risk factors for diabetes.
+    ################ High blood pressure ################
+
+    Feature("HIGH_BLOOD_PRESS", cat_dtype, na_values=(9,),
+            description="Adults who have been told they have high blood "
+                        "pressure by a doctor, nurse, or other health "
+                        "professional.",
+            name_extended="(Ever told) you have high blood pressure",
+            value_mapping={1: 'No', 2: 'Yes',
+                           9: " Don’t know/Not Sure/Refused/Missing"}),
+    ################ High cholesterol ################
+    # Cholesterol check within past five years
+    Feature("CHOL_CHK_PAST_5_YEARS", cat_dtype,
+            "About how long has it been since you last"
+            " had your blood cholesterol checked?",
+            name_extended="Time since last blooc cholesterol check",
+            note="""Aligned version of 'CHOLCHK*' features from 2015-2021; see 
+            _align_chol_chk() below..""",
+            na_values=(9,),
+            value_mapping={
+                1: 'Never',
+                2: 'Within the past year (anytime less than 12 months ago)',
+                3: 'Within the past 2 years (more than 1 year but less than 2 years ago)',
+                4: 'Within the past 5 years (more than 2 years but less than 5 years ago)',
+                5: '5 or more years ago', 7: "Don’t know/Not Sure", 9: 'Refused'
+            }),
+
+    Feature("TOLDHI", cat_dtype,
+            """Have you ever been told by a doctor, nurse or other health 
+            professional that your blood cholesterol is high?""",
+            name_extended="Ever been told you have high blood cholesterol",
+            na_values=(7, 9),
+            value_mapping={
+                1: 'Yes', 2: 'No', 7: "Don’t know/Not Sure", 9: 'Refused',
+            }),
+    ################ Other chronic health conditions ################
+    Feature("CVDSTRK3", cat_dtype,
+            """Ever had a stroke, or been told you had a stroke""",
+            name_extended="Ever had a stroke, or been told you had a stroke",
+            na_values=(7, 9),
+            value_mapping={1: 'Yes', 2: 'No', 7: "Don’t know/Not Sure",
+                           9: 'Refused', }),
+    Feature("MICHD", cat_dtype, """Question: Respondents that have ever 
+    reported having coronary heart disease (CHD) or myocardial infarction ( 
+    MI).""",
+            name_extended="Reports of coronary heart disease (CHD) or "
+                          "myocardial infarction (MI)",
+            value_mapping={
+                1: 'Reported having myocardial infarction or coronary heart '
+                   'disease',
+                2: 'Did not report having myocardial infarction or coronary '
+                   'heart disease',
+            }),
+    ################ Health care coverage ################
+    # Note: we keep missing values (=9) for this column since they are grouped
+    # with respondents aged over 64; otherwise dropping the observations
+    # with this value would exclude all respondents over 64.
+    Feature("HEALTH_COV", cat_dtype,
+            "Respondents aged 18-64 who have any form of health care coverage",
+            name_extended='Current health care coverage',
+            value_mapping={
+                1: 'Have health care coverage',
+                2: 'Do not have health care coverage',
+                9: "Not aged 18-64, Don’t know/Not Sure, Refused or Missing"
+            }),
+])
+
+
 BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS = get_random_subset_add_additional(
     BRFSS_DIABETES_FEATURES.features + BRFSS_SHARED_FEATURES.features, target, domain, k=500, additional=additional)
 BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER = len(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS)
@@ -1333,6 +1552,128 @@ BRFSS_BLOOD_PRESSURE_FEATURES_ANTICAUSAL = FeatureList(features=[
             original codebook values at preprocessing to create a binary 
             target variable).""",
             is_target=True),
+    # Indicators for high blood pressure; see
+    # https://www.nhlbi.nih.gov/health/high-blood-pressure/causes
+    ################ BMI/Obesity ################
+    # Four-categories of Body Mass Index (BMI)
+    BMI5CAT_FEATURE,
+    ################ Other medical conditions ################
+    Feature("CHCSCNCR", cat_dtype,
+            "Have skin cancer or ever told you have skin cancer",
+            name_extended="Have skin cancer or ever told you have skin cancer",
+            na_values=(7, 9),
+            value_mapping={1: 'Yes', 2: 'No', 7: "Don’t know/Not Sure",
+                           9: 'Refused'}),
+    Feature("CHCOCNCR", cat_dtype,
+            "Have any other types of cancer or ever told you have any other "
+            "types of cancer",
+            name_extended="Have any other types of cancer or ever told you "
+                          "have any other types of cancer",
+            na_values=(7, 9),
+            value_mapping={1: 'Yes', 2: 'No', 7: "Don’t know/Not Sure",
+                           9: 'Refused', }),
+])
+
+BRFSS_BLOOD_PRESSURE_FEATURES_CAUSAL_ANTICAUSAL = FeatureList(features=[
+    # Derived feature for year.
+    Feature("IYEAR", float, "Year of BRFSS dataset.",
+            name_extended="Survey year"),
+    Feature("HIGH_BLOOD_PRESS", int,
+            """Have you ever been told by a doctor, nurse or other health 
+            professional that you have high blood pressure? 0: No. 1: Yes. 8: 
+            Don’t know/Not Sure/Refused/Missing (note: we subtract 1 from 
+            original codebook values at preprocessing to create a binary 
+            target variable).""",
+            is_target=True),
+
+    # Indicators for high blood pressure; see
+    # https://www.nhlbi.nih.gov/health/high-blood-pressure/causes
+    ################ BMI/Obesity ################
+    # Four-categories of Body Mass Index (BMI)
+    BMI5CAT_FEATURE,
+    ################ Age ################
+    Feature("AGEG5YR", float, """Fourteen-level age category""",
+            na_values=(14,),
+            name_extended="Age group",
+            value_mapping={
+                1: 'Age 18 to 24', 2: 'Age 25 to 29', 3: ' Age 30 to 34',
+                4: 'Age 35 to 39',
+                5: 'Age 40 to 44', 6: 'Age 45 to 49', 7: 'Age 50 to 54',
+                8: 'Age 55 to 59', 9: 'Age 60 to 64',
+                10: 'Age 65 to 69', 11: 'Age 70 to 74',
+                12: 'Age 75 to 79', 13: 'Age 80 or older',
+                14: 'Don’t know/Refused/Missing'}),
+    ################ Family history and genetics ################
+    # No questions related to this risk factor.
+    ################ Lifestyle habits ################
+    *BRFSS_DIET_FEATURES,
+    *BRFSS_ALCOHOL_FEATURES,
+    PHYSICAL_ACTIVITY_FEATURE,
+    *BRFSS_SMOKE_FEATURES,
+    ################ Medicines ################
+    # No questions related to this risk factor.
+    ################ Other medical conditions ################
+    # 6 in 10 people suffering from diabetes also have high BP
+    # source: https://www.cdc.gov/bloodpressure/risk_factors.htm
+    Feature("DIABETES", float,
+            "Have diabetes or ever been told you have diabetes",
+            name_extended="Have diabetes or ever been told you have diabetes",
+            na_values=(7, 9),
+            value_mapping={
+                1: 'Yes', 2: 'Yes, but female told only during pregnancy',
+                3: 'No',
+                4: 'No, pre-diabetes or borderline diabetes',
+                7: "Don’t know/Not Sure",
+                9: "Refused, BLANK Not asked or Missing"
+            }),
+
+    ################ Race/ethnicity ################
+    Feature("PRACE1", float, """Preferred race category.""",
+            name_extended="Preferred race category",
+            na_values=(7., 8., 77., 99.),
+            value_mapping={
+                1: 'White',
+                2: 'Black or African American',
+                3: 'American Indian or Alaskan Native',
+                4: 'Asian', 5: 'Native Hawaiian or other Pacific Islander',
+                6: 'Other race',
+                7: 'No preferred race',
+                8: 'Multiracial but preferred race not answered',
+                77: 'Don’t know/Not sure', 9: 'refused', }),
+    ################ Sex ################
+    Feature("SEX", float, """Indicate sex of respondent.""",
+            name_extended="Sex of respondent",
+            value_mapping={1: "Male", 2: "Female"}),
+    Feature("MEDCOST", cat_dtype, """Was there a time in the past 12 months 
+    when you needed to see a doctor but could not because of cost?""",
+            name_extended="Answer to the question 'Was there a time in the "
+                          "past 12 months when you needed to see a doctor but "
+                          "could not because of cost?'",
+            na_values=(7, 9),
+            value_mapping={
+                1: "Yes", 2: "No", 7: "Don't know/not sure", 9: "Refused",
+            }),
+    ################ Social and economic factors ################
+    # Income
+    Feature("POVERTY", int,
+            description="Binary indicator for whether an individuals' income "
+                        "falls below the 2021 poverty guideline for family of "
+                        "four.",
+            name_extended="Binary indicator for whether an individuals' income "
+                          "falls below the 2021 poverty guideline for family of"
+                          " four",
+            value_mapping={1: "Yes", 0: "No"}),
+    # Type job status; related to early/late shifts which is a risk factor.
+    Feature("EMPLOY1", cat_dtype, """Current employment""",
+            name_extended="Current employment status",
+            na_values=(9,),
+            value_mapping={
+                1: 'Employed for wages', 2: 'Self-employed',
+                3: 'Out of work for 1 year or more',
+                4: 'Out of work for less than 1 year', 5: 'A homemaker',
+                6: 'A student',
+                7: 'Retired', 8: 'Unable to work', 9: 'Refused'
+            }),
     # Indicators for high blood pressure; see
     # https://www.nhlbi.nih.gov/health/high-blood-pressure/causes
     ################ BMI/Obesity ################
