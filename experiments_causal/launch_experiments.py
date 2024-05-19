@@ -223,8 +223,7 @@ TASKS = [
 #     TASKS.append("assistments_random_test_" + f"{index}")
 
 for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
-    if index in [0,1,2,3]:
-        TASKS.append("nhanes_lead_random_test_" + f"{index}")
+    TASKS.append("nhanes_lead_random_test_" + f"{index}")
 
 # for index in range(MEPS_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("meps_random_test_" + f"{index}")

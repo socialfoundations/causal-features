@@ -20,7 +20,7 @@ import numpy as np
 import pandas as pd
 
 from tableshift.core.features import Feature, FeatureList, cat_dtype
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset_add_additional
 
 DEFAULT_NHANES_CODING = {
     "1.0": "Yes",
@@ -473,9 +473,12 @@ NHANES_LEAD_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
             na_values=(".",)),
 ], documentation="https://wwwn.cdc.gov/Nchs/Nhanes/")
 
+additional = Feature("nhanes_year", int, "Derived feature for year.",
+            name_extended='year')
+
 NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS = get_arguablycausal_robust(NHANES_LEAD_FEATURES_ARGUABLYCAUSAL,
                                                                           NHANES_LEAD_FEATURES.features+NHANES_SHARED_FEATURES.features)
 NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER = len(NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS)
 
-NHANES_LEAD_FEATURES_RANDOM_SUBSETS = get_random_subset(NHANES_LEAD_FEATURES.features+NHANES_SHARED_FEATURES.features, target, domain, k=500)
+NHANES_LEAD_FEATURES_RANDOM_SUBSETS = get_random_subset_add_additional(NHANES_LEAD_FEATURES.features+NHANES_SHARED_FEATURES.features, target, domain, k=500,additional=additional)
 NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER = len(NHANES_LEAD_FEATURES_RANDOM_SUBSETS)
