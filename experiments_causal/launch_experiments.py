@@ -219,12 +219,12 @@ TASKS = [
 # for index in range(PHYSIONET_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("physionet_random_test_" + f"{index}")
 
+for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
+    if index not in [0, 2, 3, 5, 8, 14, 19, 22, 25, 27, 30, 31, 32, 35, 41, 47, 48, 56, 60, 62, 64, 65, 66, 69, 70, 71, 75, 77, 78, 79, 81, 83, 87, 88, 89, 93, 94, 97, 98, 100, 110, 112, 113, 118, 119, 120, 121, 123, 125, 126, 127, 128, 129, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 149, 151, 172, 179, 185, 191, 192, 196, 201, 218, 219, 221, 223, 232, 241, 247, 255, 256, 271, 290, 292, 298, 331, 336, 371, 392, 397, 408, 416, 418, 425, 431, 439, 443, 448, 450, 455, 461, 464, 497, 499]:
+        TASKS.append("assistments_random_test_" + f"{index}")
+
 for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
     TASKS.append("nhanes_lead_random_test_" + f"{index}")
-
-for index in range(137,ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
-    if index not in [8, 48, 56, 62, 83, 87, 97, 98, 120, 121, 128, 149, 151, 172, 179, 185, 191, 192, 196, 201, 218, 219, 221, 223, 232, 241, 247, 255, 256, 271, 290, 292, 298, 331, 336, 371, 392, 397, 408, 416, 418, 425, 431, 439, 443, 448, 450, 455, 461, 464, 497, 499]:
-        TASKS.append("assistments_random_test_" + f"{index}")
 
 # for index in range(MEPS_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("meps_random_test_" + f"{index}")
@@ -388,5 +388,7 @@ if __name__ == "__main__":
                 sleep(20)
             except:
                 sleep(3600)
+
+
 
 
