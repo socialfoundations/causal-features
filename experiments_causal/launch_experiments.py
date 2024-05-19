@@ -18,12 +18,12 @@ if __name__ == "__main__":
     import classad
 
 # Number of task to run per algorithm, per dataset
-N_TRIALS    = 50
+N_TRIALS    = 10
 # N_TRIALS = 50
 # N_TRIALS    = 100
 
 # Cluster settings
-JOB_MIN_BID = 10  # htcondor bid (min. is 15 apparently...)
+JOB_MIN_BID = 50  # htcondor bid (min. is 15 apparently...)
 JOB_CPUS = 1  # number of CPUs per experiment (per cluster job)
 JOB_MEMORY_GB = int(128)  # GBs of memory
 
@@ -219,12 +219,12 @@ TASKS = [
 # for index in range(PHYSIONET_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("physionet_random_test_" + f"{index}")
 
+for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
+    TASKS.append("nhanes_lead_random_test_" + f"{index}")
+
 for index in range(137,ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
     if index not in [8, 48, 56, 62, 83, 87, 97, 98, 120, 121, 128, 149, 151, 172, 179, 185, 191, 192, 196, 201, 218, 219, 221, 223, 232, 241, 247, 255, 256, 271, 290, 292, 298, 331, 336, 371, 392, 397, 408, 416, 418, 425, 431, 439, 443, 448, 450, 455, 461, 464, 497, 499]:
         TASKS.append("assistments_random_test_" + f"{index}")
-
-for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
-    TASKS.append("nhanes_lead_random_test_" + f"{index}")
 
 # for index in range(MEPS_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("meps_random_test_" + f"{index}")
