@@ -23,11 +23,11 @@ if __name__ == "__main__":
 # List of models
 MODELS = (
     "xgb", #random subset
-    "lightgbm", #random subset
-    "ft_transformer", #random subset
+    # "lightgbm", #random subset
+    # "ft_transformer", #random subset
     # "histgbm",
     # "mlp",
-    "saint", #random subset
+    # "saint", #random subset
     # "tabtransformer",
     # "resnet",
     # "aldro",

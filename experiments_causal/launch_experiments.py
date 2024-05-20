@@ -18,7 +18,7 @@ if __name__ == "__main__":
     import classad
 
 # Number of task to run per algorithm, per dataset
-N_TRIALS    = 10
+N_TRIALS    = 1
 # N_TRIALS = 50
 # N_TRIALS    = 100
 
@@ -219,11 +219,11 @@ TASKS = [
 # for index in range(PHYSIONET_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("physionet_random_test_" + f"{index}")
 
-# for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
-#     TASKS.append("assistments_random_test_" + f"{index}")
+for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
+    TASKS.append("assistments_random_test_" + f"{index}")
 
-for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
-    TASKS.append("nhanes_lead_random_test_" + f"{index}")
+# for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     TASKS.append("nhanes_lead_random_test_" + f"{index}")
 
 # for index in range(MEPS_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("meps_random_test_" + f"{index}")
@@ -249,7 +249,7 @@ if __name__ == "__main__":
     DATA_DIR = ROOT_DIR / "fast/vnastl/data"
 
     # Results directory
-    RESULTS_DIR = ROOT_DIR / "vnastl/results"
+    RESULTS_DIR = ROOT_DIR / "vnastl/new-results"
     RESULTS_DIR.mkdir(exist_ok=True, parents=False)
 
     # Directory to save cluster logs and job stdout/stderr
