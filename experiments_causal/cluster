@@ -31,3 +31,8 @@ output = /home/fast/vnastl/pc_r_experiment_foodstamps_0.01.out
 log = /home/fast/vnastl/pc_r_experiment_foodstamps_0.01.log
 request_memory = 256GB
 queue
+
+'Average_confidence(CONCENTRATING)',
+'attempt_count',
+'correct',
+
