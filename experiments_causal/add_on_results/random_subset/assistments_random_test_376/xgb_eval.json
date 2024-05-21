@@ -1,0 +1,1 @@
+{"id_test": 0.9193670610655522, "id_test_conf": [0.9183270342398968, 0.920397959265228], "features": ["attempt_count", "skill_id", "bottom_hint", "tutor_mode", "overlap_time", "school_id"], "ood_test": 0.45173137460650575, "ood_test_conf": [0.42921585629025044, 0.4743956441387082], "validation": 0.9188043486416122, "validation_conf": [0.9177610452188673, 0.9198385357565063]}

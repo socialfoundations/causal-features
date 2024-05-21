@@ -1705,6 +1705,28 @@ for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
         tabular_dataset_kwargs={},
     )
 
+NON_BENCHMARK_CONFIGS["assistments_but_skill"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname='school_id',
+                                domain_split_ood_values=[5040.0,
+                                                         11502.0,
+                                                         11318.0,
+                                                         11976.0,
+                                                         12421.0,
+                                                         12379.0,
+                                                         11791.0,
+                                                         8359.0,
+                                                         12406.0,
+                                                         7594.0]),
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(
+            passthrough_columns=["bottom_hint", "first_action"],
+        ),
+        tabular_dataset_kwargs={},
+    )
 
 #####################################s###########################################
 # Configuration for invariant causal prediction

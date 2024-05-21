@@ -464,6 +464,7 @@ for index, subset in enumerate(PHYSIONET_FEATURES_RANDOM_SUBSETS):
 for index, subset in enumerate(ASSISTMENTS_FEATURES_RANDOM_SUBSETS):
     _TASK_REGISTRY["assistments_random_test_"+f"{index}"] = TaskConfig(AssistmentsDataSource, subset)
 
+_TASK_REGISTRY["assistments_but_skill"] = TaskConfig(AssistmentsDataSource, ASSISTMENTS_FEATURES_BUT_SKILL)
 
 ################################################################################
 # Tasks for invariant causal prediction

@@ -1,0 +1,1 @@
+{"id_test": 0.9140469229076384, "id_test_conf": [0.9133374376371556, 0.9147524362063386], "features": ["attempt_count", "hint_count", "bottom_hint", "ms_first_response", "type", "school_id"], "ood_test": 0.8814980435997765, "ood_test_conf": [0.8757086177312339, 0.8871095024737095], "validation": 0.914217353103236, "validation_conf": [0.9135085021469405, 0.9149222304472653]}

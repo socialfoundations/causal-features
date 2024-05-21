@@ -1,5 +1,5 @@
 """Python script to plot experiments for appendix."""
-
+#%%
 from experiments_causal.plot_experiment import get_results
 from experiments_causal.plot_experiment_arguablycausal_robust import get_results as get_results_arguablycausal_robust
 from experiments_causal.plot_experiment_causal_robust import get_results as get_results_causal_robust
@@ -53,7 +53,7 @@ class MarkerHandler(HandlerBase):
             )
         ]
 
-
+#%%
 # Define list of experiments to plot
 experiments = [
     "acsfoodstamps",
@@ -1621,7 +1621,7 @@ for experiment_group, experiments in experiment_groups.items():
         bbox_inches="tight",
     )
 
-
+#%%
 experiment_groups = {
     "group1": [
         "acsincome",
@@ -1846,6 +1846,47 @@ for experiment_group, experiments in experiment_groups.items():
             shift_acc["type"] = "anticausal"
             shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
             dic_shift_acc["anticausal"] = shift_acc
+
+        #############################################################################
+        # plot errorbars and shift gap for causal+anticausal features
+        #############################################################################
+        if (eval_all["features"] == "causal_anticausal").any():
+            eval_plot = eval_all[eval_all["features"] == "causal_anticausal"]
+            eval_plot.sort_values("id_test", inplace=True)
+            # Calculate the pareto set
+            points = eval_plot[["id_test", "ood_test"]]
+            mask = paretoset(points, sense=["max", "max"])
+            points = points[mask]
+            points = points[
+                points["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
+            ]
+            markers = eval_plot[mask]
+            markers = markers[
+                markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
+            ]
+            errors = ax[0].errorbar(
+                x=markers["id_test"],
+                y=markers["ood_test"],
+                xerr=markers["id_test_ub"] - markers["id_test"],
+                yerr=markers["ood_test_ub"] - markers["ood_test"],
+                fmt="p",
+                color="tab:blue",
+                ecolor=color_error,
+                markersize=markersize,
+                capsize=capsize,
+                label="causal+anticausal",
+            )
+            # highlight bar
+            shift = eval_plot[mask]
+            shift = shift[shift["ood_test"] == shift["ood_test"].max()]
+            shift["type"] = "causal_anticausal"
+            dic_shift["causal_anticausal"] = shift
+            shift_acc = eval_plot[
+                eval_plot["ood_test"] == eval_plot["ood_test"].max()
+            ].drop_duplicates()
+            shift_acc["type"] = "causal_anticausal"
+            shift_acc["gap"] = shift_acc["id_test"] - shift_acc["ood_test"]
+            dic_shift_acc["causal_anticausal"] = shift_acc
         #############################################################################
         # plot pareto dominated area for constant
         #############################################################################
@@ -2041,6 +2082,49 @@ for experiment_group, experiments in experiment_groups.items():
             )
 
         #############################################################################
+        # plot pareto dominated area for anticausal features
+        #############################################################################
+        if (eval_all["features"] == "causal_anticausal").any():
+            eval_plot = eval_all[eval_all["features"] == "causal_anticausal"]
+            eval_plot.sort_values("id_test", inplace=True)
+            # Calculate the pareto set
+            points = eval_plot[["id_test", "ood_test"]]
+            mask = paretoset(points, sense=["max", "max"])
+            points = points[mask]
+            points = points[
+                points["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
+            ]
+            # get extra points for the plot
+            new_row = pd.DataFrame(
+                {
+                    "id_test": [xmin, max(points["id_test"])],
+                    "ood_test": [max(points["ood_test"]), ymin],
+                },
+            )
+            points = pd.concat([points, new_row], ignore_index=True)
+            points.sort_values("id_test", inplace=True)
+            ax[0].plot(
+                points["id_test"],
+                points["ood_test"],
+                color="tab:blue",
+                linestyle=(0, (1, 1)),
+                linewidth=linewidth_bound,
+            )
+
+            new_row = pd.DataFrame(
+                {"id_test": [xmin], "ood_test": [ymin]},
+            )
+            points = pd.concat([points, new_row], ignore_index=True)
+            points = points.to_numpy()
+            hull = ConvexHull(points)
+            ax[0].fill(
+                points[hull.vertices, 0],
+                points[hull.vertices, 1],
+                color="tab:blue",
+                alpha=0.05,
+            )
+
+        #############################################################################
         # Add legend & diagonal, save plot
         #############################################################################
         # Plot the diagonal line
@@ -2055,13 +2139,24 @@ for experiment_group, experiments in experiment_groups.items():
             ax[1].set_xlabel("Shift gap")
             ax[1].set_ylabel("Ood accuracy")
             shift_acc = pd.concat(dic_shift_acc.values(), ignore_index=True)
-            markers = {
-                "constant": "X",
-                "causal": "o",
-                "arguablycausal": "D",
-                "anticausal": "P",
-                "all": "s",
-            }
+            if experiment_name == "sipp":
+                markers = {
+                    "constant": "X",
+                    "causal": "o",
+                    "arguablycausal": "D",
+                    "anticausal": "P",
+                    "all": "s",
+                }
+            else:
+                markers = {
+                    "constant": "X",
+                    "causal": "o",
+                    "arguablycausal": "D",
+                    "anticausal": "P",
+                    "causal_anticausal":"p",
+                    "all": "s",
+                }
+            color_causal_anticausal = "tab:blue"
             for type, marker in markers.items():
                 type_shift = shift_acc[shift_acc["type"] == type]
                 type_shift["id_test_var"] = (
@@ -2131,14 +2226,17 @@ for experiment_group, experiments in experiment_groups.items():
     list_color_anticausal = list_color.copy()
     list_color_anticausal.remove(color_constant)
     list_color_anticausal.append(color_anticausal)
+    list_color_anticausal.append("tab:blue")
     list_color_anticausal.append(color_constant)
     list_mak_anticausal = list_mak.copy()
     list_mak_anticausal.remove(list_mak[-1])
     list_mak_anticausal.append("P")
+    list_mak_anticausal.append("p")
     list_mak_anticausal.append(list_mak[-1])
     list_lab_anticausal = list_lab.copy()
     list_lab_anticausal.remove("Constant")
-    list_lab_anticausal.append("Anticausal")
+    list_lab_anticausal.append("Anti-causal")
+    list_lab_anticausal.append("Causal & Anti-causal")
     list_lab_anticausal.append("Constant")
 
     if experiment_group == "group1":
@@ -2149,7 +2247,7 @@ for experiment_group, experiments in experiment_groups.items():
             loc="upper center",
             bbox_to_anchor=(0.5, 0),
             fancybox=True,
-            ncol=5,
+            ncol=6,
         )
     else:
         fig.legend(
@@ -2159,7 +2257,7 @@ for experiment_group, experiments in experiment_groups.items():
             loc="upper center",
             bbox_to_anchor=(0.5, 0),
             fancybox=True,
-            ncol=5,
+            ncol=6,
         )
 
     fig.savefig(

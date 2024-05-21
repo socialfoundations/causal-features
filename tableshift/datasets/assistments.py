@@ -948,3 +948,33 @@ ASSISTMENTS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER = len(ASSISTMENTS_FEATURES_
 
 ASSISTMENTS_FEATURES_RANDOM_SUBSETS = get_random_subset(ASSISTMENTS_FEATURES.features, target, domain, k=500)
 ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER = len(ASSISTMENTS_FEATURES_RANDOM_SUBSETS)
+
+ASSISTMENTS_FEATURES_BUT_SKILL = FeatureList(features=[
+    Feature('Average_confidence(BORED)', float),
+    Feature('Average_confidence(CONCENTRATING)', float),
+    Feature('Average_confidence(CONFUSED)', float),
+    Feature('Average_confidence(FRUSTRATED)', float),
+    Feature('attempt_count', int),
+    Feature('hint_count', int),
+    Feature('school_id', float),
+    Feature('problem_type', cat_dtype),
+    Feature('bottom_hint', float,
+            value_mapping={0.: 'False', 1: 'True'}),
+    Feature('ms_first_response', int),
+    Feature('tutor_mode', cat_dtype),
+    Feature('position', int),
+    Feature('type', cat_dtype),
+    Feature('overlap_time', int),
+    Feature('first_action', int,
+            value_mapping={
+                0: 'Answer',
+                1: 'Hint',
+                2: 'Scaffold'
+            }),
+    # There are other text features in this dataset that would be useful for
+    # text-only models; i.e. answer_text
+    Feature('correct', int, is_target=True)
+],
+    documentation="https://www.kaggle.com/datasets/nicolaswattiez/skillbuilder-data-2009-2010 ,"
+                  "https://sites.google.com/site/assistmentsdata/datasets/2012-13-school-data-with-affect")
+

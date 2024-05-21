@@ -26,7 +26,7 @@ def get_dic_experiments_value_anticausal(name: str) -> list:
         List of experiment names (all features, causal features, arguably causal features, anticausal features).
 
     """
-    return [name, f"{name}_causal", f"{name}_arguablycausal", f"{name}_anticausal"]
+    return [name, f"{name}_causal", f"{name}_arguablycausal", f"{name}_anticausal", f"{name}_causal_anticausal"]
 
 
 # Define dictionary of all considered experiments
@@ -35,7 +35,7 @@ dic_experiments = {
     "acsunemployment": get_dic_experiments_value_anticausal("acsunemployment"),
     "brfss_diabetes": get_dic_experiments_value_anticausal("brfss_diabetes"),
     "brfss_blood_pressure": get_dic_experiments_value_anticausal("brfss_blood_pressure"),
-    "sipp": get_dic_experiments_value_anticausal("sipp"),
+    "sipp": ["sipp", "sipp_causal", "sipp_arguablycausal", "sipp_anticausal"],
 }
 
 
@@ -78,10 +78,15 @@ def get_results(experiment_name: str) -> pd.DataFrame:
                 if "arguablycausal" not in feature_selection:
                     feature_selection.append("arguablycausal")
                 return "arguablycausal"
+            elif experiment.endswith("causal_anticausal"):
+                if "causal_anticausal" not in feature_selection:
+                    feature_selection.append("causal_anticausal")
+                return "causal_anticausal"
             elif experiment.endswith("_anticausal"):
                 if "anticausal" not in feature_selection:
                     feature_selection.append("anticausal")
                 return "anticausal"
+            
             else:
                 if "all" not in feature_selection:
                     feature_selection.append("all")
@@ -239,5 +244,5 @@ def get_results(experiment_name: str) -> pd.DataFrame:
             eval_all = pd.concat([eval_all, eval_pd], ignore_index=True)
 
     # Save to csv
-    eval_all.to_csv(str(Path(__file__).parents[0] / f"{experiment_name}_eval.csv"))
+    # eval_all.to_csv(str(Path(__file__).parents[0] / f"{experiment_name}_eval.csv"))
     return eval_all

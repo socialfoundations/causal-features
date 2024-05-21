@@ -1,0 +1,1 @@
+{"id_test": 0.7300317779016251, "id_test_conf": [0.7283558627754522, 0.7317027713007145], "features": ["Average_confidence(FRUSTRATED)", "skill_id", "ms_first_response", "school_id"], "ood_test": 0.4438614900314795, "ood_test_conf": [0.42139514333085065, 0.46650084521670354], "validation": 0.7298425493279005, "validation_conf": [0.7281662641261901, 0.7315139168346549]}

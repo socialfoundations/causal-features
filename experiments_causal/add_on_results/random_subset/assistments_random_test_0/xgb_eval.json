@@ -1,0 +1,28 @@
+{
+    "id_test": 0.9255104218891939,
+    "id_test_conf": [
+        0.9248455784832057,
+        0.9261711829264683
+    ],
+    "features": [
+        "Average_confidence(CONCENTRATING)",
+        "Average_confidence(FRUSTRATED)",
+        "attempt_count",
+        "problem_type",
+        "bottom_hint",
+        "position",
+        "type",
+        "first_action",
+        "school_id"
+    ],
+    "ood_test": 0.9100055897149245,
+    "ood_test_conf": [
+        0.9048577313117038,
+        0.9149619549378666
+    ],
+    "validation": 0.9258711382255073,
+    "validation_conf": [
+        0.9252077691477737,
+        0.9265304214586956
+    ]
+}
