@@ -564,7 +564,7 @@ for index, experiment_name in enumerate(experiments):
         )
 
         fig.savefig(
-            str(Path(__file__).parents[0] / f"plots_add_on/plot_random_subsets_{int(5)}.pdf"),
+            str(Path(__file__).parents[0] / f"plots_add_on/plot_random_subsets_{int(3)}.pdf"),
             bbox_inches="tight",
         )
         fig.show()

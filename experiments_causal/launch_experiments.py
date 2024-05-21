@@ -18,7 +18,7 @@ if __name__ == "__main__":
     import classad
 
 # Number of task to run per algorithm, per dataset
-N_TRIALS    = 1
+N_TRIALS    = 10
 # N_TRIALS = 50
 # N_TRIALS    = 100
 
@@ -384,7 +384,7 @@ if __name__ == "__main__":
             try:
                 launch_task_jobs(task=task, exp_obj=exp_obj)
                 success = True
-                sleep(20)
+                sleep(30)
             except:
                 sleep(3600)
 
