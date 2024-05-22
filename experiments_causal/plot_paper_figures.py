@@ -17,6 +17,7 @@ from matplotlib.legend_handler import HandlerBase
 from matplotlib.ticker import FormatStrFormatter
 import matplotlib.markers as mmark
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 import pandas as pd
 from pathlib import Path
 import warnings
@@ -58,6 +59,16 @@ class MarkerHandler(HandlerBase):
                 transform=trans,
             )
         ]
+    
+def lighten_color(color, amount=0.5):
+    try:
+        c = mcolors.cnames[color]
+    except KeyError:
+        c = color
+    c = mcolors.to_rgb(c)
+    c = [min(1, max(0, channel + amount * (1 - channel))) for channel in c]
+    return c
+
 
 #%%
 # Define list of experiments to plot
@@ -118,7 +129,7 @@ for index, experiment_name in enumerate(experiments):
         yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
         fmt="X",
         color=color_constant,
-        ecolor=color_error,
+        ecolor=lighten_color(color_constant, amount=0.5),
         markersize=markersize,
         capsize=capsize,
         label="constant",
@@ -148,7 +159,7 @@ for index, experiment_name in enumerate(experiments):
         yerr=markers["ood_test_ub"] - markers["ood_test"],
         fmt="o",
         color=color_causal,
-        ecolor=color_error,
+        ecolor=lighten_color(color_causal, amount=0.5),
         markersize=markersize,
         capsize=capsize,
         label="causal",
@@ -187,7 +198,7 @@ for index, experiment_name in enumerate(experiments):
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt="D",
             color=color_arguablycausal,
-            ecolor=color_error,
+            ecolor=lighten_color(color_arguablycausal, amount=0.5),
             markersize=markersize,
             capsize=capsize,
             label="arguably\ncausal",
@@ -224,7 +235,7 @@ for index, experiment_name in enumerate(experiments):
         yerr=markers["ood_test_ub"] - markers["ood_test"],
         fmt="s",
         color=color_all,
-        ecolor=color_error,
+        ecolor=lighten_color(color_all, amount=0.5),
         markersize=markersize,
         capsize=capsize,
         label="all",
@@ -421,7 +432,7 @@ for index, experiment_name in enumerate(experiments):
                 xerr=type_shift["gap_var"] ** 0.5,
                 yerr=type_shift["ood_test_ub"] - type_shift["ood_test"],
                 color=eval(f"color_{type}"),
-                ecolor=color_error,
+                ecolor=lighten_color(eval(f"color_{type}"), amount=0.5),
                 fmt=marker,
                 markersize=markersize,
                 capsize=capsize,
@@ -544,7 +555,7 @@ for index, experiment_name in enumerate(experiments):
         yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
         fmt="X",
         color=color_constant,
-        ecolor=color_error,
+        ecolor=lighten_color(color_constant, amount=0.5),
         markersize=markersize,
         capsize=capsize,
         label="constant",
@@ -582,7 +593,7 @@ for index, experiment_name in enumerate(experiments):
         yerr=markers["ood_test_ub"] - markers["ood_test"],
         fmt="s",
         color=color_all,
-        ecolor=color_error,
+        ecolor=lighten_color(color_all, amount=0.5),
         markersize=markersize,
         capsize=capsize,
         label="all",
@@ -621,7 +632,7 @@ for index, experiment_name in enumerate(experiments):
         yerr=markers["ood_test_ub"] - markers["ood_test"],
         fmt="o",
         color=color_causal,
-        ecolor=color_error,
+        ecolor=lighten_color(color_causal, amount=0.5),
         markersize=markersize,
         capsize=capsize,
         label="causal",
@@ -666,7 +677,7 @@ for index, experiment_name in enumerate(experiments):
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt="D",
             color=color_arguablycausal,
-            ecolor=color_error,
+            ecolor=lighten_color(color_arguablycausal, amount=0.5),
             markersize=markersize,
             capsize=capsize,
             label="arguably\ncausal",
@@ -704,7 +715,7 @@ for index, experiment_name in enumerate(experiments):
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt=markers_causalml[causalml],
             color=eval(f"color_{causalml}"),
-            ecolor=color_error,
+            ecolor=lighten_color(eval(f"color_{causalml}"), amount=0.5),
             markersize=markersize,
             capsize=capsize,
             label="causal ml",
@@ -737,7 +748,7 @@ for index, experiment_name in enumerate(experiments):
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt=markers_causalml[causalml],
             color=eval(f"color_{causalml}"),
-            ecolor=color_error,
+            ecolor=lighten_color(eval(f"color_{causalml}"), amount=0.5),
             markersize=markersize,
             capsize=capsize,
             label="causal ml",
@@ -1011,7 +1022,7 @@ for index, experiment_name in enumerate(experiments):
                 xerr=type_shift["gap_var"] ** 0.5,
                 yerr=type_shift["ood_test_ub"] - type_shift["ood_test"],
                 color=eval(f"color_{type}"),
-                ecolor=color_error,
+                ecolor=lighten_color(eval(f"color_{type}"),amount=0.5),
                 fmt=marker,
                 markersize=markersize,
                 capsize=capsize,
@@ -1038,7 +1049,7 @@ for index, experiment_name in enumerate(experiments):
                 xerr=type_shift["gap_var"] ** 0.5,
                 yerr=type_shift["ood_test_ub"] - type_shift["ood_test"],
                 color=eval(f"color_{type}"),
-                ecolor=color_error,
+                ecolor=lighten_color(eval(f"color_{type}"),amount=0.5),
                 fmt=marker,
                 markersize=markersize,
                 capsize=capsize,

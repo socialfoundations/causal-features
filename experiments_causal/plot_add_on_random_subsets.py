@@ -64,7 +64,17 @@ class MarkerHandler(HandlerBase):
                 transform=trans,
             )
         ]
-    
+
+import matplotlib.colors as mcolors
+def lighten_color(color, amount=0.5):
+    try:
+        c = mcolors.cnames[color]
+    except KeyError:
+        c = color
+    c = mcolors.to_rgb(c)
+    c = [min(1, max(0, channel + amount * (1 - channel))) for channel in c]
+    return c
+
 def get_dic_experiments_value(name: str) -> list:
     """Return list of experiment names for a task.
 
@@ -284,7 +294,7 @@ for index, experiment_name in enumerate(experiments):
         yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
         fmt="X",
         color=color_constant,
-        ecolor=color_error,
+        ecolor=lighten_color(color_constant),
         markersize=markersize,
         capsize=capsize,
         label="constant",
@@ -312,7 +322,7 @@ for index, experiment_name in enumerate(experiments):
         yerr=markers["ood_test_ub"] - markers["ood_test"],
         fmt="o",
         color=color_causal,
-        ecolor=color_error,
+        ecolor=lighten_color(color_causal),
         markersize=markersize,
         capsize=capsize,
         label="causal",
@@ -344,7 +354,7 @@ for index, experiment_name in enumerate(experiments):
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt="D",
             color=color_arguablycausal,
-            ecolor=color_error,
+            ecolor=lighten_color(color_arguablycausal),
             markersize=markersize,
             capsize=capsize,
             label="arguably\ncausal",
@@ -374,7 +384,7 @@ for index, experiment_name in enumerate(experiments):
         yerr=markers["ood_test_ub"] - markers["ood_test"],
         fmt="s",
         color=color_all,
-        ecolor=color_error,
+        ecolor=lighten_color(color_all),
         markersize=markersize,
         capsize=capsize,
         label="all",

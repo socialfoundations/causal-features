@@ -6,6 +6,7 @@ import seaborn as sns
 from matplotlib.legend_handler import HandlerBase
 import matplotlib.markers as mmark
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 import pandas as pd
 from pathlib import Path
 import warnings
@@ -41,6 +42,15 @@ class MarkerHandler(HandlerBase):
                 transform=trans,
             )
         ]
+
+def lighten_color(color, amount=0.5):
+    try:
+        c = mcolors.cnames[color]
+    except KeyError:
+        c = color
+    c = mcolors.to_rgb(c)
+    c = [min(1, max(0, channel + amount * (1 - channel))) for channel in c]
+    return c
 
 
 # Define list of experiments to plot
@@ -106,7 +116,7 @@ for index, set in enumerate(sets):
         y=eval_plot_features["ood_test"],
         yerr=eval_plot_features["ood_test_ub"] - eval_plot_features["ood_test"],
         color=eval(f"color_{set}"),
-        ecolor=color_error,
+        ecolor=lighten_color(eval(f"color_{set}"),amount=0.5),
         fmt=markers[set],
         markersize=markersize,
         capsize=capsize,
@@ -144,7 +154,7 @@ for index, set in enumerate(sets):
         y=shift_acc_plot["gap"],
         yerr=shift_acc_plot["gap_var"] ** 0.5,
         color=eval(f"color_{set}"),
-        ecolor=color_error,
+        ecolor=lighten_color(eval(f"color_{set}"),amount=0.5),
         fmt=markers[set],
         markersize=markersize,
         capsize=capsize,

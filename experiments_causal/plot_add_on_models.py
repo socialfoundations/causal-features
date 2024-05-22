@@ -62,6 +62,15 @@ class MarkerHandler(HandlerBase):
         ]
     
 
+import matplotlib.colors as mcolors
+def lighten_color(color, amount=0.5):
+    try:
+        c = mcolors.cnames[color]
+    except KeyError:
+        c = color
+    c = mcolors.to_rgb(c)
+    c = [min(1, max(0, channel + amount * (1 - channel))) for channel in c]
+    return c
 
 # Define list of experiments to plot
 # experiments = [
@@ -243,7 +252,7 @@ for index, experiment_name in enumerate(experiments):
         yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
         fmt=markermap["constant"],
         color=color_constant,
-        ecolor=color_error,
+        ecolor=lighten_color(color_constant),
         markersize=markersize,
         capsize=capsize,
         label="constant",
@@ -270,7 +279,7 @@ for index, experiment_name in enumerate(experiments):
             yerr=eval_model["ood_test_ub"] - eval_model["ood_test"],
             fmt=markermap[model],
             color=color_causal,
-            ecolor=color_error,
+            ecolor=lighten_color(color_causal),
             markersize=markersize,
             capsize=capsize,
             label="causal",
@@ -298,7 +307,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=eval_model["ood_test_ub"] - eval_model["ood_test"],
                 fmt=markermap[model],
                 color=color_arguablycausal,
-                ecolor=color_error,
+                ecolor=lighten_color(color_arguablycausal),
                 markersize=markersize,
                 capsize=capsize,
                 label="arguably\ncausal",
@@ -327,7 +336,7 @@ for index, experiment_name in enumerate(experiments):
             yerr=eval_model["ood_test_ub"] - eval_model["ood_test"],
             fmt=markermap[model],
             color=color_all,
-            ecolor=color_error,
+            ecolor=lighten_color(color_all),
             markersize=markersize,
             capsize=capsize,
             label="all",
@@ -517,7 +526,7 @@ for index, experiment_name in enumerate(experiments):
                         xerr=type_shift_model["gap_var"] ** 0.5,
                         yerr=type_shift_model["ood_test_ub"] - type_shift_model["ood_test"],
                         color=eval(f"color_{type}"),
-                        ecolor=color_error,
+                        ecolor=lighten_color(eval(f"color_{type}")),
                         fmt=markermap[model],
                         markersize=markersize,
                         capsize=capsize,
@@ -531,7 +540,7 @@ for index, experiment_name in enumerate(experiments):
                         xerr=type_shift["gap_var"] ** 0.5,
                         yerr=type_shift["ood_test_ub"] - type_shift["ood_test"],
                         color=eval(f"color_{type}"),
-                        ecolor=color_error,
+                        ecolor=lighten_color(eval(f"color_{type}")),
                         fmt=markermap["constant"],
                         markersize=markersize,
                         capsize=capsize,

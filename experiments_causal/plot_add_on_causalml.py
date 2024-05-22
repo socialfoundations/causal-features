@@ -52,7 +52,17 @@ class MarkerHandler(HandlerBase):
                 transform=trans,
             )
         ]
-    
+
+import matplotlib.colors as mcolors
+def lighten_color(color, amount=0.5):
+    try:
+        c = mcolors.cnames[color]
+    except KeyError:
+        c = color
+    c = mcolors.to_rgb(c)
+    c = [min(1, max(0, channel + amount * (1 - channel))) for channel in c]
+    return c
+
 experiment_groups = {
     "group1": [
         "acsfoodstamps",
@@ -112,7 +122,7 @@ for experiment_group, experiments in experiment_groups.items():
             yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
             fmt="X",
             color=color_constant,
-            ecolor=color_error,
+            ecolor=lighten_color(color_constant),
             markersize=markersize,
             capsize=capsize,
             label="constant",
@@ -150,7 +160,7 @@ for experiment_group, experiments in experiment_groups.items():
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt="s",
             color=color_all,
-            ecolor=color_error,
+            ecolor=lighten_color(color_all),
             markersize=markersize,
             capsize=capsize,
             label="all",
@@ -189,7 +199,7 @@ for experiment_group, experiments in experiment_groups.items():
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt="o",
             color=color_causal,
-            ecolor=color_error,
+            ecolor=lighten_color(color_causal),
             markersize=markersize,
             capsize=capsize,
             label="causal",
@@ -234,7 +244,7 @@ for experiment_group, experiments in experiment_groups.items():
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="D",
                 color=color_arguablycausal,
-                ecolor=color_error,
+                ecolor=lighten_color(color_arguablycausal),
                 markersize=markersize,
                 capsize=capsize,
                 label="arguably\ncausal",
@@ -272,7 +282,7 @@ for experiment_group, experiments in experiment_groups.items():
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt=markers_causalml[causalml],
                 color=eval(f"color_{causalml}"),
-                ecolor=color_error,
+                ecolor=lighten_color(eval(f"color_{causalml}")),
                 markersize=markersize,
                 capsize=capsize,
                 label="causal ml",
@@ -305,7 +315,7 @@ for experiment_group, experiments in experiment_groups.items():
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt=markers_causalml[causalml],
                 color=eval(f"color_{causalml}"),
-                ecolor=color_error,
+                ecolor=lighten_color(eval(f"color_{causalml}")),
                 markersize=markersize,
                 capsize=capsize,
                 label="causal ml",
@@ -579,7 +589,7 @@ for experiment_group, experiments in experiment_groups.items():
                     xerr=type_shift["gap_var"] ** 0.5,
                     yerr=type_shift["ood_test_ub"] - type_shift["ood_test"],
                     color=eval(f"color_{type}"),
-                    ecolor=color_error,
+                    ecolor=lighten_color(eval(f"color_{type}")),
                     fmt=marker,
                     markersize=markersize,
                     capsize=capsize,
@@ -606,7 +616,7 @@ for experiment_group, experiments in experiment_groups.items():
                     xerr=type_shift["gap_var"] ** 0.5,
                     yerr=type_shift["ood_test_ub"] - type_shift["ood_test"],
                     color=eval(f"color_{type}"),
-                    ecolor=color_error,
+                    ecolor=lighten_color(eval(f"color_{type}")),
                     fmt=marker,
                     markersize=markersize,
                     capsize=capsize,

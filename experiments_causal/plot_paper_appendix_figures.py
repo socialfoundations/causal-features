@@ -53,6 +53,18 @@ class MarkerHandler(HandlerBase):
             )
         ]
 
+
+
+import matplotlib.colors as mcolors
+def lighten_color(color, amount=0.5):
+    try:
+        c = mcolors.cnames[color]
+    except KeyError:
+        c = color
+    c = mcolors.to_rgb(c)
+    c = [min(1, max(0, channel + amount * (1 - channel))) for channel in c]
+    return c
+
 #%%
 # Define list of experiments to plot
 experiments = [
@@ -83,7 +95,7 @@ for index, experiment_name in enumerate(experiments):
             ax = subfig1.subplots(
                 1,
                 3,
-                gridspec_kw={"width_ratios": [0.3, 0.3, 0.3], "wspace": 0.6,"top": 0.8, "bottom":0.25},
+                gridspec_kw={"width_ratios": [0.3, 0.3, 0.3], "wspace": 0.9,"top": 0.8, "bottom":0.25},
             )  # create 3x2 subplots on fig
 
             eval_all = get_results(experiment_name)
@@ -100,6 +112,7 @@ for index, experiment_name in enumerate(experiments):
 
             ax[0].set_xlabel(f"In-domain accuracy")
             ax[0].set_ylabel(f"Out-of-domain\naccuracy")
+            ax[1].set_ylabel(f"Out-of-domain\naccuracy")
 
             #############################################################################
             # plot errorbars and shift gap for constant
@@ -111,7 +124,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
                 fmt="D",
                 color=color_constant,
-                ecolor=color_error,
+                ecolor=lighten_color(color_constant),
                 markersize=markersize,
                 capsize=capsize,
                 label="constant",
@@ -145,7 +158,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="o",
                 color=color_causal,
-                ecolor=color_error,
+                ecolor=lighten_color(color_causal),
                 markersize=markersize,
                 capsize=capsize,
                 label="causal",
@@ -186,7 +199,7 @@ for index, experiment_name in enumerate(experiments):
                     yerr=markers["ood_test_ub"] - markers["ood_test"],
                     fmt="^",
                     color=color_arguablycausal,
-                    ecolor=color_error,
+                    ecolor=lighten_color(color_arguablycausal),
                     markersize=markersize,
                     capsize=capsize,
                     label="arguably\ncausal",
@@ -227,7 +240,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="s",
                 color=color_all,
-                ecolor=color_error,
+                ecolor=lighten_color(color_all),
                 markersize=markersize,
                 capsize=capsize,
                 label="all",
@@ -419,7 +432,7 @@ for index, experiment_name in enumerate(experiments):
             #############################################################################
             if (eval_all["features"] == "arguablycausal").any():
                 ax[1].set_xlabel("Shift gap")
-                # ax[1].set_ylabel("Ood accuracy")
+                # ax[1].set_ylabel("Out-of-domain\naccuracy")
                 shift_acc = pd.concat(dic_shift_acc.values(), ignore_index=True)
                 markers = {
                     "constant": "X",
@@ -446,7 +459,7 @@ for index, experiment_name in enumerate(experiments):
                         xerr=type_shift["gap_var"] ** 0.5,
                         yerr=type_shift["ood_test_ub"] - type_shift["ood_test"],
                         color=eval(f"color_{type}"),
-                        ecolor=color_error,
+                        ecolor=lighten_color(eval(f"color_{type}")),
                         fmt=marker,
                         markersize=markersize,
                         capsize=capsize,
@@ -513,7 +526,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
                 fmt="D",
                 color=color_constant,
-                ecolor=color_error,
+                ecolor=lighten_color(color_constant),
                 markersize=markersize,
                 capsize=capsize,
                 label="constant",
@@ -542,7 +555,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="o",
                 color=color_causal,
-                ecolor=color_error,
+                ecolor=lighten_color(color_causal),
                 markersize=markersize,
                 capsize=capsize,
                 label="causal",
@@ -579,7 +592,7 @@ for index, experiment_name in enumerate(experiments):
                     yerr=markers["ood_test_ub"] - markers["ood_test"],
                     fmt="^",
                     color=color_arguablycausal,
-                    ecolor=color_error,
+                    ecolor=lighten_color(color_arguablycausal),
                     markersize=markersize,
                     capsize=capsize,
                     label="arguably causal",
@@ -615,7 +628,7 @@ for index, experiment_name in enumerate(experiments):
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="s",
                 color=color_all,
-                ecolor=color_error,
+                ecolor=lighten_color(color_all),
                 markersize=markersize,
                 capsize=capsize,
                 label="all",
@@ -846,7 +859,7 @@ for index, experiment_name in enumerate(experiments):
                 ax[0, 0].yaxis.set_major_formatter(FormatStrFormatter("%.3f"))
                 ax[0, 1].yaxis.set_major_formatter(FormatStrFormatter("%.3f"))
 
-                ax[0, 0].set_ylabel(f"Ood accuracy")
+                ax[0, 0].set_ylabel(f"Out-of-domain\naccuracy")
                 #############################################################################
                 # plot errorbars and shift gap for constant
                 #############################################################################
@@ -894,9 +907,9 @@ for index, experiment_name in enumerate(experiments):
                         dic_shift[f"test{index}"] = shift
 
                 #############################################################################
-                # Plot ood accuracy as bars
+                # Plot Out-of-domain\naccuracy as bars
                 #############################################################################
-                ax[0, 0].set_ylabel("Ood accuracy")
+                ax[0, 0].set_ylabel("Out-of-domain\naccuracy")
 
                 # add constant shift gap
                 shift = eval_constant
@@ -951,7 +964,7 @@ for index, experiment_name in enumerate(experiments):
                 )
                 ax[0, 1].tick_params(axis="x", labelrotation=90)
 
-                ax[1, 0].set_ylabel("Ood accuracy")
+                ax[1, 0].set_ylabel("Out-of-domain\naccuracy")
                 ax[1, 1].set_ylabel("Shift gap")
             if (
                 Path(__file__).parents[0]
@@ -1012,7 +1025,7 @@ for index, experiment_name in enumerate(experiments):
                         dic_shift[f"test{index}"] = shift
 
                 #############################################################################
-                # Plot ood accuracy as bars
+                # Plot Out-of-domain\naccuracy as bars
                 #############################################################################
                 # add constant shift gap
                 shift = eval_constant
@@ -1076,7 +1089,7 @@ for index, experiment_name in enumerate(experiments):
                     bbox_inches="tight",
                 )
 
-
+#%%
 experiment_groups = {
     "group1": [
         "acsfoodstamps",
@@ -1098,7 +1111,7 @@ for experiment_group, experiments in experiment_groups.items():
 
     for index, experiment_name in enumerate(experiments):
         subfig = subfigs[index]
-        subfig.subplots_adjust(wspace=0.3)
+        subfig.subplots_adjust(wspace=0.5)
         subfig.subplots_adjust(top=0.85)
         ax = subfig.subplots(1, 2, gridspec_kw={"width_ratios": [0.5, 0.5]})
         subfig.suptitle(
@@ -1113,8 +1126,8 @@ for experiment_group, experiments in experiment_groups.items():
         ax[1].xaxis.set_major_formatter(FormatStrFormatter("%.3f"))
         ax[1].yaxis.set_major_formatter(FormatStrFormatter("%.3f"))
 
-        ax[0].set_xlabel(f"Id accuracy")
-        ax[0].set_ylabel(f"Ood accuracy")
+        ax[0].set_xlabel(f"In-domain accuracy")
+        ax[0].set_ylabel(f"Out-of-domain\naccuracy")
 
         ##############################################################################
         # plot errorbars and shift gap for constant
@@ -1126,7 +1139,7 @@ for experiment_group, experiments in experiment_groups.items():
             yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
             fmt="X",
             color=color_constant,
-            ecolor=color_error,
+            ecolor=lighten_color(color_constant),
             markersize=markersize,
             capsize=capsize,
             label="constant",
@@ -1160,7 +1173,7 @@ for experiment_group, experiments in experiment_groups.items():
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt="s",
             color=color_all,
-            ecolor=color_error,
+            ecolor=lighten_color(color_all),
             markersize=markersize,
             capsize=capsize,
             label="all",
@@ -1195,7 +1208,7 @@ for experiment_group, experiments in experiment_groups.items():
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt="o",
             color=color_causal,
-            ecolor=color_error,
+            ecolor=lighten_color(color_causal),
             markersize=markersize,
             capsize=capsize,
             label="causal",
@@ -1236,7 +1249,7 @@ for experiment_group, experiments in experiment_groups.items():
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="D",
                 color=color_arguablycausal,
-                ecolor=color_error,
+                ecolor=lighten_color(color_arguablycausal),
                 markersize=markersize,
                 capsize=capsize,
                 label="arguably\ncausal",
@@ -1274,7 +1287,7 @@ for experiment_group, experiments in experiment_groups.items():
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="v" if causalml == "irm" else "^",
                 color=eval(f"color_{causalml}"),
-                ecolor=color_error,
+                ecolor=lighten_color(eval(f"color_{causalml}")),
                 markersize=markersize,
                 capsize=capsize,
                 label="causal ml",
@@ -1508,7 +1521,7 @@ for experiment_group, experiments in experiment_groups.items():
         #############################################################################
         if (eval_all["features"] == "arguablycausal").any():
             ax[1].set_xlabel("Shift gap")
-            ax[1].set_ylabel("Ood accuracy")
+            ax[1].set_ylabel("Out-of-domain\naccuracy")
             shift_acc = pd.concat(dic_shift.values(), ignore_index=True)
             markers = {
                 "constant": "X",
@@ -1538,7 +1551,7 @@ for experiment_group, experiments in experiment_groups.items():
                     xerr=type_shift["gap_var"] ** 0.5,
                     yerr=type_shift["ood_test_ub"] - type_shift["ood_test"],
                     color=eval(f"color_{type}"),
-                    ecolor=color_error,
+                    ecolor=lighten_color(eval(f"color_{type}")),
                     fmt=marker,
                     markersize=markersize,
                     capsize=capsize,
@@ -1634,12 +1647,12 @@ experiment_groups = {
     ],
 }
 for experiment_group, experiments in experiment_groups.items():
-    fig = plt.figure(figsize=(5.5, 2 * len(experiments)))
+    fig = plt.figure(figsize=(5.5, 1.75* len(experiments)))
     subfigs = fig.subfigures(len(experiments), 1, hspace=0.2)  # create 4x1 subfigures
 
     for index, experiment_name in enumerate(experiments):
         subfig = subfigs[index]
-        subfig.subplots_adjust(wspace=0.3)
+        subfig.subplots_adjust(wspace=0.4)
         subfig.subplots_adjust(top=0.85)
         subfig.subplots_adjust(bottom=0.25)
         ax = subfig.subplots(1, 2, gridspec_kw={"width_ratios": [0.5, 0.5]})
@@ -1665,8 +1678,8 @@ for experiment_group, experiments in experiment_groups.items():
         ax[1].xaxis.set_major_formatter(FormatStrFormatter("%.3f"))
         ax[1].yaxis.set_major_formatter(FormatStrFormatter("%.3f"))
 
-        ax[0].set_xlabel(f"Id accuracy")
-        ax[0].set_ylabel(f"Ood accuracy")
+        ax[0].set_xlabel(f"In-domain accuracy")
+        ax[0].set_ylabel(f"Out-of-domain\naccuracy")
 
         #############################################################################
         # plot errorbars and shift gap for constant
@@ -1678,7 +1691,7 @@ for experiment_group, experiments in experiment_groups.items():
             yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
             fmt="X",
             color=color_constant,
-            ecolor=color_error,
+            ecolor=lighten_color(color_constant),
             markersize=markersize,
             capsize=capsize,
             label="constant",
@@ -1710,7 +1723,7 @@ for experiment_group, experiments in experiment_groups.items():
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt="o",
             color=color_causal,
-            ecolor=color_error,
+            ecolor=lighten_color(color_causal),
             markersize=markersize,
             capsize=capsize,
             label="causal",
@@ -1751,7 +1764,7 @@ for experiment_group, experiments in experiment_groups.items():
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="D",
                 color=color_arguablycausal,
-                ecolor=color_error,
+                ecolor=lighten_color(color_arguablycausal),
                 markersize=markersize,
                 capsize=capsize,
                 label="arguably\ncausal",
@@ -1789,7 +1802,7 @@ for experiment_group, experiments in experiment_groups.items():
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt="s",
             color=color_all,
-            ecolor=color_error,
+            ecolor=lighten_color(color_all),
             markersize=markersize,
             capsize=capsize,
             label="all",
@@ -1830,7 +1843,7 @@ for experiment_group, experiments in experiment_groups.items():
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="P",
                 color=color_anticausal,
-                ecolor=color_error,
+                ecolor=lighten_color(color_anticausal),
                 markersize=markersize,
                 capsize=capsize,
                 label="anticausal",
@@ -1871,7 +1884,7 @@ for experiment_group, experiments in experiment_groups.items():
                 yerr=markers["ood_test_ub"] - markers["ood_test"],
                 fmt="p",
                 color="tab:blue",
-                ecolor=color_error,
+                ecolor=lighten_color("tab:blue"),
                 markersize=markersize,
                 capsize=capsize,
                 label="causal+anticausal",
@@ -2137,7 +2150,7 @@ for experiment_group, experiments in experiment_groups.items():
         #############################################################################
         if (eval_all["features"] == "arguablycausal").any():
             ax[1].set_xlabel("Shift gap")
-            ax[1].set_ylabel("Ood accuracy")
+            ax[1].set_ylabel("Out-of-domain\naccuracy")
             shift_acc = pd.concat(dic_shift_acc.values(), ignore_index=True)
             if experiment_name == "sipp":
                 markers = {
@@ -2176,7 +2189,7 @@ for experiment_group, experiments in experiment_groups.items():
                     xerr=type_shift["gap_var"] ** 0.5,
                     yerr=type_shift["ood_test_ub"] - type_shift["ood_test"],
                     color=eval(f"color_{type}"),
-                    ecolor=color_error,
+                    ecolor=lighten_color(eval(f"color_{type}")),
                     fmt=marker,
                     markersize=markersize,
                     capsize=capsize,

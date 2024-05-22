@@ -28,10 +28,10 @@ from experiments_causal.plot_config_colors import *
 from experiments_causal.plot_config_tasks import dic_title
 
 experiments = [
-    "acsfoodstamps", #pc
+    # "acsfoodstamps", #pc
     # "acsincome", #pc
     # "acspubcov", #old fci
-    # "acsunemployment", #pc
+    "acsunemployment", #pc, icp
     # "anes",
     # "assistments",
     # "brfss_blood_pressure",
@@ -46,7 +46,7 @@ experiments = [
     # "sipp",
 ]
 
-discovery = "pc"
+discovery = "icp"
 
 # Set plot configurations
 sns.set_context("paper")
@@ -60,7 +60,18 @@ list_mak = [
     mmark.MarkerStyle("X"),
     mmark.MarkerStyle("*"),
 ]
-list_lab = ["All", "Arguably causal", "Causal", "Constant","PC"]
+
+import matplotlib.colors as mcolors
+def lighten_color(color, amount=0.5):
+    try:
+        c = mcolors.cnames[color]
+    except KeyError:
+        c = color
+    c = mcolors.to_rgb(c)
+    c = [min(1, max(0, channel + amount * (1 - channel))) for channel in c]
+    return c
+
+list_lab = ["All", "Arguably causal", "Causal", "Constant","ICP"]
 list_color = [color_all, color_arguablycausal, color_causal, color_constant, plt.cm.Paired(1)]
 
 list_mak_results = list_mak.copy()
@@ -228,7 +239,7 @@ for experiment_name in experiments:
         yerr=eval_constant["ood_test_ub"] - eval_constant["ood_test"],
         fmt="X",
         color=color_constant,
-        ecolor=color_error,
+        ecolor=lighten_color(color_constant),
         markersize=markersize,
         capsize=capsize,
         label="constant",
@@ -256,7 +267,7 @@ for experiment_name in experiments:
         yerr=markers["ood_test_ub"] - markers["ood_test"],
         fmt="o",
         color=color_causal,
-        ecolor=color_error,
+        ecolor=lighten_color(color_causal),
         markersize=markersize,
         capsize=capsize,
         label="causal",
@@ -288,7 +299,7 @@ for experiment_name in experiments:
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt="D",
             color=color_arguablycausal,
-            ecolor=color_error,
+            ecolor=lighten_color(color_arguablycausal),
             markersize=markersize,
             capsize=capsize,
             label="arguably\ncausal",
@@ -318,7 +329,7 @@ for experiment_name in experiments:
         yerr=markers["ood_test_ub"] - markers["ood_test"],
         fmt="s",
         color=color_all,
-        ecolor=color_error,
+        ecolor=lighten_color(color_all),
         markersize=markersize,
         capsize=capsize,
         label="all",
@@ -491,7 +502,7 @@ for experiment_name in experiments:
             yerr=markers["ood_test_ub"] - markers["ood_test"],
             fmt="*",
             color=plt.cm.Paired(1),
-            ecolor="#78add2",
+            ecolor=lighten_color(plt.cm.Paired(1)),
             markersize=markersize,
             capsize=capsize,
         )
