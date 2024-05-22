@@ -1,1 +1,0 @@
-{"id_test": 0.7341232134314567, "id_test_conf": [0.7330129531309814, 0.7352312512536008], "features": ["ms_first_response", "tutor_mode", "type", "first_action", "school_id"], "ood_test": 0.671803880859219, "ood_test_conf": [0.663500766748461, 0.6800270794105812], "validation": 0.7331840291487204, "validation_conf": [0.732072527026562, 0.7342933177068146]}
