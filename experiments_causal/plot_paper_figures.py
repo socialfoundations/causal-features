@@ -34,7 +34,7 @@ list_mak = [
     mmark.MarkerStyle("o"),
     mmark.MarkerStyle("X"),
 ]
-list_lab = ["All", "Arguably causal", "Causal", "Constant"]
+list_lab = ["All features ", "Arguably causal\nfeatures", "Causal features", "Constant"]
 list_color = [color_all, color_arguablycausal, color_causal, color_constant]
 markers_causalml = {
                 "irm": "v",
@@ -74,18 +74,18 @@ def lighten_color(color, amount=0.5):
 # Define list of experiments to plot
 experiments = [
     "brfss_diabetes",
-    "acsunemployment",
+    # "acsunemployment",
     "acsincome",
     "mimic_extract_mort_hosp",
 ]
 
 sns.set_style("white")
-fig = plt.figure(figsize=[5.5, 7])
-(subfig1, subfig2, subfig3, subfig4) = fig.subfigures(
-    4, 1
+fig = plt.figure(figsize=[5.5, 5])
+(subfig1, subfig2, subfig3) = fig.subfigures(
+    3, 1
 )  # create 4x1 subfigures
 
-subfigs = (subfig1, subfig2, subfig3, subfig4)
+subfigs = (subfig1, subfig2, subfig3)
 
 
 ax1 = subfig1.subplots(
@@ -97,10 +97,10 @@ ax2 = subfig2.subplots(
 ax3 = subfig3.subplots(
     1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "top":0.85, "bottom":0.25}
 )  # create 1x4 subplots on subfig2
-ax4 = subfig4.subplots(
-    1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "top":0.85, "bottom":0.25}
-)  # create 1x4 subplots on subfig2
-axes = (ax1, ax2, ax3, ax4)
+# ax4 = subfig4.subplots(
+#     1, 2, gridspec_kw={"width_ratios": [0.5, 0.5], "top":0.85, "bottom":0.25}
+# )  # create 1x4 subplots on subfig2
+axes = (ax1, ax2, ax3)
 
 for index, experiment_name in enumerate(experiments):
     subfig = subfigs[index]
@@ -490,10 +490,10 @@ fig.legend(
     list(zip(list_color_results, list_mak_results)),
     list_lab_results,
     handler_map={tuple: MarkerHandler()},
-    loc="upper center",
-    bbox_to_anchor=(0.5, 0),
+    loc="center left",
+    bbox_to_anchor=(1, 0.5),
     fancybox=True,
-    ncol=5,
+    title = "Legend",
 )
 
 fig.savefig(

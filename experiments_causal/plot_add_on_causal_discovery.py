@@ -46,7 +46,7 @@ experiments = [
     # "sipp",
 ]
 
-discovery = "icp"
+discovery = "pc"
 
 # Set plot configurations
 sns.set_context("paper")

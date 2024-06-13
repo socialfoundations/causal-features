@@ -23,7 +23,7 @@ list_mak = [
     mmark.MarkerStyle("o"),
     mmark.MarkerStyle("X"),
 ]
-list_lab = ["All", "Arguably causal", "Causal", "Constant"]
+list_lab = ["All features ", "Arguably causal\nfeatures", "Causal features", "Constant"]
 list_color = [color_all, color_arguablycausal, color_causal, color_constant]
 
 
@@ -123,14 +123,6 @@ for index, set in enumerate(sets):
         label=set.capitalize() if set != "arguablycausal" else "Arguably causal",
         zorder=len(sets) - index,
     )
-    # get pareto set for shift vs accuracy
-    shift_acc = eval_plot_features
-    shift_acc["type"] = set
-    shift_acc["gap"] = shift_acc["ood_test"] - shift_acc["id_test"]
-    shift_acc["id_test_var"] = ((shift_acc["id_test_ub"] - shift_acc["id_test"])) ** 2
-    shift_acc["ood_test_var"] = ((shift_acc["ood_test_ub"] - shift_acc["ood_test"])) ** 2
-    shift_acc["gap_var"] = shift_acc["id_test_var"] + shift_acc["ood_test_var"]
-    dic_shift_acc[set] = shift_acc
 
 ax[0].tick_params(axis="x", labelrotation=90)
 ax[0].set_ylim(top=1.0)
@@ -179,10 +171,10 @@ fig.legend(
     list(zip(list_color, list_mak)),
     list_lab,
     handler_map={tuple: MarkerHandler()},
-    loc="lower center",
-    bbox_to_anchor=(0.5, 1),
+    loc="center left",
+    bbox_to_anchor=(1, 0.5),
     fancybox=True,
-    ncol=5,
+    title = "Legend",
 )
 
 fig.savefig(
