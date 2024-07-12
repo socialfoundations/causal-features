@@ -3,7 +3,7 @@
 from experiments_causal.plot_experiment import get_results
 from experiments_causal.plot_experiment_anticausal import get_results as get_results_anticausal
 from experiments_causal.plot_experiment_causalml import get_results as get_results_causalml
-from experiments_causal.plot_add_on_causal_discovery import get_results_pc_subsets
+# from experiments_causal.plot_add_on_causal_discovery import get_results_pc_subsets
 from experiments_causal.plot_config_colors import *
 import seaborn as sns
 from matplotlib.legend_handler import HandlerBase
@@ -17,6 +17,8 @@ import matplotlib.colors as mcolors
 import pandas as pd
 from pathlib import Path
 import warnings
+import os
+import json
 warnings.filterwarnings("ignore")
 
 
@@ -24,7 +26,7 @@ warnings.filterwarnings("ignore")
 color_all = "#BAC477"
 color_arguablycausal = "#4C5D78"
 color_causal = "#DA944C"
-color_anticausal = "#C25B32"
+color_anticausal = "#D35B50" #"#C25B32"
 
 # Set plot configurations
 sns.set_context("poster")
@@ -60,6 +62,78 @@ dic_title = {
     "physionet": "Sepsis",
     "sipp": "Poverty",
 }
+
+def get_results_pc_subsets(experiment_name: str) -> pd.DataFrame:
+
+    """Load json files of experiments from results folder, concat them into a dataframe and save it.
+
+    Parameters
+    ----------
+    experiment_name : str
+        The name of the task.
+
+    Returns
+    -------
+    pd.DataFrame
+        Dataframe containing the results of the experiment.
+
+    """
+    experiments = [experiment_name]
+
+    # Load all json files of experiments
+    eval_all = pd.DataFrame()
+    feature_selection = []
+    for experiment in experiments:
+        file_info = []
+        try:
+            RESULTS_DIR = Path(__file__).parents[0] / "add_on_results" / "causal_discovery" / experiment
+            for filename in os.listdir(RESULTS_DIR):
+                if filename == ".DS_Store":
+                    pass
+                else:
+                    file_info.append(filename)
+
+            for run in file_info:
+                with open(str(RESULTS_DIR / run), "rb") as file:
+                    # print(str(RESULTS_DIR / run))
+                    try:
+                        eval_json = json.load(file)
+                        eval_pd = pd.DataFrame(
+                            [
+                                {
+                                    "id_test": eval_json["id_test"],
+                                    "id_test_lb": eval_json["id_test" + "_conf"][0],
+                                    "id_test_ub": eval_json["id_test" + "_conf"][1],
+                                    "ood_test": eval_json["ood_test"],
+                                    "ood_test_lb": eval_json["ood_test" + "_conf"][0],
+                                    "ood_test_ub": eval_json["ood_test" + "_conf"][1],
+                                    "validation": eval_json["validation"],
+                                    "features": f"random_{experiment.split('_')[-1]}",
+                                    "model": run.split("_", 2)[0] + "_" + run.split("_", 2)[1] if run.split("_")[0] in ["ib", "and", "causirl"] else run.split("_")[0],
+                                    "number": len(eval_json["features"]),
+                                }
+                            ]
+                        )
+                        eval_all = pd.concat([eval_all, eval_pd], ignore_index=True)
+                    except:
+                        print(str(RESULTS_DIR / run))
+        except:
+            print(experiment)
+
+    # Select model with highest in-domain validation accuracy
+    list_model_data = []
+    for set in eval_all["features"].unique():
+        eval_feature = eval_all[eval_all["features"] == set]
+        for model in eval_feature["model"].unique():
+            model_data = eval_feature[eval_feature["model"] == model]
+            model_data = model_data[
+                model_data["validation"] == model_data["validation"].max()
+            ]
+            model_data.drop_duplicates(inplace=True)
+            list_model_data.append(model_data)
+    eval_all = pd.concat(list_model_data)
+    return eval_all
+
 
 #%%
 # Define list of experiments to plot
@@ -505,48 +579,6 @@ for index, experiment_name in enumerate(experiments):
             alpha=0.05,
         )
 
-    # #############################################################################
-    # # plot pareto dominated area for anticausal features
-    # #############################################################################
-    # if (eval_all["features"] == "causal_anticausal").any():
-    #     eval_plot = eval_all[eval_all["features"] == "causal_anticausal"]
-    #     eval_plot.sort_values("id_test", inplace=True)
-    #     # Calculate the pareto set
-    #     points = eval_plot[["id_test", "ood_test"]]
-    #     mask = paretoset(points, sense=["max", "max"])
-    #     points = points[mask]
-    #     points = points[
-    #         points["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
-    #     ]
-    #     # get extra points for the plot
-    #     new_row = pd.DataFrame(
-    #         {
-    #             "id_test": [xmin, max(points["id_test"])],
-    #             "ood_test": [max(points["ood_test"]), ymin],
-    #         },
-    #     )
-    #     points = pd.concat([points, new_row], ignore_index=True)
-    #     points.sort_values("id_test", inplace=True)
-    #     ax.plot(
-    #         points["id_test"],
-    #         points["ood_test"],
-    #         color="tab:blue",
-    #         linestyle=(0, (1, 1)),
-    #         # linewidth=linewidth_bound,
-    #     )
-
-    #     new_row = pd.DataFrame(
-    #         {"id_test": [xmin], "ood_test": [ymin]},
-    #     )
-    #     points = pd.concat([points, new_row], ignore_index=True)
-    #     points = points.to_numpy()
-    #     hull = ConvexHull(points)
-    #     ax.fill(
-    #         points[hull.vertices, 0],
-    #         points[hull.vertices, 1],
-    #         color="tab:blue",
-    #         alpha=0.05,
-    #     )
     
     fig.savefig(
     str(Path(__file__).parents[0] / f"plots_poster/plot_{experiment_name}_anticausal.pdf"),
@@ -833,13 +865,16 @@ markers_causalml = {
                 "causirl_coral": "v",}
 color_ml = "#AB5878"
 
-experiments = ["acsincome","acsunemployment","mimic_extract_mort_hosp",]
+experiments = ["brfss_diabetes","acsincome","acsunemployment","mimic_extract_mort_hosp",]
 
 
 for index, experiment_name in enumerate(experiments):
     fig, ax = plt.subplots()
 
-    eval_all = get_results_causalml(experiment_name)
+    if experiment_name == "brfss_diabetes":
+        eval_all = get_results(experiment_name)
+    else:
+        eval_all = get_results_causalml(experiment_name)
     eval_constant = eval_all[eval_all["features"] == "constant"]
     dic_shift = {}
 
@@ -847,7 +882,7 @@ for index, experiment_name in enumerate(experiments):
     ax.yaxis.set_major_formatter(FormatStrFormatter("%.3f"))
 
     ax.set_xlabel(f"In-domain accuracy")
-    ax.set_ylabel(f"Out-of-domain\naccuracy")
+    ax.set_ylabel(f"Out-of-domain accuracy")
 
     ##############################################################################
     # plot errorbars and shift gap for constant
@@ -864,7 +899,139 @@ for index, experiment_name in enumerate(experiments):
         # capsize=capsize,
         label="constant",
     )
-    
+
+        
+
+    #############################################################################
+    # plot errorbars and shift gap for causal ml
+    #############################################################################
+    eval_plot = eval_all[eval_all["features"] == "all"]
+
+    for causalml in ["irm", "vrex"]:
+        eval_model = eval_plot[
+            (eval_plot["model"] == causalml)
+            | (eval_plot["model"] == f"tableshift:{causalml}")
+        ]
+        points = eval_model[["id_test", "ood_test"]]
+        mask = paretoset(points, sense=["max", "max"])
+        points = points[mask]
+        points = points[
+            points["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
+        ]
+        markers = eval_model[mask]
+        markers = markers[
+            markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
+        ]
+        errors = ax.errorbar(
+            x=markers["id_test"],
+            y=markers["ood_test"],
+            xerr=markers["id_test_ub"] - markers["id_test"],
+            yerr=markers["ood_test_ub"] - markers["ood_test"],
+            fmt=markers_causalml[causalml],
+            color=color_ml,
+            ecolor=lighten_color(color_ml, amount=0.5),
+            # markersize=markersize,
+            # capsize=capsize,
+            label="causal ml",
+        )
+
+    for causalml in ["ib_irm", "causirl_mmd", "causirl_coral", "and_mask"]:
+        eval_model = eval_plot[
+            (eval_plot["model"] == causalml)
+        ]
+        points = eval_model[["id_test", "ood_test"]]
+        mask = paretoset(points, sense=["max", "max"])
+        points = points[mask]
+        points = points[
+            points["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
+        ]
+        markers = eval_model[mask]
+        markers = markers[
+            markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
+        ]
+        errors = ax.errorbar(
+            x=markers["id_test"],
+            y=markers["ood_test"],
+            xerr=markers["id_test_ub"] - markers["id_test"],
+            yerr=markers["ood_test_ub"] - markers["ood_test"],
+            fmt=markers_causalml[causalml],
+            color=color_ml,
+            ecolor=lighten_color(color_ml, amount=0.5),
+            # markersize=markersize,
+            # capsize=capsize,
+            label="causal ml",
+        )
+
+    if experiment_name == "acsunemployment":
+        #############################################################################
+        # plot errorbars for causal discovery features
+        #############################################################################
+        for discovery in ["pc","icp"]:
+            eval_all_causal_discovery = get_results_pc_subsets(f"{experiment_name}_{discovery}")
+
+            for set in eval_all_causal_discovery["features"].unique():
+                eval_plot = eval_all_causal_discovery[eval_all_causal_discovery["features"] == set]
+                eval_plot.sort_values("id_test", inplace=True)
+                # Calculate the pareto set
+                points = eval_plot[["id_test", "ood_test"]]
+                mask = paretoset(points, sense=["max", "max"])
+                markers = eval_plot[mask]
+                errors = ax.errorbar(
+                    x=markers["id_test"],
+                    y=markers["ood_test"],
+                    xerr=markers["id_test_ub"] - markers["id_test"],
+                    yerr=markers["ood_test_ub"] - markers["ood_test"],
+                    fmt="P",
+                    color=plt.cm.Paired(1),
+                    ecolor=lighten_color(plt.cm.Paired(1)),
+                )
+
+    if experiment_name == "acsincome":
+        #############################################################################
+        # plot errorbars for causal discovery features
+        #############################################################################
+        for discovery in ["pc"]:
+            eval_all_causal_discovery = get_results_pc_subsets(f"{experiment_name}_{discovery}")
+
+            for set in eval_all_causal_discovery["features"].unique():
+                eval_plot = eval_all_causal_discovery[eval_all_causal_discovery["features"] == set]
+                eval_plot.sort_values("id_test", inplace=True)
+                # Calculate the pareto set
+                points = eval_plot[["id_test", "ood_test"]]
+                mask = paretoset(points, sense=["max", "max"])
+                markers = eval_plot[mask]
+                errors = ax.errorbar(
+                    x=markers["id_test"],
+                    y=markers["ood_test"],
+                    xerr=markers["id_test_ub"] - markers["id_test"],
+                    yerr=markers["ood_test_ub"] - markers["ood_test"],
+                    fmt="P",
+                    color=plt.cm.Paired(1),
+                    ecolor=lighten_color(plt.cm.Paired(1)),
+                )
+    if experiment_name == "brfss_diabetes":
+        #############################################################################
+        # plot errorbars for causal discovery features
+        #############################################################################
+        for discovery in ["pc","fci"]:
+            eval_all_causal_discovery = get_results_pc_subsets(f"{experiment_name}_{discovery}")
+
+            for set in eval_all_causal_discovery["features"].unique():
+                eval_plot = eval_all_causal_discovery[eval_all_causal_discovery["features"] == set]
+                eval_plot.sort_values("id_test", inplace=True)
+                # Calculate the pareto set
+                points = eval_plot[["id_test", "ood_test"]]
+                mask = paretoset(points, sense=["max", "max"])
+                markers = eval_plot[mask]
+                errors = ax.errorbar(
+                    x=markers["id_test"],
+                    y=markers["ood_test"],
+                    xerr=markers["id_test_ub"] - markers["id_test"],
+                    yerr=markers["ood_test_ub"] - markers["ood_test"],
+                    fmt="P",
+                    color=plt.cm.Paired(1),
+                    ecolor=lighten_color(plt.cm.Paired(1)),
+                )
     #############################################################################
     # plot errorbars and shift gap for all features
     #############################################################################
@@ -975,73 +1142,13 @@ for index, experiment_name in enumerate(experiments):
             # capsize=capsize,
             label="arguably\ncausal",
         )
-        
-
-    #############################################################################
-    # plot errorbars and shift gap for causal ml
-    #############################################################################
-    eval_plot = eval_all[eval_all["features"] == "all"]
-
-    for causalml in ["irm", "vrex"]:
-        eval_model = eval_plot[
-            (eval_plot["model"] == causalml)
-            | (eval_plot["model"] == f"tableshift:{causalml}")
-        ]
-        points = eval_model[["id_test", "ood_test"]]
-        mask = paretoset(points, sense=["max", "max"])
-        points = points[mask]
-        points = points[
-            points["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
-        ]
-        markers = eval_model[mask]
-        markers = markers[
-            markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
-        ]
-        errors = ax.errorbar(
-            x=markers["id_test"],
-            y=markers["ood_test"],
-            xerr=markers["id_test_ub"] - markers["id_test"],
-            yerr=markers["ood_test_ub"] - markers["ood_test"],
-            fmt=markers_causalml[causalml],
-            color=color_ml,
-            ecolor=lighten_color(color_ml, amount=0.5),
-            # markersize=markersize,
-            # capsize=capsize,
-            label="causal ml",
-        )
-
-    for causalml in ["ib_irm", "causirl_mmd", "causirl_coral", "and_mask"]:
-        eval_model = eval_plot[
-            (eval_plot["model"] == causalml)
-        ]
-        points = eval_model[["id_test", "ood_test"]]
-        mask = paretoset(points, sense=["max", "max"])
-        points = points[mask]
-        points = points[
-            points["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
-        ]
-        markers = eval_model[mask]
-        markers = markers[
-            markers["id_test"] >= (eval_constant["id_test"].values[0] - 0.01)
-        ]
-        errors = ax.errorbar(
-            x=markers["id_test"],
-            y=markers["ood_test"],
-            xerr=markers["id_test_ub"] - markers["id_test"],
-            yerr=markers["ood_test_ub"] - markers["ood_test"],
-            fmt=markers_causalml[causalml],
-            color=color_ml,
-            ecolor=lighten_color(color_ml, amount=0.5),
-            # markersize=markersize,
-            # capsize=capsize,
-            label="causal ml",
-        )
 
     #############################################################################
     # plot pareto dominated area for constant
     #############################################################################
     xmin, xmax = ax.get_xlim()
     ymin, ymax = ax.get_ylim()
+
     ax.plot(
         [xmin, eval_constant["id_test"].values[0]],
         [eval_constant["ood_test"].values[0], eval_constant["ood_test"].values[0]],
@@ -1215,9 +1322,12 @@ for index, experiment_name in enumerate(experiments):
             color=color_arguablycausal,
             alpha=0.05,
         )
+    ax.set_xlim((xmin, xmax))
+    ax.set_ylim((ymin, ymax))
 
     fig.savefig(
     str(Path(__file__).parents[0] / f"plots_poster/plot_{experiment_name}_causalml.pdf"),
     bbox_inches="tight",
     )
     
+# %%
