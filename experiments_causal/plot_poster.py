@@ -23,10 +23,11 @@ warnings.filterwarnings("ignore")
 
 
 # Reset colors for poster
-color_all = "#BAC477"
-color_arguablycausal = "#4C5D78"
-color_causal = "#DA944C"
-color_anticausal = "#D35B50" #"#C25B32"
+color_all = "#9CBB06" # "#BAC477"
+color_arguablycausal = "#0B60AC" #"#4C5D78"
+color_causal = "#FB9E06" #DA944C"
+color_anticausal = "#E7000E" #"#D35B50" #"#C25B32"
+color_ml = "#830042"
 
 # Set plot configurations
 sns.set_context("poster")
@@ -863,7 +864,7 @@ markers_causalml = {
                 "and_mask": "v",
                 "causirl_mmd": "v",
                 "causirl_coral": "v",}
-color_ml = "#AB5878"
+# color_ml = "#AB5878"
 
 experiments = ["brfss_diabetes","acsincome","acsunemployment","mimic_extract_mort_hosp",]
 
@@ -982,8 +983,8 @@ for index, experiment_name in enumerate(experiments):
                     xerr=markers["id_test_ub"] - markers["id_test"],
                     yerr=markers["ood_test_ub"] - markers["ood_test"],
                     fmt="P",
-                    color=plt.cm.Paired(1),
-                    ecolor=lighten_color(plt.cm.Paired(1)),
+                    color="#48B3FE",
+                    ecolor=lighten_color("#48B3FE"),
                 )
 
     if experiment_name == "acsincome":
@@ -1006,8 +1007,8 @@ for index, experiment_name in enumerate(experiments):
                     xerr=markers["id_test_ub"] - markers["id_test"],
                     yerr=markers["ood_test_ub"] - markers["ood_test"],
                     fmt="P",
-                    color=plt.cm.Paired(1),
-                    ecolor=lighten_color(plt.cm.Paired(1)),
+                    color="#48B3FE",
+                    ecolor=lighten_color("#48B3FE"),
                 )
     if experiment_name == "brfss_diabetes":
         #############################################################################
@@ -1029,8 +1030,8 @@ for index, experiment_name in enumerate(experiments):
                     xerr=markers["id_test_ub"] - markers["id_test"],
                     yerr=markers["ood_test_ub"] - markers["ood_test"],
                     fmt="P",
-                    color=plt.cm.Paired(1),
-                    ecolor=lighten_color(plt.cm.Paired(1)),
+                    color="#48B3FE",
+                    ecolor=lighten_color("#48B3FE"),
                 )
     #############################################################################
     # plot errorbars and shift gap for all features
