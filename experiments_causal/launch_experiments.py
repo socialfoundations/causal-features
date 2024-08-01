@@ -104,8 +104,8 @@ for index in range(ACS_FOODSTAMPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
 # for index in range(ACS_PUBCOV_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("acspubcov_causal_test_" + f"{index}")
 
-for index in range(ACS_PUBCOV_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-    TASKS.append("acspubcov_arguablycausal_test_" + f"{index}")
+# for index in range(ACS_PUBCOV_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+#     TASKS.append("acspubcov_arguablycausal_test_" + f"{index}")
 
 # for index in range(ACS_UNEMPLOYMENT_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("acsunemployment_causal_test_" + f"{index}")
