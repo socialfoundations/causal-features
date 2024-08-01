@@ -146,8 +146,8 @@ for index in range(ASSISTMENTS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
 # for index in range(COLLEGE_SCORECARD_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("college_scorecard_causal_test_" + f"{index}")
 
-# # for index in range(COLLEGE_SCORECARD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-# #         TASKS.append("college_scorecard_arguablycausal_test_"+f"{index}")
+for index in range(COLLEGE_SCORECARD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+        TASKS.append("college_scorecard_arguablycausal_test_"+f"{index}")
 
 # for index in range(MIMIC_EXTRACT_LOS_3_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("mimic_extract_los_3_causal_test_" + f"{index}")
