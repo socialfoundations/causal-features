@@ -23,7 +23,7 @@ N_TRIALS    = 10
 # N_TRIALS    = 100
 
 # Cluster settings
-JOB_MIN_BID = 50  # htcondor bid (min. is 15 apparently...)
+JOB_MIN_BID = 30  # htcondor bid (min. is 15 apparently...)
 JOB_CPUS = 1  # number of CPUs per experiment (per cluster job)
 JOB_MEMORY_GB = int(128)  # GBs of memory
 
@@ -92,56 +92,56 @@ TASKS = [
 # for index in range(ACS_INCOME_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("acsincome_causal_test_" + f"{index}")
 
-# for index in range(ACS_INCOME_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-#     TASKS.append("acsincome_arguablycausal_test_" + f"{index}")
+for index in range(ACS_INCOME_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+    TASKS.append("acsincome_arguablycausal_test_" + f"{index}")
 
 # for index in range(ACS_FOODSTAMPS_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("acsfoodstamps_causal_test_" + f"{index}")
 
-# for index in range(ACS_FOODSTAMPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-#     TASKS.append("acsfoodstamps_arguablycausal_test_" + f"{index}")
+for index in range(ACS_FOODSTAMPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+    TASKS.append("acsfoodstamps_arguablycausal_test_" + f"{index}")
 
 # for index in range(ACS_PUBCOV_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("acspubcov_causal_test_" + f"{index}")
 
-# for index in range(ACS_PUBCOV_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-#     TASKS.append("acspubcov_arguablycausal_test_" + f"{index}")
+for index in range(ACS_PUBCOV_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+    TASKS.append("acspubcov_arguablycausal_test_" + f"{index}")
 
 # for index in range(ACS_UNEMPLOYMENT_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("acsunemployment_causal_test_" + f"{index}")
 
-# for index in range(ACS_UNEMPLOYMENT_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-#     TASKS.append("acsunemployment_arguablycausal_test_" + f"{index}")
+for index in range(ACS_UNEMPLOYMENT_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+    TASKS.append("acsunemployment_arguablycausal_test_" + f"{index}")
 
 # for index in range(BRFSS_DIABETES_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("brfss_diabetes_causal_test_" + f"{index}")
 
-# for index in range(BRFSS_DIABETES_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-#     TASKS.append("brfss_diabetes_arguablycausal_test_" + f"{index}")
+for index in range(BRFSS_DIABETES_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+    TASKS.append("brfss_diabetes_arguablycausal_test_" + f"{index}")
 
 # for index in range(BRFSS_BLOOD_PRESSURE_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("brfss_blood_pressure_causal_test_" + f"{index}")
 
-# for index in range(BRFSS_BLOOD_PRESSURE_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-#     TASKS.append("brfss_blood_pressure_arguablycausal_test_" + f"{index}")
+for index in range(BRFSS_BLOOD_PRESSURE_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+    TASKS.append("brfss_blood_pressure_arguablycausal_test_" + f"{index}")
 
 # for index in range(DIABETES_READMISSION_FEATURES_CAUSAL_NUMBER):
 #     TASKS.append("diabetes_readmission_causal_test_" + f"{index}")
 
-# for index in range(DIABETES_READMISSION_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-#     TASKS.append("diabetes_readmission_arguablycausal_test_" + f"{index}")
+for index in range(DIABETES_READMISSION_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+    TASKS.append("diabetes_readmission_arguablycausal_test_" + f"{index}")
 
 # for index in range(ANES_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("anes_causal_test_" + f"{index}")
 
-# for index in range(ANES_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-#     TASKS.append("anes_arguablycausal_test_" + f"{index}")
+for index in range(ANES_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+    TASKS.append("anes_arguablycausal_test_" + f"{index}")
 
 # for index in range(ASSISTMENTS_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("assistments_causal_test_" + f"{index}")
 
-# for index in range(ASSISTMENTS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-#     TASKS.append("assistments_arguablycausal_test_" + f"{index}")
+for index in range(ASSISTMENTS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+    TASKS.append("assistments_arguablycausal_test_" + f"{index}")
 
 # for index in range(COLLEGE_SCORECARD_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("college_scorecard_causal_test_" + f"{index}")
@@ -164,26 +164,26 @@ TASKS = [
 # for index in range(SIPP_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("sipp_causal_test_" + f"{index}")
 
-# for index in range(SIPP_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-#     TASKS.append("sipp_arguablycausal_test_" + f"{index}")
+for index in range(SIPP_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+    TASKS.append("sipp_arguablycausal_test_" + f"{index}")
 
 # for index in range(MEPS_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("meps_causal_test_" + f"{index}")
 
-# # # for index in range(MEPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-# # #         TASKS.append("meps_arguablycausal_test_"+f"{index}")
+for index in range(MEPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+        TASKS.append("meps_arguablycausal_test_"+f"{index}")
 
 # for index in range(PHYSIONET_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("physionet_causal_test_" + f"{index}")
 
-# for index in range(PHYSIONET_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-#     TASKS.append("physionet_arguablycausal_test_" + f"{index}")
+for index in range(PHYSIONET_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+    TASKS.append("physionet_arguablycausal_test_" + f"{index}")
 
 # for index in range(NHANES_LEAD_FEATURES_CAUSAL_SUBSETS_NUMBER):
 #     TASKS.append("nhanes_lead_causal_test_" + f"{index}")
 
-# for index in range(NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
-#     TASKS.append("nhanes_lead_arguablycausal_test_" + f"{index}")
+for index in range(NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
+    TASKS.append("nhanes_lead_arguablycausal_test_" + f"{index}")
 
 ################################################################################
 # Task for additional robustness tests
@@ -219,8 +219,8 @@ TASKS = [
 # for index in range(PHYSIONET_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("physionet_random_test_" + f"{index}")
 
-for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
-    TASKS.append("assistments_random_test_" + f"{index}")
+# for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     TASKS.append("assistments_random_test_" + f"{index}")
 
 # for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
 #     TASKS.append("nhanes_lead_random_test_" + f"{index}")

@@ -83,6 +83,33 @@ def select_superset_plus_one(x: list, allfeatures: list) -> list:
         supersets.append(x+[item])
     return supersets
 
+def select_subset_non_causal(x: list, allfeatures: list) -> list:
+    """Generate subset of all features minus one non-causal feature.
+
+    Parameters
+    ----------
+    x : list
+        List of features.
+    allfeatures : list
+        List of current and additional features.
+
+    Returns
+    -------
+    list
+        List of supersets of features adding one feature.
+
+    """
+    supersets = []
+    feature_names_x = [feature.name for feature in x]
+    feature_names_all = [feature.name for feature in allfeatures]
+    feature_names_additional = list(set(feature_names_all).difference(feature_names_x))
+    additional = [feature for feature in allfeatures if feature.name in feature_names_additional]
+    for item in additional:
+        item_all_features = allfeatures.copy()
+        item_all_features.remove(item)
+        supersets.append(item_all_features.copy())
+    return supersets
+
 
 def get_causal_robust(
         featurelist: FeatureList,
@@ -117,7 +144,7 @@ def get_causal_robust(
         subsets.append(FeatureList(subset))
     return subsets
 
-
+# TODO edited arguably causal for ablation study
 def get_arguablycausal_robust(
         featurelist: FeatureList,
         allfeatures: list) -> list:
@@ -136,7 +163,10 @@ def get_arguablycausal_robust(
         List of robustness tests.
 
     """
-    arguablycausal_supersets = select_superset_plus_one(
+
+    # arguablycausal_supersets = select_superset_plus_one(
+    #     featurelist.features, allfeatures)
+    arguablycausal_supersets = select_subset_non_causal(
         featurelist.features, allfeatures)
     supersets = []
     for superset in arguablycausal_supersets:
