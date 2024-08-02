@@ -1480,253 +1480,253 @@ for index in range(NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER):
 # Configuration for additional robustness tests
 ################################################################################
 
-for index in range(ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
-    NON_BENCHMARK_CONFIGS["acsincome_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname="DIVISION",
-                                domain_split_ood_values=['01']),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(),
-        tabular_dataset_kwargs={"acs_task": "acsincome"})
+# for index in range(ACS_INCOME_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     NON_BENCHMARK_CONFIGS["acsincome_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname="DIVISION",
+#                                 domain_split_ood_values=['01']),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(),
+#         tabular_dataset_kwargs={"acs_task": "acsincome"})
 
-for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
-    NON_BENCHMARK_CONFIGS["acsunemployment_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname='SCHL',
-                                # No high school diploma vs. GED/diploma or higher.
-                                domain_split_ood_values=['01', '02', '03', '04',
-                                                         '05', '06', '07', '08',
-                                                         '09', '10', '11', '12',
-                                                         '13', '14', '15']),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(),
-        tabular_dataset_kwargs={"acs_task": "acsunemployment"})
+# for index in range(ACS_UNEMPLOYMENT_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     NON_BENCHMARK_CONFIGS["acsunemployment_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname='SCHL',
+#                                 # No high school diploma vs. GED/diploma or higher.
+#                                 domain_split_ood_values=['01', '02', '03', '04',
+#                                                          '05', '06', '07', '08',
+#                                                          '09', '10', '11', '12',
+#                                                          '13', '14', '15']),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(),
+#         tabular_dataset_kwargs={"acs_task": "acsunemployment"})
     
-for index in range(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS_NUMBER): 
-    NON_BENCHMARK_CONFIGS["acsfoodstamps_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname="DIVISION",
-                                domain_split_ood_values=['06']),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(),
-        tabular_dataset_kwargs={"acs_task": "acsfoodstamps"})
+# for index in range(ACS_FOODSTAMPS_FEATURES_RANDOM_SUBSETS_NUMBER): 
+#     NON_BENCHMARK_CONFIGS["acsfoodstamps_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname="DIVISION",
+#                                 domain_split_ood_values=['06']),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(),
+#         tabular_dataset_kwargs={"acs_task": "acsfoodstamps"})
 
-for index in range(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER):
-    NON_BENCHMARK_CONFIGS["acspubcov_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname="DIS",
-                                domain_split_ood_values=['1.0']),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(),
-        tabular_dataset_kwargs={"acs_task": "acspubcov", "name": "acspubcov_random_test_"+f"{index}",
-                                "years": ACS_YEARS})
+# for index in range(ACS_PUBCOV_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     NON_BENCHMARK_CONFIGS["acspubcov_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname="DIS",
+#                                 domain_split_ood_values=['1.0']),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(),
+#         tabular_dataset_kwargs={"acs_task": "acspubcov", "name": "acspubcov_random_test_"+f"{index}",
+#                                 "years": ACS_YEARS})
     
-for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
-     NON_BENCHMARK_CONFIGS["brfss_diabetes_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname="PRACE1",
-                                domain_split_ood_values=[
-                                    2, 3, 4, 5, 6],
-                                domain_split_id_values=[1, ]),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
-        tabular_dataset_kwargs={"name": "brfss_diabetes_random_test_"+f"{index}",
-                                "task": "diabetes", "years": BRFSS_YEARS})
+# for index in range(BRFSS_DIABETES_FEATURES_RANDOM_SUBSETS_NUMBER):
+#      NON_BENCHMARK_CONFIGS["brfss_diabetes_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname="PRACE1",
+#                                 domain_split_ood_values=[
+#                                     2, 3, 4, 5, 6],
+#                                 domain_split_id_values=[1, ]),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
+#         tabular_dataset_kwargs={"name": "brfss_diabetes_random_test_"+f"{index}",
+#                                 "task": "diabetes", "years": BRFSS_YEARS})
 
-for index in range(BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS_NUMBER):
-    NON_BENCHMARK_CONFIGS["brfss_blood_pressure_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname="BMI5CAT",
-                                # OOD values: [1 underweight, 2 normal weight], [3 overweight, 4 obese]
-                                domain_split_ood_values=['3.0', '4.0']),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
-        tabular_dataset_kwargs={"name": "brfss_blood_pressure_random_test_"+f"{index}",
-                                "task": "blood_pressure",
-                                "years": BRFSS_YEARS},
-    )
+# for index in range(BRFSS_BLOOD_PRESSURE_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     NON_BENCHMARK_CONFIGS["brfss_blood_pressure_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname="BMI5CAT",
+#                                 # OOD values: [1 underweight, 2 normal weight], [3 overweight, 4 obese]
+#                                 domain_split_ood_values=['3.0', '4.0']),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
+#         tabular_dataset_kwargs={"name": "brfss_blood_pressure_random_test_"+f"{index}",
+#                                 "task": "blood_pressure",
+#                                 "years": BRFSS_YEARS},
+#     )
 
-for index in range(ANES_FEATURES_RANDOM_SUBSETS_NUMBER):
-    NON_BENCHMARK_CONFIGS["anes_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname='VCF0112',
-                                domain_split_ood_values=['3.0']),
-        # male vs. all others; white non-hispanic vs. others
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(numeric_features="kbins",
-                                               dropna=None),
-        tabular_dataset_kwargs={})
+# for index in range(ANES_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     NON_BENCHMARK_CONFIGS["anes_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname='VCF0112',
+#                                 domain_split_ood_values=['3.0']),
+#         # male vs. all others; white non-hispanic vs. others
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(numeric_features="kbins",
+#                                                dropna=None),
+#         tabular_dataset_kwargs={})
 
-for index in range(SIPP_FEATURES_RANDOM_SUBSETS_NUMBER):
-    NON_BENCHMARK_CONFIGS["sipp_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname="CITIZENSHIP_STATUS",
-                                domain_split_ood_values=['1.0']),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(),
-        tabular_dataset_kwargs={})
+# for index in range(SIPP_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     NON_BENCHMARK_CONFIGS["sipp_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname="CITIZENSHIP_STATUS",
+#                                 domain_split_ood_values=['1.0']),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(),
+#         tabular_dataset_kwargs={})
 
-for index in range(DIABETES_READMISSION_FEATURES_RANDOM_SUBSETS_NUMBER):
-    NON_BENCHMARK_CONFIGS["diabetes_readmission_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname='admission_source_id',
-                                domain_split_ood_values=[7, ]),
-        # male vs. all others; white non-hispanic vs. others
-        grouper=None,
-        # Note: using min_frequency=0.01 reduces data
-        # dimensionality from ~2400 -> 169 columns.
-        # This is due to high cardinality of 'diag_*' features.
-        preprocessor_config=PreprocessorConfig(
-            min_frequency=0.01),
-        tabular_dataset_kwargs={})
+# for index in range(DIABETES_READMISSION_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     NON_BENCHMARK_CONFIGS["diabetes_readmission_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname='admission_source_id',
+#                                 domain_split_ood_values=[7, ]),
+#         # male vs. all others; white non-hispanic vs. others
+#         grouper=None,
+#         # Note: using min_frequency=0.01 reduces data
+#         # dimensionality from ~2400 -> 169 columns.
+#         # This is due to high cardinality of 'diag_*' features.
+#         preprocessor_config=PreprocessorConfig(
+#             min_frequency=0.01),
+#         tabular_dataset_kwargs={})
     
-for index in range(MEPS_FEATURES_RANDOM_SUBSETS_NUMBER):
-    NON_BENCHMARK_CONFIGS["meps_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname="INSCOV19",
-                                domain_split_ood_values=[0]),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(),
-        tabular_dataset_kwargs={})
+# for index in range(MEPS_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     NON_BENCHMARK_CONFIGS["meps_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname="INSCOV19",
+#                                 domain_split_ood_values=[0]),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(),
+#         tabular_dataset_kwargs={})
 
-for index in range(COLLEGE_SCORECARD_FEATURES_RANDOM_SUBSETS_NUMBER):
-    NON_BENCHMARK_CONFIGS["college_scorecard_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname='CCBASIC',
-                                domain_split_ood_values=[
-                                    'Special Focus Institutions--Other special-focus institutions',
-                                    'Special Focus Institutions--Theological seminaries, Bible colleges, and other faith-related institutions',
-                                    "Associate's--Private For-profit 4-year Primarily Associate's",
-                                    'Baccalaureate Colleges--Diverse Fields',
-                                    'Special Focus Institutions--Schools of art, music, and design',
-                                    "Associate's--Private Not-for-profit",
-                                    "Baccalaureate/Associate's Colleges",
-                                    "Master's Colleges and Universities (larger programs)"]
-                                ),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(
-            # Several categorical features in college scorecard have > 10k
-            # unique values; so we label-encode instead of one-hot encoding.
-            categorical_features="label_encode",
-            # Some important numeric features are not reported by universities
-            # in a way that could be systematic (and we would like these included
-            # in the sample, not excluded), so we use kbins
-            numeric_features="kbins",
-            n_bins=100,
-            dropna=None,
-        ),
-        tabular_dataset_kwargs={},
-    )
+# for index in range(COLLEGE_SCORECARD_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     NON_BENCHMARK_CONFIGS["college_scorecard_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname='CCBASIC',
+#                                 domain_split_ood_values=[
+#                                     'Special Focus Institutions--Other special-focus institutions',
+#                                     'Special Focus Institutions--Theological seminaries, Bible colleges, and other faith-related institutions',
+#                                     "Associate's--Private For-profit 4-year Primarily Associate's",
+#                                     'Baccalaureate Colleges--Diverse Fields',
+#                                     'Special Focus Institutions--Schools of art, music, and design',
+#                                     "Associate's--Private Not-for-profit",
+#                                     "Baccalaureate/Associate's Colleges",
+#                                     "Master's Colleges and Universities (larger programs)"]
+#                                 ),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(
+#             # Several categorical features in college scorecard have > 10k
+#             # unique values; so we label-encode instead of one-hot encoding.
+#             categorical_features="label_encode",
+#             # Some important numeric features are not reported by universities
+#             # in a way that could be systematic (and we would like these included
+#             # in the sample, not excluded), so we use kbins
+#             numeric_features="kbins",
+#             n_bins=100,
+#             dropna=None,
+#         ),
+#         tabular_dataset_kwargs={},
+#     )
 
-for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
-    NON_BENCHMARK_CONFIGS["nhanes_lead_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname='INDFMPIRBelowCutoff',
-                                domain_split_ood_values=[1.]),
-        # Race (non. hispanic white vs. all others; male vs. all others)
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(
-            passthrough_columns=["nhanes_year"],
-            numeric_features="kbins"),
-        tabular_dataset_kwargs={"nhanes_task": "lead", "years": NHANES_YEARS})
+# for index in range(NHANES_LEAD_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     NON_BENCHMARK_CONFIGS["nhanes_lead_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname='INDFMPIRBelowCutoff',
+#                                 domain_split_ood_values=[1.]),
+#         # Race (non. hispanic white vs. all others; male vs. all others)
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(
+#             passthrough_columns=["nhanes_year"],
+#             numeric_features="kbins"),
+#         tabular_dataset_kwargs={"nhanes_task": "lead", "years": NHANES_YEARS})
 
-for index in range(PHYSIONET_FEATURES_RANDOM_SUBSETS_NUMBER):
-    NON_BENCHMARK_CONFIGS["physionet_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname='ICULOS',
-                                domain_split_gt_thresh=47.0),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(numeric_features="kbins",
-                                               dropna=None),
-        tabular_dataset_kwargs={"name": "physionet_random_test_"+f"{index}"})
+# for index in range(PHYSIONET_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     NON_BENCHMARK_CONFIGS["physionet_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname='ICULOS',
+#                                 domain_split_gt_thresh=47.0),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(numeric_features="kbins",
+#                                                dropna=None),
+#         tabular_dataset_kwargs={"name": "physionet_random_test_"+f"{index}"})
 
-for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
-    list_passthrough = [feature.name for feature in ASSISTMENTS_FEATURES_RANDOM_SUBSETS[index]
-                        if feature.name in ["skill_id", "bottom_hint", "first_action"]]
-    NON_BENCHMARK_CONFIGS["assistments_random_test_"+f"{index}"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname='school_id',
-                                domain_split_ood_values=[5040.0,
-                                                         11502.0,
-                                                         11318.0,
-                                                         11976.0,
-                                                         12421.0,
-                                                         12379.0,
-                                                         11791.0,
-                                                         8359.0,
-                                                         12406.0,
-                                                         7594.0]),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(
-            passthrough_columns=list_passthrough,
-        ),
-        tabular_dataset_kwargs={},
-    )
+# for index in range(ASSISTMENTS_FEATURES_RANDOM_SUBSETS_NUMBER):
+#     list_passthrough = [feature.name for feature in ASSISTMENTS_FEATURES_RANDOM_SUBSETS[index]
+#                         if feature.name in ["skill_id", "bottom_hint", "first_action"]]
+#     NON_BENCHMARK_CONFIGS["assistments_random_test_"+f"{index}"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname='school_id',
+#                                 domain_split_ood_values=[5040.0,
+#                                                          11502.0,
+#                                                          11318.0,
+#                                                          11976.0,
+#                                                          12421.0,
+#                                                          12379.0,
+#                                                          11791.0,
+#                                                          8359.0,
+#                                                          12406.0,
+#                                                          7594.0]),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(
+#             passthrough_columns=list_passthrough,
+#         ),
+#         tabular_dataset_kwargs={},
+#     )
 
-NON_BENCHMARK_CONFIGS["assistments_but_skill"] = ExperimentConfig(
-        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
-                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
-                                random_state=DEFAULT_RANDOM_STATE,
-                                id_test_size=DEFAULT_ID_TEST_SIZE,
-                                domain_split_varname='school_id',
-                                domain_split_ood_values=[5040.0,
-                                                         11502.0,
-                                                         11318.0,
-                                                         11976.0,
-                                                         12421.0,
-                                                         12379.0,
-                                                         11791.0,
-                                                         8359.0,
-                                                         12406.0,
-                                                         7594.0]),
-        grouper=None,
-        preprocessor_config=PreprocessorConfig(
-            passthrough_columns=["bottom_hint", "first_action"],
-        ),
-        tabular_dataset_kwargs={},
-    )
+# NON_BENCHMARK_CONFIGS["assistments_but_skill"] = ExperimentConfig(
+#         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+#                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
+#                                 random_state=DEFAULT_RANDOM_STATE,
+#                                 id_test_size=DEFAULT_ID_TEST_SIZE,
+#                                 domain_split_varname='school_id',
+#                                 domain_split_ood_values=[5040.0,
+#                                                          11502.0,
+#                                                          11318.0,
+#                                                          11976.0,
+#                                                          12421.0,
+#                                                          12379.0,
+#                                                          11791.0,
+#                                                          8359.0,
+#                                                          12406.0,
+#                                                          7594.0]),
+#         grouper=None,
+#         preprocessor_config=PreprocessorConfig(
+#             passthrough_columns=["bottom_hint", "first_action"],
+#         ),
+#         tabular_dataset_kwargs={},
+#     )
 
 #####################################s###########################################
 # Configuration for invariant causal prediction
