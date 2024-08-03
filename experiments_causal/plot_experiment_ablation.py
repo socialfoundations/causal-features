@@ -1,5 +1,5 @@
 """Python script to load json files of experiments with robustness test of arguably causal features."""
-
+#%%
 import json
 import numpy as np
 import pandas as pd
@@ -8,22 +8,7 @@ import ast
 import os
 from tableshift import get_dataset
 from statsmodels.stats.proportion import proportion_confint
-from tableshift.datasets import (
-    ACS_INCOME_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-    ACS_FOODSTAMPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-    ACS_PUBCOV_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-    ACS_UNEMPLOYMENT_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-    BRFSS_DIABETES_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-    BRFSS_BLOOD_PRESSURE_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-    DIABETES_READMISSION_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-    ANES_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-    ASSISTMENTS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-    COLLEGE_SCORECARD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-    SIPP_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-    MEPS_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-    PHYSIONET_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-    NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS_NUMBER,
-)
+from tableshift.datasets import *
 from experiments_causal.plot_config_tasks import dic_domain_label, dic_tableshift
 
 
@@ -43,7 +28,7 @@ def get_dic_experiments_value(name: str, superset: int) -> list:
         List of experiment names (all features, arguably causal features, robustness tests).
 
     """
-    return [name, f"{name}_arguablycausal"] + [
+    return [name] + [
         f"{name}_arguablycausal_test_{index}" for index in range(superset)
     ]
 
@@ -101,6 +86,52 @@ dic_experiments = {
     ),
 }
 
+def select_non_causal(experiment_name) -> list:
+    """Generate subset of all features minus one non-causal feature.
+
+    Parameters
+    ----------
+    x : list
+        List of features.
+    allfeatures : list
+        List of current and additional features.
+
+    Returns
+    -------
+    list
+        List of supersets of features adding one feature.
+
+    """
+    experiment_name = experiment_name.upper()
+    if experiment_name.startswith("ACS"):
+        experiment_name = "ACS_" + experiment_name[3:]
+    x = eval(experiment_name + "_FEATURES_ARGUABLYCAUSAL.features")
+    if experiment_name.startswith("ACS"):
+        allfeatures = eval(experiment_name + "_FEATURES.features") + ACS_SHARED_FEATURES.features
+    elif experiment_name.startswith("BRFSS"):
+        allfeatures = eval(experiment_name + "_FEATURES.features") + BRFSS_SHARED_FEATURES.features
+    elif experiment_name.startswith("NHANES"):
+       allfeatures = eval(experiment_name + "_FEATURES.features") + NHANES_SHARED_FEATURES.features
+    else:
+        allfeatures = eval(experiment_name + "_FEATURES.features")
+    supersets = []
+    feature_names_x = [feature.name for feature in x]
+    feature_names_all = [feature.name for feature in allfeatures]
+    feature_names_additional = list(set(feature_names_all).difference(feature_names_x))
+    additional = [feature for feature in allfeatures if feature.name in feature_names_additional]
+    for item in feature_names_additional:
+        supersets.append(item)
+    return supersets
+
+def get_anticausal_feature(experiment_name) -> list:
+    if experiment_name in  ["acsincome","acsunemployment","brfss_diabetes","brfss_blood_pressure","sipp",]:
+        experiment_name = experiment_name.upper()
+        if experiment_name.startswith("ACS"):
+            experiment_name = "ACS_" + experiment_name[3:]
+        return [feature.name for feature in eval(experiment_name + "_FEATURES_ANTICAUSAL.features")]
+    else:
+        return []
+
 
 def get_results(experiment_name: str) -> pd.DataFrame:
     """Load json files of experiments from results folder, concat them into a dataframe and save it.
@@ -125,12 +156,15 @@ def get_results(experiment_name: str) -> pd.DataFrame:
     feature_selection = []
     for experiment in experiments:
         file_info = []
-        RESULTS_DIR = Path(__file__).parents[0] / "results" / experiment
-        for filename in os.listdir(RESULTS_DIR):
-            if filename == ".DS_Store":
-                pass
-            else:
-                file_info.append(filename)
+        RESULTS_DIR = Path(__file__).parents[0] / "add_on_results" / "ablation" / experiment
+        try:
+            for filename in os.listdir(RESULTS_DIR):
+                if filename == ".DS_Store":
+                    pass
+                else:
+                    file_info.append(filename)
+        except:
+            pass
 
         def get_feature_selection(experiment):
             if experiment.endswith("_arguablycausal"):
@@ -299,3 +333,163 @@ def get_results(experiment_name: str) -> pd.DataFrame:
                 print(experiment_name, model)
             eval_all = pd.concat([eval_all, eval_pd], ignore_index=True)
     return eval_all
+
+#%%
+from experiments_causal.plot_config_colors import *
+from experiments_causal.plot_config_tasks import dic_title
+from scipy.spatial import ConvexHull
+from paretoset import paretoset
+import seaborn as sns
+from matplotlib.legend_handler import HandlerBase
+from matplotlib.ticker import FormatStrFormatter
+import matplotlib.markers as mmark
+import matplotlib.pyplot as plt
+import pandas as pd
+from pathlib import Path
+import warnings
+warnings.filterwarnings("ignore")
+
+# Set plot configurations
+sns.set_context("paper")
+sns.set_style("white")
+plt.rcParams["figure.dpi"] = 300
+plt.rcParams["savefig.dpi"] = 1200
+list_mak = [
+    mmark.MarkerStyle("s"),
+    mmark.MarkerStyle("D"),
+    mmark.MarkerStyle("o"),
+    mmark.MarkerStyle("X"),
+]
+list_lab = ["All", "Arguably causal", "Causal", "Constant"]
+list_color = [color_all, color_arguablycausal, color_causal, color_constant]
+
+class MarkerHandler(HandlerBase):
+    def create_artists(
+        self, legend, tup, xdescent, ydescent, width, height, fontsize, trans
+    ):
+        return [
+            plt.Line2D(
+                [width / 2],
+                [height / 2.0],
+                ls="",
+                marker=tup[1],
+                markersize=markersize,
+                color=tup[0],
+                transform=trans,
+            )
+        ]
+
+
+
+import matplotlib.colors as mcolors
+def lighten_color(color, amount=0.5):
+    try:
+        c = mcolors.cnames[color]
+    except KeyError:
+        c = color
+    c = mcolors.to_rgb(c)
+    c = [min(1, max(0, channel + amount * (1 - channel))) for channel in c]
+    return c
+
+#%%
+
+# Define list of experiments to plot
+experiments = [
+    # "acsfoodstamps",
+    # "acsincome",
+    # # "acspubcov",
+    # "acsunemployment",
+    # "anes",
+    # "assistments",
+    # "brfss_blood_pressure",
+    # "brfss_diabetes",
+    # "college_scorecard",
+    # "diabetes_readmission",
+    # "meps",
+    # # "mimic_extract_mort_hosp",
+    # # "mimic_extract_los_3",
+    # "nhanes_lead",
+    "physionet",
+    # "sipp",
+]
+
+# experiment_name = "brfss_blood_pressure"
+for experiment_name in experiments:
+    eval_all = get_results(experiment_name)
+    eval_constant = eval_all[eval_all["features"] == "constant"]
+    dic_shift = {}
+    fig = plt.figure()
+    ax = fig.subplots()
+    ax.yaxis.set_major_formatter(FormatStrFormatter("%.3f"))
+
+    #############################################################################
+    # plot errorbars and shift gap for constant
+    #############################################################################
+
+    #############################################################################
+    # plot errorbars and shift gap for all features
+    #############################################################################
+    eval_plot = eval_all[eval_all["features"] == "all"]
+    eval_plot.sort_values("id_test", inplace=True)
+    # Calculate the pareto set
+    points = eval_plot[["id_test", "ood_test"]]
+    mask = paretoset(points, sense=["max", "max"])
+    shift = eval_plot[mask]
+    shift = shift[shift["ood_test"] == shift["ood_test"].max()]
+    shift["type"] = "All"
+    dic_shift["all"] = shift
+
+    #############################################################################
+    # plot errorbars and shift gap for robustness tests
+    #############################################################################
+    existing_results = []
+    for index in range(dic_robust_number[experiment_name]):
+        if (eval_all["features"] == f"test{index}").any():
+            existing_results.append(index)
+            eval_plot = eval_all[eval_all["features"] == f"test{index}"]
+            eval_plot.sort_values("id_test", inplace=True)
+            # Calculate the pareto set
+            points = eval_plot[["id_test", "ood_test"]]
+            mask = paretoset(points, sense=["max", "max"])
+            points = points[mask]
+            shift = eval_plot[mask]
+            shift = shift[shift["ood_test"] == shift["ood_test"].max()]
+            shift["type"] = f"Test {index}"
+            dic_shift[f"test{index}"] = shift
+
+    #############################################################################
+    # Plot Out-of-domain\naccuracy as bars
+    #############################################################################
+    # add constant shift gap
+    shift = eval_constant
+    shift["type"] = "Constant"
+    dic_shift["constant"] = shift
+
+    shift = pd.concat(dic_shift.values(), ignore_index=True)
+    shift.drop_duplicates(inplace=True)
+    # shift["gap"] = shift["id_test"] - shift["ood_test"]
+    shift["type"] = ["All"] + [select_non_causal(experiment_name)[index] for index in existing_results] + ["Constant"]
+
+    barlist = ax.bar(
+        shift["type"],
+        shift["ood_test"] - eval_constant["ood_test"].values[0] + 0.01,
+        yerr=shift["ood_test_ub"] - shift["ood_test"],
+        color=[color_all]
+        + [
+            color_anticausal if feature in get_anticausal_feature(experiment_name) else color_arguablycausal_robust for feature in select_non_causal(experiment_name)
+        ]
+        + [color_constant],
+        ecolor=color_error,
+        align="center",
+        capsize=capsize,
+        bottom=eval_constant["ood_test"].values[0] - 0.01,
+    )
+    plt.hlines(shift["ood_test_lb"].loc[0],xmin="All", xmax="Constant",ls="dotted",color=color_all)
+    ax.tick_params(axis="x", labelrotation=90)
+    plt.title(dic_title[experiment_name])
+    ax.set_ylabel("Out-of-domain accuracy")
+    fig.savefig(
+        str(Path(__file__).parents[0] / f"plots_add_on/ablation/plot_{experiment_name}.pdf"),
+        bbox_inches="tight",
+    )
+# %%

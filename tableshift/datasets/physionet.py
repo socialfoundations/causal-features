@@ -189,9 +189,9 @@ PHYSIONET_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
                           "t_sepsis − 6 and 0 if t < t_sepsis − 6. For "
                           "non-septic patients, SepsisLabel is 0.",
             is_target=True),
-    Feature("set", cat_dtype,
-            "The training set (i..e hospital) from which an example is drawn "
-            "unique (values: 'a', 'b').")
+#     Feature("set", cat_dtype,
+#             "The training set (i..e hospital) from which an example is drawn "
+#             "unique (values: 'a', 'b').")
 ], documentation="https://physionet.org/content/challenge-2019/1.0.0"
                  "/physionet_challenge_2019_ccm_manuscript.pdf")
 
