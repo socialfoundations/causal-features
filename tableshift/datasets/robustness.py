@@ -144,11 +144,12 @@ def get_causal_robust(
         subsets.append(FeatureList(subset))
     return subsets
 
-# TODO edited arguably causal for ablation study
 def get_arguablycausal_robust(
         featurelist: FeatureList,
-        allfeatures: list) -> list:
+        allfeatures: list,
+        ablation: bool =False) -> list:
     """Generate robustness test for arguably causal features.
+    If ablation is True, generate tests for ablation study.
 
     Parameters
     ----------
@@ -163,11 +164,12 @@ def get_arguablycausal_robust(
         List of robustness tests.
 
     """
-
-    # arguablycausal_supersets = select_superset_plus_one(
-    #     featurelist.features, allfeatures)
-    arguablycausal_supersets = select_subset_non_causal(
-        featurelist.features, allfeatures)
+    if ablation:
+        arguablycausal_supersets = select_subset_non_causal(
+            featurelist.features, allfeatures)
+    else:
+        arguablycausal_supersets = select_superset_plus_one(
+            featurelist.features, allfeatures)
     supersets = []
     for superset in arguablycausal_supersets:
         supersets.append(FeatureList(superset))
@@ -265,5 +267,39 @@ def get_random_subset_add_additional(featurelist: FeatureList,
         subset.append(domain)
         if (additional != None) & (additional not in subset):
             subset.append(additional)
+        subsets.append(FeatureList(subset))
+    return subsets
+
+
+def get_feature_distribution(
+        featurelist: FeatureList,
+        target: Feature,
+        domain: Feature) -> list:
+    """Generate individual feature, together with target and domain.
+
+    Parameters
+    ----------
+    featurelist : FeatureList
+        All features.
+    target : Feature
+        Target.
+    domain : Feature
+        Domain variable.
+
+    Returns
+    -------
+    list
+        List of robustness tests.
+
+    """
+    all_features = featurelist.features.copy()
+    if target in all_features:
+        all_features.remove(target)
+    all_features.remove(domain)
+    all_subsets = [[item] for item in all_features]
+    subsets = []
+    for subset in all_subsets:
+        subset.append(target)
+        subset.append(domain)
         subsets.append(FeatureList(subset))
     return subsets

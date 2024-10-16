@@ -22,7 +22,7 @@ import pandas as pd
 from itertools import combinations
 
 from tableshift.core.features import Feature, FeatureList, cat_dtype
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset,get_feature_distribution
 
 ################################################################################
 # Shared features used in more than one task
@@ -684,6 +684,8 @@ domain = Feature('DIVISION', cat_dtype,
 ACS_INCOME_FEATURES_CAUSAL_SUBSETS = get_causal_robust(ACS_INCOME_FEATURES_CAUSAL, target, domain)
 ACS_INCOME_FEATURES_CAUSAL_SUBSETS_NUMBER = len(ACS_INCOME_FEATURES_CAUSAL_SUBSETS)
 
+ACS_INCOME_FEATURES_DIST = get_feature_distribution(ACS_INCOME_FEATURES + ACS_SHARED_FEATURES, target, domain)
+
 ACS_INCOME_FEATURES_ARGUABLYCAUSAL = FeatureList([
     Feature('PINCP', float, """Total person's income >= threshold.""",
             is_target=True),
@@ -1023,6 +1025,9 @@ domain = DIS_FEATURE
 ACS_PUBCOV_FEATURES_CAUSAL_SUBSETS = get_causal_robust(ACS_PUBCOV_FEATURES_CAUSAL, target, domain)
 ACS_PUBCOV_FEATURES_CAUSAL_SUBSETS_NUMBER = len(ACS_PUBCOV_FEATURES_CAUSAL_SUBSETS)
 
+ACS_PUBCOV_FEATURES_DIST = get_feature_distribution(ACS_PUBCOV_FEATURES + ACS_SHARED_FEATURES, target, domain)
+
+
 ACS_PUBCOV_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
     DIS_FEATURE,
     ESP_FEATURE,
@@ -1254,6 +1259,8 @@ domain = Feature('SCHL', cat_dtype, "Educational attainment",
 
 ACS_UNEMPLOYMENT_FEATURES_CAUSAL_SUBSETS = get_causal_robust(ACS_UNEMPLOYMENT_FEATURES_CAUSAL, target, domain)
 ACS_UNEMPLOYMENT_FEATURES_CAUSAL_SUBSETS_NUMBER = len(ACS_UNEMPLOYMENT_FEATURES_CAUSAL_SUBSETS)
+
+ACS_UNEMPLOYMENT_FEATURES_DIST = get_feature_distribution(ACS_UNEMPLOYMENT_FEATURES + ACS_SHARED_FEATURES, target, domain)
 
 
 ACS_UNEMPLOYMENT_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
@@ -1710,6 +1717,9 @@ domain = Feature('DIVISION', cat_dtype,
 ACS_FOODSTAMPS_FEATURES_CAUSAL_SUBSETS = get_causal_robust(ACS_FOODSTAMPS_FEATURES_CAUSAL,
                                                            target, domain)
 ACS_FOODSTAMPS_FEATURES_CAUSAL_SUBSETS_NUMBER = len(ACS_FOODSTAMPS_FEATURES_CAUSAL_SUBSETS)
+
+ACS_FOODSTAMPS_FEATURES_DIST = get_feature_distribution(ACS_FOODSTAMPS_FEATURES + ACS_SHARED_FEATURES, target, domain)
+
 
 ACS_FOODSTAMPS_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
     Feature('FS', int, """Yearly food stamp/Supplemental Nutrition Assistance

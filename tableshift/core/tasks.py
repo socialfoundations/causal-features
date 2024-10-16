@@ -485,3 +485,20 @@ def get_task_config(name: str) -> TaskConfig:
         return _TASK_REGISTRY[name]
     else:
         raise NotImplementedError(f"task {name} not implemented.")
+
+
+################################################################################
+# Tasks for distribution shift by feature
+################################################################################
+
+for index, subset in enumerate(ACS_INCOME_FEATURES_DIST):
+    _TASK_REGISTRY["acsincome_dist_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
+
+for index, subset in enumerate(ACS_PUBCOV_FEATURES_DIST):
+    _TASK_REGISTRY["acspubcov_dist_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
+
+for index, subset in enumerate(ACS_UNEMPLOYMENT_FEATURES_DIST):
+    _TASK_REGISTRY["acsunemployment_dist_"+f"{index}"] = TaskConfig(ACSDataSource, subset)
+
+for index, subset in enumerate(ACS_FOODSTAMPS_FEATURES_DIST):
+    _TASK_REGISTRY["acsfoodstamps_dist_"+f"{index}"] = TaskConfig(ACSDataSource, subset)

@@ -11,6 +11,20 @@ from statsmodels.stats.proportion import proportion_confint
 from tableshift.datasets import *
 from experiments_causal.plot_config_tasks import dic_domain_label, dic_tableshift
 
+from experiments_causal.plot_config_colors import *
+from experiments_causal.plot_config_tasks import dic_title
+from scipy.spatial import ConvexHull
+from paretoset import paretoset
+import seaborn as sns
+from matplotlib.legend_handler import HandlerBase
+from matplotlib.ticker import FormatStrFormatter
+import matplotlib.markers as mmark
+import matplotlib.pyplot as plt
+import pandas as pd
+from pathlib import Path
+import warnings
+warnings.filterwarnings("ignore")
+
 
 def get_dic_experiments_value(name: str, superset: int) -> list:
     """Return list of experiment names for a task.
@@ -335,19 +349,6 @@ def get_results(experiment_name: str) -> pd.DataFrame:
     return eval_all
 
 #%%
-from experiments_causal.plot_config_colors import *
-from experiments_causal.plot_config_tasks import dic_title
-from scipy.spatial import ConvexHull
-from paretoset import paretoset
-import seaborn as sns
-from matplotlib.legend_handler import HandlerBase
-from matplotlib.ticker import FormatStrFormatter
-import matplotlib.markers as mmark
-import matplotlib.pyplot as plt
-import pandas as pd
-from pathlib import Path
-import warnings
-warnings.filterwarnings("ignore")
 
 # Set plot configurations
 sns.set_context("paper")
@@ -397,7 +398,7 @@ def lighten_color(color, amount=0.5):
 experiments = [
     # "acsfoodstamps",
     # "acsincome",
-    # # "acspubcov",
+    # "acspubcov",
     # "acsunemployment",
     # "anes",
     # "assistments",
@@ -405,11 +406,11 @@ experiments = [
     # "brfss_diabetes",
     # "college_scorecard",
     # "diabetes_readmission",
-    # "meps",
+    "meps",
     # # "mimic_extract_mort_hosp",
     # # "mimic_extract_los_3",
     # "nhanes_lead",
-    "physionet",
+    # "physionet",
     # "sipp",
 ]
 
@@ -418,7 +419,7 @@ for experiment_name in experiments:
     eval_all = get_results(experiment_name)
     eval_constant = eval_all[eval_all["features"] == "constant"]
     dic_shift = {}
-    fig = plt.figure()
+    fig = plt.figure(figsize=[5.5, 1.75])
     ax = fig.subplots()
     ax.yaxis.set_major_formatter(FormatStrFormatter("%.3f"))
 
@@ -486,6 +487,10 @@ for experiment_name in experiments:
     )
     plt.hlines(shift["ood_test_lb"].loc[0],xmin="All", xmax="Constant",ls="dotted",color=color_all)
     ax.tick_params(axis="x", labelrotation=90)
+    if experiment_name == "meps":
+        ax.tick_params(axis="x", labelrotation=90, labelsize=4)
+    else:
+        ax.tick_params(axis="x", labelrotation=90)
     plt.title(dic_title[experiment_name])
     ax.set_ylabel("Out-of-domain accuracy")
     fig.savefig(
