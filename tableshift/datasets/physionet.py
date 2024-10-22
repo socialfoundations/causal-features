@@ -15,7 +15,7 @@ import pandas as pd
 
 from tableshift.core.features import Feature, FeatureList, cat_dtype
 
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset, get_feature_distribution
 
 ################################################################################
 # Feature list
@@ -128,6 +128,8 @@ domain = Feature("ICULOS", float,
                  name_extended="ICU length of stay (hours since ICU admission)")
 PHYSIONET_FEATURES_CAUSAL_SUBSETS = get_causal_robust(PHYSIONET_FEATURES_CAUSAL, target, domain)
 PHYSIONET_FEATURES_CAUSAL_SUBSETS_NUMBER = len(PHYSIONET_FEATURES_CAUSAL_SUBSETS)
+
+PHYSIONET_FEATURES_DIST = get_feature_distribution(PHYSIONET_FEATURES, target, domain)
 
 PHYSIONET_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
     Feature("HR", float, name_extended="Heart rate (in beats per minute)"),

@@ -18,7 +18,7 @@ from typing import Dict
 import pandas as pd
 from tableshift.core.features import Feature, FeatureList, cat_dtype
 
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset, get_feature_distribution
 
 
 DIABETES_READMISSION_RESOURCES = [
@@ -471,6 +471,10 @@ domain = Feature('admission_source_id', int, """Integer identifier corresponding
                  })
 DIABETES_READMISSION_FEATURES_CAUSAL_SUBSETS = get_causal_robust(DIABETES_READMISSION_FEATURES_CAUSAL, target, domain)
 DIABETES_READMISSION_FEATURES_CAUSAL_NUMBER = len(DIABETES_READMISSION_FEATURES_CAUSAL_SUBSETS)
+
+DIABETES_READMISSION_FEATURES_DIST = get_feature_distribution(DIABETES_READMISSION_FEATURES, target, domain)
+
+
 
 DIABETES_READMISSION_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
     Feature('race', cat_dtype, """Nominal. Values: Caucasian, Asian, African 

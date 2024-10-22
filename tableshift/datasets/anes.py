@@ -14,7 +14,7 @@ import pandas as pd
 
 from tableshift.core.features import Feature, cat_dtype, FeatureList
 
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset,get_feature_distribution
 
 # Note that "state" feature is named as VCF0901b; see below. Note that '99' is
 # also a valid value, but it contains all missing targets .
@@ -657,6 +657,9 @@ domain = Feature('VCF0112', cat_dtype, """Region - U.S. Census 1. Northeast (CT,
                      '3.0': "South",
                      # (AK, AZ, CA, CO, HI, ID, MT, NV, NM, OR, UT, WA, WY)
                      '4.0': 'West', })
+
+ANES_FEATURES_DIST = get_feature_distribution(ANES_FEATURES, target, domain)
+
 
 ANES_FEATURES_CAUSAL_SUBSETS = get_causal_robust(ANES_FEATURES_CAUSAL, target, domain)
 ANES_FEATURES_CAUSAL_SUBSETS_NUMBER = len(ANES_FEATURES_CAUSAL_SUBSETS)

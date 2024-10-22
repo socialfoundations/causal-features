@@ -9,7 +9,7 @@ import numpy as np
 from pandas import DataFrame
 
 from tableshift.core.features import Feature, FeatureList, cat_dtype
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset,get_feature_distribution
 
 
 ASSISTMENTS_FEATURES = FeatureList(features=[
@@ -666,6 +666,8 @@ target = Feature('correct', int, is_target=True)
 domain = Feature('school_id', float)
 ASSISTMENTS_FEATURES_CAUSAL_SUBSETS = get_causal_robust(ASSISTMENTS_FEATURES_CAUSAL, target, domain)
 ASSISTMENTS_FEATURES_CAUSAL_SUBSETS_NUMBER = len(ASSISTMENTS_FEATURES_CAUSAL_SUBSETS)
+
+ASSISTMENTS_FEATURES_DIST = get_feature_distribution(ASSISTMENTS_FEATURES, target, domain)
 
 ASSISTMENTS_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
     Feature('correct', int, is_target=True),

@@ -274,7 +274,8 @@ def get_random_subset_add_additional(featurelist: FeatureList,
 def get_feature_distribution(
         featurelist: FeatureList,
         target: Feature,
-        domain: Feature) -> list:
+        domain: Feature,
+        additional: Feature = None) -> list:
     """Generate individual feature, together with target and domain.
 
     Parameters
@@ -296,10 +297,13 @@ def get_feature_distribution(
     if target in all_features:
         all_features.remove(target)
     all_features.remove(domain)
+        
     all_subsets = [[item] for item in all_features]
     subsets = []
     for subset in all_subsets:
         subset.append(target)
         subset.append(domain)
+        if (additional != None) & (additional not in subset):
+            subset.append(additional)
         subsets.append(FeatureList(subset))
     return subsets

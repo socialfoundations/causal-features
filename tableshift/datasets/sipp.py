@@ -14,7 +14,7 @@ import json
 import os
 
 from tableshift.core.features import Feature, FeatureList, cat_dtype
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset, get_feature_distribution
 # Get the absolute path of the current file
 current_file_path = os.path.abspath(__file__)
 # Get the directory of the current file
@@ -75,6 +75,9 @@ target = Feature('OPM_RATIO', int, is_target=True,
 domain = [feature for feature in SIPP_ALL_FEATURES if feature.name == 'CITIZENSHIP_STATUS'][0]
 SIPP_FEATURES_CAUSAL_SUBSETS = get_causal_robust(SIPP_FEATURES_CAUSAL, target, domain)
 SIPP_FEATURES_CAUSAL_SUBSETS_NUMBER = len(SIPP_FEATURES_CAUSAL_SUBSETS)
+
+SIPP_FEATURES_DIST = get_feature_distribution(SIPP_FEATURES, target, domain)
+
 
 # List of features that are neither causal nor arguably causal
 list_other_feature_names = [

@@ -20,7 +20,7 @@ import numpy as np
 import pandas as pd
 
 from tableshift.core.features import Feature, FeatureList, cat_dtype
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset_add_additional
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset_add_additional, get_feature_distribution
 
 DEFAULT_NHANES_CODING = {
     "1.0": "Yes",
@@ -419,6 +419,9 @@ domain = Feature('INDFMPIRBelowCutoff', float,
                  value_mapping={1.: 'yes', 0.: 'no'})
 NHANES_LEAD_FEATURES_CAUSAL_SUBSETS = get_causal_robust(NHANES_LEAD_FEATURES_CAUSAL, target, domain)
 NHANES_LEAD_FEATURES_CAUSAL_SUBSETS_NUMBER = len(NHANES_LEAD_FEATURES_CAUSAL_SUBSETS)
+
+NHANES_LEAD_FEATURES_DIST = get_feature_distribution(NHANES_LEAD_FEATURES+NHANES_SHARED_FEATURES, target, domain)
+
 
 NHANES_LEAD_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
     # Derived feature for survey year

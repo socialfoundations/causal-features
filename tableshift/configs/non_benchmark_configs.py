@@ -1840,7 +1840,7 @@ for index, subset in enumerate(ACS_PUBCOV_FEATURES_DIST):
                                 domain_split_ood_values=['1.0']),
         grouper=None,
         preprocessor_config=PreprocessorConfig(),
-        tabular_dataset_kwargs={"acs_task": "acspubcov", "name": "acspubcov_dist",
+        tabular_dataset_kwargs={"acs_task": "acspubcov",
                                 "years": ACS_YEARS})
 
 
@@ -1871,3 +1871,133 @@ for index, subset in enumerate(ACS_FOODSTAMPS_FEATURES_DIST):
         grouper=None,
         preprocessor_config=PreprocessorConfig(),
         tabular_dataset_kwargs={"acs_task": "acsfoodstamps"})
+    
+
+for index, subset in enumerate(ANES_FEATURES_DIST):
+    NON_BENCHMARK_CONFIGS["anes_dist_"+f"{index}"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname='VCF0112',
+                                domain_split_ood_values=['3.0']),
+        # male vs. all others; white non-hispanic vs. others
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(numeric_features="kbins",
+                                               dropna=None),
+        tabular_dataset_kwargs={})
+    
+
+for  index, subset in enumerate(BRFSS_BLOOD_PRESSURE_FEATURES_DIST):
+    NON_BENCHMARK_CONFIGS["brfss_blood_pressure_dist_"+f"{index}"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname="BMI5CAT",
+                                # OOD values: [1 underweight, 2 normal weight], [3 overweight, 4 obese]
+                                domain_split_ood_values=['3.0', '4.0']),
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
+        tabular_dataset_kwargs={
+                                "task": "blood_pressure",
+                                "years": BRFSS_YEARS},
+    )
+
+
+for  index, subset in enumerate(BRFSS_DIABETES_FEATURES_DIST):
+    NON_BENCHMARK_CONFIGS["brfss_diabetes_dist_"+f"{index}"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname="PRACE1",
+                                domain_split_ood_values=[
+                                    2, 3, 4, 5, 6],
+                                domain_split_id_values=[1, ]),
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(passthrough_columns=["IYEAR"]),
+        tabular_dataset_kwargs={
+                                "task": "diabetes", "years": BRFSS_YEARS})
+    
+for index, subset in enumerate(ASSISTMENTS_FEATURES_DIST):
+    NON_BENCHMARK_CONFIGS["assistments_dist_"+f"{index}"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname='school_id',
+                                domain_split_ood_values=[5040.0,
+                                                         11502.0,
+                                                         11318.0,
+                                                         11976.0,
+                                                         12421.0,
+                                                         12379.0,
+                                                         11791.0,
+                                                         8359.0,
+                                                         12406.0,
+                                                         7594.0]),
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(
+            passthrough_columns=list_passthrough,
+        ),
+        tabular_dataset_kwargs={},
+    )
+
+for index, subset in enumerate(DIABETES_READMISSION_FEATURES_DIST):
+     NON_BENCHMARK_CONFIGS["diabetes_readmission_dist_"+f"{index}"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname='admission_source_id',
+                                domain_split_ood_values=[7, ]),
+        # male vs. all others; white non-hispanic vs. others
+        grouper=None,
+        # Note: using min_frequency=0.01 reduces data
+        # dimensionality from ~2400 -> 169 columns.
+        # This is due to high cardinality of 'diag_*' features.
+        preprocessor_config=PreprocessorConfig(
+            min_frequency=0.01),
+        tabular_dataset_kwargs={})
+     
+
+for index, subset in enumerate(NHANES_LEAD_FEATURES_DIST):
+    NON_BENCHMARK_CONFIGS["nhanes_lead_dist"+f"{index}"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname='INDFMPIRBelowCutoff',
+                                domain_split_ood_values=[1.]),
+        # Race (non. hispanic white vs. all others; male vs. all others)
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(
+            passthrough_columns=["nhanes_year"],
+            numeric_features="kbins"),
+        tabular_dataset_kwargs={"nhanes_task": "lead", "years": NHANES_YEARS})
+    
+for index, subset in enumerate(PHYSIONET_FEATURES_DIST):
+    NON_BENCHMARK_CONFIGS["physionet_dist"+f"{index}"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname='ICULOS',
+                                domain_split_gt_thresh=47.0),
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(numeric_features="kbins",
+                                               dropna=None),
+        tabular_dataset_kwargs={})
+
+for index, subset in enumerate(SIPP_FEATURES_DIST):
+    NON_BENCHMARK_CONFIGS["sipp_dist"+f"{index}"] = ExperimentConfig(
+        splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
+                                ood_val_size=DEFAULT_OOD_VAL_SIZE,
+                                random_state=DEFAULT_RANDOM_STATE,
+                                id_test_size=DEFAULT_ID_TEST_SIZE,
+                                domain_split_varname="CITIZENSHIP_STATUS",
+                                domain_split_ood_values=['1.0']),
+        grouper=None,
+        preprocessor_config=PreprocessorConfig(),
+        tabular_dataset_kwargs={})

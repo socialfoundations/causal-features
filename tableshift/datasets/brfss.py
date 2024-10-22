@@ -22,7 +22,7 @@ import pandas as pd
 from tableshift.core.features import Feature, FeatureList, cat_dtype
 from tableshift.core.splitter import idx_where_not_in
 
-from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset, get_random_subset_add_additional
+from tableshift.datasets.robustness import get_causal_robust, get_arguablycausal_robust, get_random_subset,get_feature_distribution, get_random_subset_add_additional
 
 # Features present in every year of BRFSS
 BRFSS_GLOBAL_FEATURES = [
@@ -828,8 +828,24 @@ domain = Feature("PRACE1", float, """Preferred race category.""",
                      7: 'No preferred race',
                      8: 'Multiracial but preferred race not answered',
                      77: 'Don’t know/Not sure', 9: 'refused', })
+
 BRFSS_DIABETES_FEATURES_CAUSAL_SUBSETS = get_causal_robust(BRFSS_DIABETES_FEATURES_CAUSAL, target, domain)
 BRFSS_DIABETES_FEATURES_CAUSAL_SUBSETS_NUMBER = len(BRFSS_DIABETES_FEATURES_CAUSAL_SUBSETS)
+
+# fix value mapping for distribution features
+domain = Feature("PRACE1", float, """Preferred race category.""",
+            name_extended="Preferred race category",
+            na_values=(7., 8., 77., 99.),
+            value_mapping={
+                "1.0": 'White',
+                "2.0": 'Black or African American',
+                "3.0": 'American Indian or Alaskan Native',
+                "4.0": 'Asian', "5.0": 'Native Hawaiian or other Pacific Islander',
+                "6.0": 'Other race',
+                "7.0": 'No preferred race',
+                "8.0": 'Multiracial but preferred race not answered',
+                "77.0": 'Don’t know/Not sure', "9.0": 'refused', })
+BRFSS_DIABETES_FEATURES_DIST = get_feature_distribution(BRFSS_DIABETES_FEATURES, target, domain, additional)
 
 BRFSS_DIABETES_FEATURES_ARGUABLYCAUSAL = FeatureList([
     ################ Target ################
@@ -1430,9 +1446,13 @@ target = Feature("HIGH_BLOOD_PRESS", int,
             original codebook values at preprocessing to create a binary 
             target variable).""",
                  is_target=True)
+
 domain = BMI5CAT_FEATURE
+
 BRFSS_BLOOD_PRESSURE_FEATURES_CAUSAL_SUBSETS = get_causal_robust(BRFSS_BLOOD_PRESSURE_FEATURES_CAUSAL, target, domain)
 BRFSS_BLOOD_PRESSURE_FEATURES_CAUSAL_SUBSETS_NUMBER = len(BRFSS_BLOOD_PRESSURE_FEATURES_CAUSAL_SUBSETS)
+
+BRFSS_BLOOD_PRESSURE_FEATURES_DIST = get_feature_distribution(BRFSS_BLOOD_PRESSURE_FEATURES, target, domain, additional)
 
 BRFSS_BLOOD_PRESSURE_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
     # Derived feature for year.
