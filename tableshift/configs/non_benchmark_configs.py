@@ -1963,7 +1963,7 @@ for index, subset in enumerate(DIABETES_READMISSION_FEATURES_DIST):
      
 
 for index, subset in enumerate(NHANES_LEAD_FEATURES_DIST):
-    NON_BENCHMARK_CONFIGS["nhanes_lead_dist"+f"{index}"] = ExperimentConfig(
+    NON_BENCHMARK_CONFIGS["nhanes_lead_dist_"+f"{index}"] = ExperimentConfig(
         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
                                 random_state=DEFAULT_RANDOM_STATE,
@@ -1978,7 +1978,7 @@ for index, subset in enumerate(NHANES_LEAD_FEATURES_DIST):
         tabular_dataset_kwargs={"nhanes_task": "lead", "years": NHANES_YEARS})
     
 for index, subset in enumerate(PHYSIONET_FEATURES_DIST):
-    NON_BENCHMARK_CONFIGS["physionet_dist"+f"{index}"] = ExperimentConfig(
+    NON_BENCHMARK_CONFIGS["physionet_dist_"+f"{index}"] = ExperimentConfig(
         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
                                 random_state=DEFAULT_RANDOM_STATE,
@@ -1991,7 +1991,7 @@ for index, subset in enumerate(PHYSIONET_FEATURES_DIST):
         tabular_dataset_kwargs={})
 
 for index, subset in enumerate(SIPP_FEATURES_DIST):
-    NON_BENCHMARK_CONFIGS["sipp_dist"+f"{index}"] = ExperimentConfig(
+    NON_BENCHMARK_CONFIGS["sipp_dist_"+f"{index}"] = ExperimentConfig(
         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
                                 random_state=DEFAULT_RANDOM_STATE,

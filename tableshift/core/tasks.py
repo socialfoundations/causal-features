@@ -516,14 +516,14 @@ for index, subset in enumerate(ASSISTMENTS_FEATURES_DIST):
     _TASK_REGISTRY["assistments_dist_"+f"{index}"] = TaskConfig(AssistmentsDataSource, subset)
 
 for index, subset in enumerate(DIABETES_READMISSION_FEATURES_DIST):
-    _TASK_REGISTRY["diabetes_readmission_dist"+f"{index}"] = TaskConfig(DiabetesReadmissionDataSource, subset)
+    _TASK_REGISTRY["diabetes_readmission_dist_"+f"{index}"] = TaskConfig(DiabetesReadmissionDataSource, subset)
 
 
 for index, subset in enumerate(NHANES_LEAD_FEATURES_DIST):
-    _TASK_REGISTRY["nhanes_lead_dist"+f"{index}"] = TaskConfig(NHANESDataSource, subset)
+    _TASK_REGISTRY["nhanes_lead_dist_"+f"{index}"] = TaskConfig(NHANESDataSource, subset)
 
 for index, subset in enumerate(PHYSIONET_FEATURES_DIST):
-    _TASK_REGISTRY["physionet_dist"+f"{index}"] = TaskConfig(PhysioNetDataSource, subset)
+    _TASK_REGISTRY["physionet_dist_"+f"{index}"] = TaskConfig(PhysioNetDataSource, subset)
 
 for index, subset in enumerate(SIPP_FEATURES_DIST):
-    _TASK_REGISTRY["sipp_dist"+f"{index}"] = TaskConfig(SIPPDataSource, subset)
+    _TASK_REGISTRY["sipp_dist_"+f"{index}"] = TaskConfig(SIPPDataSource, subset)
