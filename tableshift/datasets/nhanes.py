@@ -420,7 +420,10 @@ domain = Feature('INDFMPIRBelowCutoff', float,
 NHANES_LEAD_FEATURES_CAUSAL_SUBSETS = get_causal_robust(NHANES_LEAD_FEATURES_CAUSAL, target, domain)
 NHANES_LEAD_FEATURES_CAUSAL_SUBSETS_NUMBER = len(NHANES_LEAD_FEATURES_CAUSAL_SUBSETS)
 
-NHANES_LEAD_FEATURES_DIST = get_feature_distribution(NHANES_LEAD_FEATURES+NHANES_SHARED_FEATURES, target, domain)
+additional = Feature("nhanes_year", int, "Derived feature for year.",
+            name_extended='year')
+
+NHANES_LEAD_FEATURES_DIST = get_feature_distribution(NHANES_LEAD_FEATURES+NHANES_SHARED_FEATURES, target, domain, additional)
 
 
 NHANES_LEAD_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
@@ -475,9 +478,6 @@ NHANES_LEAD_FEATURES_ARGUABLYCAUSAL = FeatureList(features=[
     Feature("LBXBPB", float, "Blood lead (ug/dL)", is_target=True,
             na_values=(".",)),
 ], documentation="https://wwwn.cdc.gov/Nchs/Nhanes/")
-
-additional = Feature("nhanes_year", int, "Derived feature for year.",
-            name_extended='year')
 
 NHANES_LEAD_FEATURES_ARGUABLYCAUSAL_SUPERSETS = get_arguablycausal_robust(NHANES_LEAD_FEATURES_ARGUABLYCAUSAL,
                                                                           NHANES_LEAD_FEATURES.features+NHANES_SHARED_FEATURES.features)

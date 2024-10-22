@@ -1921,6 +1921,8 @@ for  index, subset in enumerate(BRFSS_DIABETES_FEATURES_DIST):
                                 "task": "diabetes", "years": BRFSS_YEARS})
     
 for index, subset in enumerate(ASSISTMENTS_FEATURES_DIST):
+    list_passthrough = [feature.name for feature in subset
+                        if feature.name in ["skill_id", "bottom_hint", "first_action"]]
     NON_BENCHMARK_CONFIGS["assistments_dist_"+f"{index}"] = ExperimentConfig(
         splitter=DomainSplitter(val_size=DEFAULT_ID_VAL_SIZE,
                                 ood_val_size=DEFAULT_OOD_VAL_SIZE,
