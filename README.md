@@ -5,7 +5,7 @@
 
 This is code to reproduce experiments in the paper:
 
-> Vivian Y. Nastl and Moritz Hardt. "Predictors from causal features do not generalize better to new domains", 2024.
+> Vivian Y. Nastl and Moritz Hardt. "Do causal predictors generalize better to new domains?", 2024.
 
 <div align="center">
 <img src="experiments_causal/dag_diabetes.svg">
