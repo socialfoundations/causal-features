@@ -60,6 +60,10 @@ The full list of model names is given below. For more details on each algorithm,
 | IRM                   | `irm`              |
 | VREX                  | `vrex`             |
 | FT-Transformer        | `ft_transformer`   |
+| IB-IRM                | `ib_irm`           |
+| CausIRL CORAL         | `causirl_coral`    |
+| CausIRL MMD           | `causirl_mmd`      |
+| AND-Mask              | `and_mask`         |
 
 All experiments were run as jobs submitted to a centralized cluster, running the open-source HTCondor scheduler.
 The relevant script launching the jobs is located at `experiments_causal/launch_experiments.py`.
@@ -72,7 +76,15 @@ Use the following Python scripts:
 - Main result:
   - Figure in introduction: `experiments_causal/plot_paper_introduction_figure.py`
   - Figures in section "Empirical results": `experiments_causal/plot_paper_figures.py`
-- Appendix: `experiments_causal/plot_paper_appendix_figures.py`, `experiments_causal/plot_paper_appendix_figures_extra.py`, and `experiments_causal/plot_paper_appendix_figures_extra2.py`
+- Appendix:
+  - Main results: `experiments_causal/plot_paper_appendix_figures.py`, `experiments_causal/plot_paper_appendix_figures_extra.py`, `experiments_causal/plot_paper_appendix_figures_extra2.py`
+  - Anti-causal features: `experiments_causal/plot_paper_appendix_figures.py`
+  - Causal machine learning: `experiments_causal/plot_add_on_causalml.py`
+  - Causal discovery: `experiments_causal/plot_add_on_causal_discovery.py`
+  - Random subsets: `experiments_causal/plot_add_on_random_subsets.py`
+  - Ablation study: `experiments_causal/plot_experiment_ablation.py`
+  - Empirical results across machine learning models: `experiments_causal/plot_add_on_models.py`
+  - Synthetic experiments: `experiments_causal/synthetic_experiments.ipynb`
 
 ## Dataset Availability
 
@@ -81,7 +93,7 @@ The datasets with open credentialized access require signing a data use agreemen
 Hence, these datasets must be manually fetched and stored locally.
 
 A list of datasets, their names in our code, and the corresponding access levels are below. The string identifier is the value that should be passed as the `experiment` parameter to the `--experiment` flag of `experiments_causal/run_experiment.py`.
-The causal, arguably causal, and anti-causal feature sets are obtained by appending `_causal`, `_arguablycausal` and `_anticausal` to the string identifier.
+The causal, arguably causal, and anti-causal feature sets are obtained by appending `_causal`, `_arguablycausal` and `_anticausal` to the string identifier. Combined causal and anti-causal features have the appendix `_causal_anticausal`. If they exist, one obtains the estimated parents from causal discovery algorithms by appending the abbreviation of the algorithms in lower letters. For example, `acsincome_pc`. Random subsets are indexed from 0 to 500, and callable via the appendix `_random_test_{index}`. 
 
 
 | Tasks                 | String Identifier         | Availability                                                                                                 | Source                                                                                                                 | Preprocessing |
@@ -108,11 +120,13 @@ TableShift includes the preprocessing of the data files in their implementation.
 ## Differences to TableShift
 We list in the following which files/folders we changed for our experiments:
 - created folder `experiments_causal` with python scripts to run experiments, launch experiments on a cluster, and plot figures for the paper
-- created folder `backward_prediction` with preprocessing files adapted from [Hardt & Kim (2023)](https://doi.org/10.1145/3617694.3623225) with `backward_predictor/sipp/data/data_cleaning.ipynb` &copy; Ricardo Sandoval
-- added tasks `meps` and `sipp`, as well as causal feature selections of all tasks in their respective Python scripts in the folder `tableshift/datasets`
+- created folder `backward_prediction` with preprocessing files adapted from [Hardt & Kim (2023)](https://doi.org/10.1145/3617694.3623225) with `backward_predictor/sipp/data/data_cleaning.ipynb` &copy; Ricardo Sandoval, 2024
+- added tasks `meps` and `sipp`, as well as feature selections of all tasks in their respective Python scripts in the folder `tableshift/datasets`
 - added data source for `meps` and `sipp` in `tableshift/core/data_source.py`
-- added tasks `meps` and `sipp`, as well as causal feature selection of all tasks in `tableshift/core/tasks.py`
-- added configurations for tasks and their causal feature selections in `tableshift/configs/non_benchmark_configs.py`
+- added tasks `meps` and `sipp`, as well as feature selections of all tasks in `tableshift/core/tasks.py`
+- added configurations for tasks and their feature selections in `tableshift/configs/non_benchmark_configs.py`
+- added models `ib_erm`, `ib_irm`, `causirl_coral`, `causirl_mmd` and `and_mask` in `tableshift/models`, adapted from [Gulrajani & Lopez-Paz (2021)](https://openreview.net/forum?id=lQdXeXDoWtI)
+- added configurations for hyperparameters of added models in `tableshift/configs/hparams.py`
 - added computation of balanced accuracy in `tableshift/models/torchutils.py` and adapted `tableshift/models/compat.py` accordingly
 - minor fixes in `tableshift/core/features.py`, `tableshift/core/tabular_dataset.py` and `tableshift/models/training.py`
 - added the packages `paretoset==1.2.3` and `seaborn==0.13.0` in `requirements.txt`
@@ -121,7 +135,7 @@ We list in the following which files/folders we changed for our experiments:
 This repository contains code and supplementary materials for the following preprint:
 ```
 @misc{nastl2024predictors,
-      title={Predictors from causal features do not generalize better to new domains}, 
+      title={Do causal predictors generalize better to new domains?}, 
       author={Vivian Y. Nastl and Moritz Hardt},
       year={2024},
       eprint={2402.09891},
