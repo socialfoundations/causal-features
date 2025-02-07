@@ -134,12 +134,16 @@ We list in the following which files/folders we changed for our experiments:
 ## Citing
 This repository contains code and supplementary materials for the following preprint:
 ```
-@misc{nastl2024predictors,
-      title={Do causal predictors generalize better to new domains?}, 
-      author={Vivian Y. Nastl and Moritz Hardt},
-      year={2024},
-      eprint={2402.09891},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG}
+@inproceedings{nastl2024predictors,
+ author = {Nastl, Vivian and Hardt, Moritz},
+ booktitle = {Advances in Neural Information Processing Systems},
+ editor = {A. Globerson and L. Mackey and D. Belgrave and A. Fan and U. Paquet and J. Tomczak and C. Zhang},
+ pages = {31202--31315},
+ publisher = {Curran Associates, Inc.},
+ title = {Do causal predictors generalize better to new domains?},
+ url = {https://proceedings.neurips.cc/paper_files/paper/2024/file/3792ddbf94b68ff4369f510f7a3e1777-Paper-Conference.pdf},
+ volume = {37},
+ year = {2024}
 }
+
 ```
